@@ -41,8 +41,7 @@
             font-size: 0.95rem;
             margin-bottom: 15px;
         }
-        /* About Me Section */
-        .about-box {
+        .about-box, .skills-box {
             background: #0f172a;
             padding: 15px;
             border-radius: 12px;
@@ -50,11 +49,11 @@
             border: 1px solid #334155;
             text-align: left;
         }
-        .about-title {
+        .about-title, .skills-title {
             color: #00ff88;
             font-size: 0.95rem;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: center;
         }
         .about-text {
@@ -62,20 +61,6 @@
             font-size: 0.88rem;
             line-height: 1.5;
             margin: 0;
-        }
-        /* Skills Section */
-        .skills-box {
-            background: #0f172a;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
-            border: 1px solid #334155;
-        }
-        .skills-title {
-            color: #00ff88;
-            font-size: 0.95rem;
-            font-weight: bold;
-            margin-bottom: 10px;
         }
         .skills-tags {
             display: flex;
@@ -89,8 +74,7 @@
             padding: 6px 14px;
             border-radius: 15px;
             font-size: 0.85rem;
-            text-decoration: none; /* Underline hatane ke liye */
-            display: inline-block;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
         .tag:hover {
@@ -99,7 +83,6 @@
             font-weight: bold;
             transform: scale(1.05);
         }
-        /* Main Buttons */
         .btn {
             display: block;
             width: 90%;
@@ -112,19 +95,57 @@
             transition: 0.3s;
             font-size: 0.95rem;
         }
-        .btn-github {
-            background-color: #24292e;
-            border: 1px solid #444c56;
+        .btn-github { background-color: #24292e; border: 1px solid #444c56; }
+        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-yt { background-color: #ff0000; }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        /* Pop-up Box (Modal) Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
         }
-        .btn-insta {
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        .modal-content {
+            background-color: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 350px;
+            width: 80%;
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            text-align: left;
+            position: relative;
         }
-        .btn-yt {
-            background-color: #ff0000;
+        .modal-title {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 10px;
         }
-        .btn:hover {
-            transform: translateY(-3px);
-            opacity: 0.9;
+        .modal-text {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .close-btn {
+            background: #00ff88;
+            color: #0f172a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
         }
     </style>
 </head>
@@ -145,14 +166,14 @@
             </p>
         </div>
 
-        <!-- Skills Tags (Sabhi Nayi Window Me Khulenge) -->
+        <!-- Skills Section -->
         <div class="skills-box">
             <div class="skills-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
-                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Python</a>
-                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Cyber Security</a>
-                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Web Development</a>
-                <a href="https://www.youtube.com/@NareshIndianHacker" target="_blank" class="tag">Tech Content</a>
+                <span class="tag" onclick="openModal('python')">Python</span>
+                <span class="tag" onclick="openModal('cyber')">Cyber Security</span>
+                <span class="tag" onclick="openModal('web')">Web Development</span>
+                <span class="tag" onclick="openModal('tech')">Tech Content</span>
             </div>
         </div>
 
@@ -161,6 +182,46 @@
         <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
     </div>
+
+    <!-- Naya Pop-up Box (Modal) -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <p id="modalText" class="modal-text"></p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const details = {
+            'cyber': {
+                title: '🛡️ Cyber Security',
+                text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats aur unauthorized access se secure karna hota hai. Main ethical hacking, security basics aur digital safety se jude topics explore karta hoon.'
+            },
+            'python': {
+                title: '🐍 Python Programming',
+                text: 'Python ek bahut powerful aur easy-to-learn programming language hai. Iska use Ethical Hacking tools banane, Automation, Web Development aur Data Analysis me hota hai.'
+            },
+            'web': {
+                title: '🌐 Web Development',
+                text: 'Web Development ke zariye hum HTML, CSS aur JavaScript ka use karke responsive aur stylish websites (jaise ye profile page) design aur deploy karte hain.'
+            },
+            'tech': {
+                title: '🎬 Tech Content Creation',
+                text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon taaki logon ko nayi technology ke baare me simple bhasha me samjha saku.'
+            }
+        };
+
+        function openModal(topic) {
+            document.getElementById('modalTitle').innerText = details[topic].title;
+            document.getElementById('modalText').innerText = details[topic].text;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
