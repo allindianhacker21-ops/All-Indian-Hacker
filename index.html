@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naresh Indian Hacker</title>
+    
+    <!-- Google Search / SEO Meta Tags -->
+    <title>Naresh Indian Hacker | Official Website</title>
+    <meta name="description" content="Official Website of Naresh Indian Hacker - Cyber Security, Python Programming, Web Development and Tech Content.">
+    <meta name="keywords" content="Naresh Indian Hacker, Naresh, Cyber Security, Ethical Hacking, Python, Tech">
+    <meta name="author" content="Naresh Indian Hacker">
+
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -11,6 +17,7 @@
             emailjs.init("YOUR_PUBLIC_KEY");
         })();
     </script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -96,7 +103,7 @@
         }
         .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .btn-yt { background-color: #ff0000; }
-        .btn:hover { transform: translateY(-2px); }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
         /* Modal Windows */
         .modal {
@@ -151,7 +158,7 @@
             </p>
         </div>
 
-        <!-- Skills Section WITH WORKING CLICK POPUP -->
+        <!-- Skills Section -->
         <div class="skills-box">
             <div class="box-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
@@ -246,7 +253,7 @@
 
         let generatedOTP = null;
 
-        // Skills Pop-up Functions (FIXED)
+        // Skills Pop-up Functions
         function openInfoModal(topic) {
             document.getElementById('modalTitle').innerText = details[topic].title;
             document.getElementById('modalText').innerText = details[topic].text;
