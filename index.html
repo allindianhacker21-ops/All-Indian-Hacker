@@ -105,14 +105,15 @@
         }
         .modal-content {
             background-color: #1e293b; padding: 20px; border-radius: 15px;
-            max-width: 330px; width: 85%; border: 1px solid #00ff88;
+            max-width: 340px; width: 85%; border: 1px solid #00ff88;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); text-align: left;
+            max-height: 80vh; overflow-y: auto;
         }
         .modal-title { color: #00ff88; font-size: 1.1rem; margin-top: 0; margin-bottom: 10px; text-align: center; }
         .modal-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; }
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
-        .form-group input, .form-group textarea {
+        .form-group input {
             width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #334155;
             background-color: #0f172a; color: #ffffff; box-sizing: border-box; font-size: 0.85rem;
         }
@@ -150,6 +151,16 @@
             display: block;
             font-size: 0.75rem;
         }
+
+        /* Tech Details Box Styling */
+        .info-list {
+            padding-left: 18px;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .info-list li { margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -187,11 +198,11 @@
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
     </div>
 
-    <!-- 1. SKILLS INFO POPUP -->
+    <!-- 1. SKILLS & TECH CONTENT POPUP -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title"></h3>
-            <p id="modalText" class="modal-text"></p>
+            <div id="modalText" class="modal-text"></div>
             <button class="close-btn" style="background:#00ff88; color:#0f172a;" onclick="closeInfoModal()">Close</button>
         </div>
     </div>
@@ -235,7 +246,7 @@
         </div>
     </div>
 
-    <!-- 4. CONTACT MODAL (Bina OTP - Naam, Pata, Phone, Gmail) -->
+    <!-- 4. CONTACT MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact Us</h3>
@@ -264,10 +275,30 @@
 
     <script>
         const details = {
-            'cyber': { title: '🛡️ Cyber Security', text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai.' },
-            'python': { title: '🐍 Python Programming', text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' },
-            'web': { title: '🌐 Web Development', text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.' },
-            'tech': { title: '🎬 Tech Content Creation', text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.' }
+            'cyber': { 
+                title: '🛡️ Cyber Security', 
+                text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai.' 
+            },
+            'python': { 
+                title: '🐍 Python Programming', 
+                text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' 
+            },
+            'web': { 
+                title: '🌐 Web Development', 
+                text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.' 
+            },
+            'tech': { 
+                title: '🎬 Tech Content & Platform Guide', 
+                text: `
+                    <strong>Is Platform Par Aap Kaise Kaam Kar Sakte Hain?</strong>
+                    <ul class="info-list">
+                        <li><strong>1. Online Live Chat:</strong> Login karke aap direct mere saath live chat start kar sakte hain aur apne doubts pooch sakte hain.</li>
+                        <li><strong>2. Educational Notes & Quizzes:</strong> Yahan aage aane waale time me Cyber Security aur Coding (Python, Web Dev) ke daily notes aur quizzes update honge.</li>
+                        <li><strong>3. Contact Form:</strong> Contact Us option ke jariye aap apni basic details (Naam, Pata, Phone) bhejkar hamare saath connect ho sakte hain.</li>
+                        <li><strong>4. Tech Updates:</strong> Mere official YouTube aur Instagram handles par milne waale sabhi new tutorials aur video links aapko sabse pehle yahan milenge!</li>
+                    </ul>
+                ` 
+            }
         };
 
         let currentUser = "";
@@ -275,7 +306,7 @@
         // Modal Controls
         function openInfoModal(topic) {
             document.getElementById('modalTitle').innerText = details[topic].title;
-            document.getElementById('modalText').innerText = details[topic].text;
+            document.getElementById('modalText').innerHTML = details[topic].text;
             document.getElementById('infoModal').style.display = 'flex';
         }
         function closeInfoModal() { document.getElementById('infoModal').style.display = 'none'; }
