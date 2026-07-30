@@ -15,12 +15,32 @@
         }
         .container {
             max-width: 480px;
-            margin: 30px auto;
+            margin: 10px auto;
             background: #1e293b;
             padding: 30px 20px;
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0, 255, 136, 0.25);
             border: 1px solid #334155;
+            position: relative;
+        }
+        /* Top Right Corner Contact Button */
+        .top-contact-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #00ff88;
+            color: #0f172a;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        .top-contact-btn:hover {
+            transform: scale(1.05);
+            background: #34d399;
         }
         .profile-pic {
             width: 110px;
@@ -29,77 +49,60 @@
             object-fit: cover;
             border: 3px solid #00ff88;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            margin-top: 10px;
         }
         h1 {
             color: #00ff88;
             font-size: 1.8rem;
             margin: 10px 0 5px 0;
         }
-        .status-badge {
-            display: inline-block;
-            background: #064e3b;
-            color: #34d399;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border: 1px solid #10b981;
+        .tagline {
+            color: #94a3b8;
+            font-size: 0.95rem;
             margin-bottom: 15px;
         }
-        .form-box {
+        .about-box, .skills-box {
             background: #0f172a;
-            padding: 18px;
+            padding: 15px;
             border-radius: 12px;
-            margin: 18px 0;
+            margin: 15px 0;
             border: 1px solid #334155;
             text-align: left;
         }
         .box-title {
             color: #00ff88;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-align: center;
         }
-        .form-group {
-            margin-bottom: 12px;
+        .about-text {
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0;
         }
-        .form-group label {
-            display: block;
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .tag {
+            background: #334155;
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 15px;
             font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background-color: #1e293b;
-            color: #ffffff;
-            box-sizing: border-box;
-            font-size: 0.9rem;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #00ff88;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
+        .tag:hover {
             background: #00ff88;
             color: #0f172a;
-            border: none;
-            border-radius: 25px;
             font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .submit-btn:hover {
-            background: #34d399;
-            transform: translateY(-2px);
+            transform: scale(1.05);
         }
         .btn {
             display: block;
@@ -113,88 +116,218 @@
             transition: 0.3s;
             font-size: 0.95rem;
         }
-        .btn-contact { background: linear-gradient(45deg, #00b09b, #96c93d); color: #0f172a; }
         .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .btn-yt { background-color: #ff0000; }
         .btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        /* Pop-up Windows (Modals) Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 330px;
+            width: 85%;
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            text-align: left;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-title {
+            color: #00ff88;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .modal-text {
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .close-btn {
+            background: #00ff88;
+            color: #0f172a;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            color: #ffffff;
+            box-sizing: border-box;
+            font-size: 0.85rem;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background: #00ff88;
+            color: #0f172a;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- Upar Dahi Taraf Contact Button -->
+        <button class="top-contact-btn" onclick="openContactModal()">📩 Contact Us</button>
+
         <!-- Profile Photo -->
         <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Naresh" class="profile-pic">
 
         <h1>Naresh Indian Hacker</h1>
-        
-        <!-- Live Status Badge -->
-        <div class="status-badge">🟢 Currently Online / Live Class</div>
+        <div class="tagline">Welcome to my official profile page!</div>
 
-        <!-- Contact Button -->
-        <a href="#contactSection" class="btn btn-contact">📞 Contact Us / Join Online Class</a>
+        <!-- About Me Section -->
+        <div class="about-box">
+            <div class="box-title">🙋‍♂️ About Me</div>
+            <p class="about-text">
+                Namaste! Main Naresh hoon. Mujhe Cyber Security, Ethical Hacking, Python programming aur Tech content create karne me kaafi interest hai. Main nayi technologies seekhta hoon aur apne YouTube & Instagram par tech-related updates share karta hoon.
+            </p>
+        </div>
+
+        <!-- What I Do / Learning Section -->
+        <div class="skills-box">
+            <div class="box-title">🚀 What I Do / Learning</div>
+            <div class="skills-tags">
+                <span class="tag" onclick="openInfoModal('python')">Python</span>
+                <span class="tag" onclick="openInfoModal('cyber')">Cyber Security</span>
+                <span class="tag" onclick="openInfoModal('web')">Web Development</span>
+                <span class="tag" onclick="openInfoModal('tech')">Tech Content</span>
+            </div>
+        </div>
 
         <!-- Social Links Buttons -->
         <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
+    </div>
 
-        <!-- Contact Us Form Section -->
-        <div class="form-box" id="contactSection">
-            <div class="box-title">📩 Contact Us Form</div>
+    <!-- 1. Cyber Security / Info Pop-up Box -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <p id="modalText" class="modal-text"></p>
+            <button class="close-btn" onclick="closeInfoModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- 2. Contact Form Pop-up Box -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">📩 Contact Us Form</h3>
             <form id="userForm">
                 <div class="form-group">
-                    <label for="fullName">Aapka Naam (Full Name):</label>
-                    <input type="text" id="fullName" placeholder="Apna naam likhein" required>
+                    <label for="fullName">Aapka Naam:</label>
+                    <input type="text" id="fullName" placeholder="Full Name" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="userCountry">Country (Desh):</label>
+                    <label for="userCountry">Country:</label>
                     <select id="userCountry" required>
-                        <option value="">-- Country Select Karein --</option>
+                        <option value="">-- Country Select --</option>
                         <option value="India">India 🇮🇳</option>
                         <option value="Nepal">Nepal 🇳🇵</option>
-                        <option value="Bangladesh">Bangladesh 🇧🇩</option>
-                        <option value="Other">Other Country</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="userState">State (Rajya):</label>
+                    <label for="userState">State:</label>
                     <select id="userState" required>
-                        <option value="">-- State Select Karein --</option>
+                        <option value="">-- State Select --</option>
                         <option value="Rajasthan">Rajasthan</option>
                         <option value="Uttar Pradesh">Uttar Pradesh</option>
                         <option value="Bihar">Bihar</option>
                         <option value="Madhya Pradesh">Madhya Pradesh</option>
                         <option value="Delhi">Delhi</option>
-                        <option value="Haryana">Haryana</option>
-                        <option value="Punjab">Punjab</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Gujarat">Gujarat</option>
                         <option value="Other">Other State</option>
                     </select>
                 </div>
-                
                 <div class="form-group">
-                    <label for="userAddress">Aapka Pata (District / City / Gaanv):</label>
-                    <input type="text" id="userAddress" placeholder="Zila / Sehar ya Gaanv ka naam" required>
+                    <label for="userAddress">Pata (City / Village):</label>
+                    <input type="text" id="userAddress" placeholder="Zila / Sehar ya Gaanv" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="userContact">Mobile No. ya Email:</label>
-                    <input type="text" id="userContact" placeholder="Phone number likhein" required>
+                    <label for="userContact">Mobile No. / Email:</label>
+                    <input type="text" id="userContact" placeholder="Phone number" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="userMessage">Message / Sawaal:</label>
-                    <textarea id="userMessage" rows="3" placeholder="Apna message yahan likhein..."></textarea>
-                </div>
-
-                <button type="button" class="submit-btn" onclick="saveDetails()">Submit & Save Details 🚀</button>
+                <button type="button" class="submit-btn" onclick="saveDetails()">Submit Details 🚀</button>
             </form>
+            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeContactModal()">Close Window</button>
         </div>
     </div>
 
     <script>
+        const details = {
+            'cyber': {
+                title: '🛡️ Cyber Security',
+                text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai. Main ethical hacking, security basics aur digital safety explore karta hoon.'
+            },
+            'python': {
+                title: '🐍 Python Programming',
+                text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.'
+            },
+            'web': {
+                title: '🌐 Web Development',
+                text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.'
+            },
+            'tech': {
+                title: '🎬 Tech Content Creation',
+                text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.'
+            }
+        };
+
+        // Info Pop-up Functions
+        function openInfoModal(topic) {
+            document.getElementById('modalTitle').innerText = details[topic].title;
+            document.getElementById('modalText').innerText = details[topic].text;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        // Contact Pop-up Functions
+        function openContactModal() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+        function closeContactModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
         function saveDetails() {
             const name = document.getElementById('fullName').value;
             const country = document.getElementById('userCountry').value;
@@ -207,8 +340,9 @@
                 return;
             }
 
-            alert('Dhanyawad ' + name + '! Aapki details save ho gayi hain. Naresh jaldi hi aapse contact karega.');
+            alert('Dhanyawad ' + name + '! Aapki details save ho gayi hain.');
             document.getElementById('userForm').reset();
+            closeContactModal();
         }
     </script>
 
