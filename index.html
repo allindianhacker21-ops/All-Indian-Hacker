@@ -10,14 +10,6 @@
     <meta name="keywords" content="Naresh Indian Hacker, Naresh, Cyber Security, Ethical Hacking, Python, Tech">
     <meta name="author" content="Naresh Indian Hacker">
 
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY");
-        })();
-    </script>
-
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -120,21 +112,17 @@
         .modal-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; }
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
-        .form-group input {
+        .form-group input, .form-group textarea {
             width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #334155;
             background-color: #0f172a; color: #ffffff; box-sizing: border-box; font-size: 0.85rem;
         }
-        .send-otp-btn {
-            background: #00ff88; color: #0f172a; border: none; padding: 8px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px;
-        }
         .submit-btn {
-            width: 100%; padding: 10px; background: #3b82f6; color: #ffffff;
+            width: 100%; padding: 10px; background: #00ff88; color: #0f172a;
             border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
         }
         .close-btn {
-            background: #00ff88; color: #0f172a; border: none; padding: 8px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 12px; width: 100%;
+            background: #334155; color: #ffffff; border: none; padding: 8px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
         }
         
         /* Online Chat Box Styling */
@@ -204,7 +192,7 @@
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title"></h3>
             <p id="modalText" class="modal-text"></p>
-            <button class="close-btn" onclick="closeInfoModal()">Close</button>
+            <button class="close-btn" style="background:#00ff88; color:#0f172a;" onclick="closeInfoModal()">Close</button>
         </div>
     </div>
 
@@ -221,13 +209,13 @@
                     <label>Password:</label>
                     <input type="password" id="loginPassword" placeholder="Password daalein" required>
                 </div>
-                <button type="button" class="submit-btn" onclick="handleLogin()">Login & Open Chat 🚀</button>
+                <button type="button" class="submit-btn" style="background:#3b82f6; color:#fff;" onclick="handleLogin()">Login & Open Chat 🚀</button>
             </form>
-            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeLoginModal()">Close</button>
+            <button class="close-btn" onclick="closeLoginModal()">Close</button>
         </div>
     </div>
 
-    <!-- 3. ONLINE LIVE CHAT MODAL (Login ke turant baad khulega) -->
+    <!-- 3. ONLINE LIVE CHAT MODAL -->
     <div id="chatModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
@@ -242,38 +230,35 @@
             <div class="form-group">
                 <input type="text" id="chatMessage" placeholder="Apna message yahan likhein...">
             </div>
-            <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="sendMessage()">Send Message 🚀</button>
-            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeChatModal()">Close Chat</button>
+            <button type="button" class="submit-btn" onclick="sendMessage()">Send Message 🚀</button>
+            <button class="close-btn" onclick="closeChatModal()">Close Chat</button>
         </div>
     </div>
 
-    <!-- 4. CONTACT & OTP MODAL -->
+    <!-- 4. CONTACT MODAL (Bina OTP - Naam, Pata, Phone, Gmail) -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact & Gmail Verification</h3>
+            <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact Us</h3>
             <form id="userForm">
                 <div class="form-group">
                     <label>Aapka Naam:</label>
-                    <input type="text" id="fullName" placeholder="Full Name" required>
+                    <input type="text" id="fullName" placeholder="Apna Poora Naam daalein" required>
+                </div>
+                <div class="form-group">
+                    <label>Aapka Pata (Address):</label>
+                    <input type="text" id="userAddress" placeholder="Apna Pata/City daalein" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile No.:</label>
+                    <input type="tel" id="userContact" placeholder="Phone number" required>
                 </div>
                 <div class="form-group">
                     <label>Gmail Address:</label>
                     <input type="email" id="userEmail" placeholder="example@gmail.com" required>
-                    <button type="button" class="send-otp-btn" onclick="sendOTP()">Send OTP to Gmail 📩</button>
                 </div>
-                
-                <div class="form-group" id="otpBox" style="display: none;">
-                    <label style="color:#00ff88;">Gmail Par Aaya OTP Daalein:</label>
-                    <input type="text" id="enteredOTP" placeholder="4-Digit OTP">
-                </div>
-
-                <div class="form-group">
-                    <label>Mobile No.:</label>
-                    <input type="text" id="userContact" placeholder="Phone number" required>
-                </div>
-                <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyAndSubmit()">Verify OTP & Submit 🚀</button>
+                <button type="button" class="submit-btn" onclick="submitDetails()">Submit Details 🚀</button>
             </form>
-            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeContactModal()">Close</button>
+            <button class="close-btn" onclick="closeContactModal()">Close</button>
         </div>
     </div>
 
@@ -286,7 +271,6 @@
         };
 
         let currentUser = "";
-        let generatedOTP = null;
 
         // Modal Controls
         function openInfoModal(topic) {
@@ -304,7 +288,7 @@
 
         function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
 
-        // Login -> Opens Chat Window Directly
+        // Login Logic
         function handleLogin() {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
@@ -314,14 +298,12 @@
                 return;
             }
 
-            currentUser = email.split('@')[0]; // Set username from email
+            currentUser = email.split('@')[0];
             closeLoginModal();
-            
-            // Open Chat Modal Directly
             document.getElementById('chatModal').style.display = 'flex';
         }
 
-        // Live Chat Message Logic
+        // Live Chat Message
         function sendMessage() {
             const msgInput = document.getElementById('chatMessage');
             const msgText = msgInput.value.trim();
@@ -339,26 +321,21 @@
             msgInput.value = "";
         }
 
-        // OTP Verification Logic
-        function sendOTP() {
+        // Simple Form Submit (Bina OTP)
+        function submitDetails() {
+            const name = document.getElementById('fullName').value;
+            const address = document.getElementById('userAddress').value;
+            const phone = document.getElementById('userContact').value;
             const email = document.getElementById('userEmail').value;
-            if(email === '') { alert('Pehle apni Gmail ID daalein!'); return; }
-            generatedOTP = Math.floor(1000 + Math.random() * 9000);
-            alert('OTP aapki Gmail (' + email + ') par bhej diya gaya hai! (Demo OTP: ' + generatedOTP + ')');
-            document.getElementById('otpBox').style.display = 'block';
-        }
 
-        function verifyAndSubmit() {
-            const userEntered = document.getElementById('enteredOTP').value;
-            if(!generatedOTP) { alert('Pehle Send OTP button par click karein!'); return; }
-            if(userEntered == generatedOTP) {
-                alert('🟢 Gmail Verification Successful!');
-                document.getElementById('userForm').reset();
-                document.getElementById('otpBox').style.display = 'none';
-                closeContactModal();
-            } else {
-                alert('🔴 Galat OTP! Kripya sahi OTP daalein.');
+            if(!name || !address || !phone || !email) {
+                alert('Kripya saari details (Naam, Pata, Phone number, Gmail) bharein!');
+                return;
             }
+
+            alert('🟢 Thank you ' + name + '! Aapki jankari safaltapurvak bhej di gayi hai.');
+            document.getElementById('userForm').reset();
+            closeContactModal();
         }
     </script>
 
