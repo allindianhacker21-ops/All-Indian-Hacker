@@ -45,10 +45,8 @@
             border: none;
             transition: 0.3s;
         }
-        .top-login-btn:hover {
-            background: #2563eb;
-            transform: scale(1.05);
-        }
+        .top-login-btn:hover { background: #2563eb; transform: scale(1.05); }
+
         /* Top Right - Contact Button */
         .top-contact-btn {
             position: absolute;
@@ -64,10 +62,8 @@
             border: none;
             transition: 0.3s;
         }
-        .top-contact-btn:hover {
-            background: #34d399;
-            transform: scale(1.05);
-        }
+        .top-contact-btn:hover { background: #34d399; transform: scale(1.05); }
+
         .profile-pic {
             width: 110px;
             height: 110px;
@@ -91,12 +87,16 @@
             background: #334155; color: #e2e8f0; padding: 6px 14px;
             border-radius: 15px; font-size: 0.85rem; cursor: pointer; transition: 0.3s;
         }
+        .tag:hover { background: #00ff88; color: #0f172a; font-weight: bold; transform: scale(1.05); }
+        
         .btn {
             display: block; width: 90%; margin: 12px auto; padding: 12px 0;
             color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 25px; font-size: 0.95rem;
+            transition: 0.3s;
         }
         .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .btn-yt { background-color: #ff0000; }
+        .btn:hover { transform: translateY(-2px); }
 
         /* Modal Windows */
         .modal {
@@ -109,6 +109,8 @@
             max-width: 330px; width: 85%; border: 1px solid #00ff88;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); text-align: left;
         }
+        .modal-title { color: #00ff88; font-size: 1.1rem; margin-top: 0; margin-bottom: 10px; text-align: center; }
+        .modal-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; }
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
         .form-group input {
@@ -124,8 +126,8 @@
             border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
         }
         .close-btn {
-            background: #334155; color: #fff; border: none; padding: 8px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
+            background: #00ff88; color: #0f172a; border: none; padding: 8px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 12px; width: 100%;
         }
     </style>
 </head>
@@ -145,17 +147,18 @@
         <div class="about-box">
             <div class="box-title">🙋‍♂️ About Me</div>
             <p class="about-text">
-                Namaste! Main Naresh hoon. Mujhe Cyber Security, Ethical Hacking, Python programming aur Tech content create karne me kaafi interest hai.
+                Namaste! Main Naresh hoon. Mujhe Cyber Security, Ethical Hacking, Python programming aur Tech content create karne me kaafi interest hai. Main nayi technologies seekhta hoon aur apne YouTube & Instagram par tech-related updates share karta hoon.
             </p>
         </div>
 
+        <!-- Skills Section WITH WORKING CLICK POPUP -->
         <div class="skills-box">
             <div class="box-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
-                <span class="tag">Python</span>
-                <span class="tag">Cyber Security</span>
-                <span class="tag">Web Development</span>
-                <span class="tag">Tech Content</span>
+                <span class="tag" onclick="openInfoModal('python')">Python</span>
+                <span class="tag" onclick="openInfoModal('cyber')">Cyber Security</span>
+                <span class="tag" onclick="openInfoModal('web')">Web Development</span>
+                <span class="tag" onclick="openInfoModal('tech')">Tech Content</span>
             </div>
         </div>
 
@@ -163,7 +166,16 @@
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
     </div>
 
-    <!-- 1. LOGIN MODAL -->
+    <!-- 1. CYBER SECURITY / SKILLS INFO POPUP -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <p id="modalText" class="modal-text"></p>
+            <button class="close-btn" onclick="closeInfoModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- 2. LOGIN MODAL -->
     <div id="loginModal" class="modal">
         <div class="modal-content" style="border-color: #3b82f6;">
             <h3 style="color:#3b82f6; text-align:center; margin-top:0;">🔐 Account Login</h3>
@@ -178,11 +190,11 @@
                 </div>
                 <button type="button" class="submit-btn" onclick="handleLogin()">Login Karein 🚀</button>
             </form>
-            <button class="close-btn" onclick="closeLoginModal()">Close</button>
+            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeLoginModal()">Close</button>
         </div>
     </div>
 
-    <!-- 2. CONTACT & OTP MODAL -->
+    <!-- 3. CONTACT & OTP MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact & Gmail Verification</h3>
@@ -208,17 +220,47 @@
                 </div>
                 <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyAndSubmit()">Verify OTP & Submit 🚀</button>
             </form>
-            <button class="close-btn" onclick="closeContactModal()">Close</button>
+            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeContactModal()">Close</button>
         </div>
     </div>
 
     <script>
+        const details = {
+            'cyber': {
+                title: '🛡️ Cyber Security',
+                text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai. Main ethical hacking, security basics aur digital safety explore karta hoon.'
+            },
+            'python': {
+                title: '🐍 Python Programming',
+                text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.'
+            },
+            'web': {
+                title: '🌐 Web Development',
+                text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.'
+            },
+            'tech': {
+                title: '🎬 Tech Content Creation',
+                text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.'
+            }
+        };
+
         let generatedOTP = null;
 
-        // Modal Functions
+        // Skills Pop-up Functions (FIXED)
+        function openInfoModal(topic) {
+            document.getElementById('modalTitle').innerText = details[topic].title;
+            document.getElementById('modalText').innerText = details[topic].text;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        // Login Modal Functions
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
+        // Contact Modal Functions
         function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
         function closeContactModal() { document.getElementById('contactModal').style.display = 'none'; }
 
