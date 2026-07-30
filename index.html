@@ -41,7 +41,7 @@
             font-size: 0.95rem;
             margin-bottom: 15px;
         }
-        /* About Me Section Styling */
+        /* About Me Section */
         .about-box {
             background: #0f172a;
             padding: 15px;
@@ -63,6 +63,7 @@
             line-height: 1.5;
             margin: 0;
         }
+        /* Skills Section */
         .skills-box {
             background: #0f172a;
             padding: 15px;
@@ -85,10 +86,20 @@
         .tag {
             background: #334155;
             color: #e2e8f0;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 15px;
             font-size: 0.85rem;
+            text-decoration: none; /* Underline hatane ke liye */
+            display: inline-block;
+            transition: all 0.3s ease;
         }
+        .tag:hover {
+            background: #00ff88;
+            color: #0f172a;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+        /* Main Buttons */
         .btn {
             display: block;
             width: 90%;
@@ -134,18 +145,18 @@
             </p>
         </div>
 
-        <!-- Skills Section -->
+        <!-- Skills Tags (Sabhi Nayi Window Me Khulenge) -->
         <div class="skills-box">
             <div class="skills-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
-                <span class="tag">Python</span>
-                <span class="tag">Cyber Security</span>
-                <span class="tag">Web Development</span>
-                <span class="tag">Tech Content</span>
+                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Python</a>
+                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Cyber Security</a>
+                <a href="https://github.com/allindianhacker21-ops" target="_blank" class="tag">Web Development</a>
+                <a href="https://www.youtube.com/@NareshIndianHacker" target="_blank" class="tag">Tech Content</a>
             </div>
         </div>
 
-        <!-- Social Links -->
+        <!-- Social Links Buttons -->
         <a href="https://github.com/allindianhacker21-ops" class="btn btn-github" target="_blank">💻 GitHub Profile</a>
         <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
@@ -153,4 +164,3 @@
 
 </body>
 </html>
-
