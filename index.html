@@ -136,6 +136,32 @@
             background: #00ff88; color: #0f172a; border: none; padding: 8px;
             border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 12px; width: 100%;
         }
+        
+        /* Online Chat Box Styling */
+        .chat-container {
+            height: 220px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .chat-msg {
+            background: #1e293b;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+        .chat-msg span {
+            color: #00ff88;
+            font-weight: bold;
+            display: block;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 <body>
@@ -173,7 +199,7 @@
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
     </div>
 
-    <!-- 1. CYBER SECURITY / SKILLS INFO POPUP -->
+    <!-- 1. SKILLS INFO POPUP -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title"></h3>
@@ -195,13 +221,33 @@
                     <label>Password:</label>
                     <input type="password" id="loginPassword" placeholder="Password daalein" required>
                 </div>
-                <button type="button" class="submit-btn" onclick="handleLogin()">Login Karein 🚀</button>
+                <button type="button" class="submit-btn" onclick="handleLogin()">Login & Open Chat 🚀</button>
             </form>
             <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeLoginModal()">Close</button>
         </div>
     </div>
 
-    <!-- 3. CONTACT & OTP MODAL -->
+    <!-- 3. ONLINE LIVE CHAT MODAL (Login ke turant baad khulega) -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
+            <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
+            
+            <div class="chat-container" id="chatBox">
+                <div class="chat-msg">
+                    <span>Naresh (Admin)</span>
+                    Welcome! Aap successfully login ho chuke hain. Yahan se aap mujhse live chat kar sakte hain.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="chatMessage" placeholder="Apna message yahan likhein...">
+            </div>
+            <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="sendMessage()">Send Message 🚀</button>
+            <button class="close-btn" style="background:#334155; color:#fff;" onclick="closeChatModal()">Close Chat</button>
+        </div>
+    </div>
+
+    <!-- 4. CONTACT & OTP MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact & Gmail Verification</h3>
@@ -233,63 +279,70 @@
 
     <script>
         const details = {
-            'cyber': {
-                title: '🛡️ Cyber Security',
-                text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai. Main ethical hacking, security basics aur digital safety explore karta hoon.'
-            },
-            'python': {
-                title: '🐍 Python Programming',
-                text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.'
-            },
-            'web': {
-                title: '🌐 Web Development',
-                text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.'
-            },
-            'tech': {
-                title: '🎬 Tech Content Creation',
-                text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.'
-            }
+            'cyber': { title: '🛡️ Cyber Security', text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai.' },
+            'python': { title: '🐍 Python Programming', text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' },
+            'web': { title: '🌐 Web Development', text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.' },
+            'tech': { title: '🎬 Tech Content Creation', text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.' }
         };
 
+        let currentUser = "";
         let generatedOTP = null;
 
-        // Skills Pop-up Functions
+        // Modal Controls
         function openInfoModal(topic) {
             document.getElementById('modalTitle').innerText = details[topic].title;
             document.getElementById('modalText').innerText = details[topic].text;
             document.getElementById('infoModal').style.display = 'flex';
         }
-        function closeInfoModal() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
+        function closeInfoModal() { document.getElementById('infoModal').style.display = 'none'; }
 
-        // Login Modal Functions
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
-        // Contact Modal Functions
         function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
         function closeContactModal() { document.getElementById('contactModal').style.display = 'none'; }
 
-        // Login Logic
+        function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
+
+        // Login -> Opens Chat Window Directly
         function handleLogin() {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
+
             if(email === '' || pass === '') {
                 alert('Kripya Gmail aur Password dono daalein!');
                 return;
             }
-            alert('🟢 Login Successful! Welcome ' + email);
+
+            currentUser = email.split('@')[0]; // Set username from email
             closeLoginModal();
+            
+            // Open Chat Modal Directly
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        // Live Chat Message Logic
+        function sendMessage() {
+            const msgInput = document.getElementById('chatMessage');
+            const msgText = msgInput.value.trim();
+
+            if(msgText === "") return;
+
+            const chatBox = document.getElementById('chatBox');
+            const newMsg = document.createElement('div');
+            newMsg.className = 'chat-msg';
+            newMsg.innerHTML = `<span>${currentUser || 'User'}</span>${msgText}`;
+            
+            chatBox.appendChild(newMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            msgInput.value = "";
         }
 
         // OTP Verification Logic
         function sendOTP() {
             const email = document.getElementById('userEmail').value;
-            if(email === '') {
-                alert('Pehle apni Gmail ID daalein!');
-                return;
-            }
+            if(email === '') { alert('Pehle apni Gmail ID daalein!'); return; }
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
             alert('OTP aapki Gmail (' + email + ') par bhej diya gaya hai! (Demo OTP: ' + generatedOTP + ')');
             document.getElementById('otpBox').style.display = 'block';
@@ -297,12 +350,9 @@
 
         function verifyAndSubmit() {
             const userEntered = document.getElementById('enteredOTP').value;
-            if(!generatedOTP) {
-                alert('Pehle Send OTP button par click karein!');
-                return;
-            }
+            if(!generatedOTP) { alert('Pehle Send OTP button par click karein!'); return; }
             if(userEntered == generatedOTP) {
-                alert('🟢 Gmail Verification Successful! Aapki details save ho gayi hain.');
+                alert('🟢 Gmail Verification Successful!');
                 document.getElementById('userForm').reset();
                 document.getElementById('otpBox').style.display = 'none';
                 closeContactModal();
