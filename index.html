@@ -10,7 +10,7 @@
     <meta name="keywords" content="Naresh Indian Hacker, Naresh, Cyber Security, Ethical Hacking, Python, Tech">
     <meta name="author" content="Naresh Indian Hacker">
 
-    <!-- Firebase SDKs (v8) for Real SMS OTP -->
+    <!-- Firebase SDKs (v8) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
@@ -151,7 +151,7 @@
                 <span class="tag" onclick="openInfoModal('cyber')">Cyber Security</span>
                 <span class="tag" onclick="openInfoModal('web')">Web Development</span>
                 <span class="tag" onclick="openInfoModal('tech')">Tech Content</span>
-                <span class="tag tag-batch" onclick="openBatchPhoneModal()">🔥 Join Batch (₹10)</span>
+                <span class="tag tag-batch" onclick="openBatchEmailModal()">🔥 Join Batch (₹10)</span>
             </div>
         </div>
 
@@ -232,33 +232,22 @@
         </div>
     </div>
 
-    <!-- 5. REAL SMS OTP VERIFICATION MODAL -->
-    <div id="batchPhoneModal" class="modal">
+    <!-- 5. GMAIL VERIFICATION MODAL -->
+    <div id="batchEmailModal" class="modal">
         <div class="modal-content" style="border-color: #ffaa00;">
-            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📱 OTP Verification</h3>
-            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye SMS OTP Verify Karein.</p>
+            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📧 Gmail Verification</h3>
+            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye Apni Gmail ID Verify Karein.</p>
             
-            <!-- Step 1: Phone Input -->
-            <div id="phoneStep">
+            <div id="emailStep">
                 <div class="form-group">
-                    <label>Aapka Mobile Number (10 Digits):</label>
-                    <input type="tel" id="batchPhoneInput" placeholder="10 Digit Number" maxlength="10">
+                    <label>Aapki Gmail Address:</label>
+                    <input type="email" id="batchEmailInput" placeholder="example@gmail.com">
                 </div>
-                <div id="recaptcha-container"></div>
-                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendOTP()">Send OTP SMS 📩</button>
-            </div>
-
-            <!-- Step 2: OTP Input -->
-            <div id="otpStep" style="display:none;">
-                <div class="form-group">
-                    <label>SMS me aaya 6-Digit OTP daalein:</label>
-                    <input type="number" id="otpInput" placeholder="Enter OTP">
-                </div>
-                <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyOTP()">Verify OTP & Proceed 🚀</button>
+                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendEmailVerification()">Verify Gmail & Proceed 🚀</button>
             </div>
 
             <div id="statusBox" class="status-msg"></div>
-            <button class="close-btn" onclick="closeModal('batchPhoneModal')">Cancel</button>
+            <button class="close-btn" onclick="closeModal('batchEmailModal')">Cancel</button>
         </div>
     </div>
 
@@ -307,8 +296,7 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        let confirmationResult = null;
-        let verifiedPhone = "";
+        let verifiedEmail = "";
         let hasClickedPay = false;
         let currentUser = "";
 
@@ -317,10 +305,6 @@
             'python': { title: '🐍 Python Programming', text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' },
             'web': { title: '🌐 Web Development', text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.' },
             'tech': { title: '🎬 Tech Content', text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.' }
-        };
-
-        window.onload = function() {
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
         };
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -336,68 +320,39 @@
         function closeContactModal() { closeModal('contactModal'); }
         function closeChatModal() { closeModal('chatModal'); }
 
-        function openBatchPhoneModal() {
-            document.getElementById('batchPhoneModal').style.display = 'flex';
-            document.getElementById('phoneStep').style.display = 'block';
-            document.getElementById('otpStep').style.display = 'none';
+        function openBatchEmailModal() {
+            document.getElementById('batchEmailModal').style.display = 'flex';
             document.getElementById('statusBox').style.display = 'none';
             hasClickedPay = false;
         }
 
-        // Send OTP via Firebase SMS
-        function sendOTP() {
-            const phone = document.getElementById('batchPhoneInput').value.trim();
+        // Gmail Verification Function
+        function sendEmailVerification() {
+            const email = document.getElementById('batchEmailInput').value.trim();
             const statusBox = document.getElementById('statusBox');
 
-            if (phone.length !== 10 || !/^[6-9]\d{9}$/.test(phone)) {
-                statusBox.innerText = "❌ Kripya 10-digit Sahi Mobile Number daalein!";
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                statusBox.innerText = "❌ Kripya Sahi Gmail Address daalein!";
                 statusBox.style.color = "#ff4d4d";
                 statusBox.style.display = "block";
                 return;
             }
 
-            statusBox.innerText = "⏳ Bhej rahe hain OTP SMS...";
+            statusBox.innerText = "⏳ Verifying Gmail...";
             statusBox.style.color = "#ffaa00";
             statusBox.style.display = "block";
 
-            firebase.auth().signInWithPhoneNumber("+91" + phone, window.recaptchaVerifier)
-                .then((result) => {
-                    confirmationResult = result;
-                    verifiedPhone = phone;
-                    statusBox.innerText = "✅ SMS OTP Bhej diya gaya hai!";
-                    statusBox.style.color = "#00ff88";
-                    document.getElementById('phoneStep').style.display = 'none';
-                    document.getElementById('otpStep').style.display = 'block';
-                }).catch((error) => {
-                    statusBox.innerText = "❌ Error: " + (error.message || JSON.stringify(error));
-                    statusBox.style.color = "#ff4d4d";
-                });
-        }
+            verifiedEmail = email;
+            document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Gmail:%20${verifiedEmail}`;
 
-        // Verify OTP Function
-        function verifyOTP() {
-            const otp = document.getElementById('otpInput').value.trim();
-            const statusBox = document.getElementById('statusBox');
-
-            if (otp.length !== 6) {
-                statusBox.innerText = "❌ 6-Digit OTP daalein!";
-                statusBox.style.color = "#ff4d4d";
-                return;
-            }
-
-            confirmationResult.confirm(otp).then((result) => {
-                statusBox.innerText = "✅ Number Verified Successfully!";
+            setTimeout(() => {
+                statusBox.innerText = "✅ Gmail Verified Successfully!";
                 statusBox.style.color = "#00ff88";
-                document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Number:%20${verifiedPhone}`;
-
                 setTimeout(() => {
-                    closeModal('batchPhoneModal');
+                    closeModal('batchEmailModal');
                     document.getElementById('batchPayModal').style.display = 'flex';
-                }, 1000);
-            }).catch((error) => {
-                statusBox.innerText = "❌ Galat OTP! Dobara check karein.";
-                statusBox.style.color = "#ff4d4d";
-            });
+                }, 800);
+            }, 1000);
         }
 
         function trackPaymentClick() { hasClickedPay = true; }
