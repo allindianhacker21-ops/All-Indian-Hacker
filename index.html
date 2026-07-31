@@ -3,342 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naresh Indian Hacker - Profile & Batch Access</title>
     
-    <!-- Google Search / SEO Meta Tags -->
-    <title>Naresh Indian Hacker | Official Website</title>
-    <meta name="description" content="Official Website of Naresh Indian Hacker - Cyber Security, Python Programming, Web Development and Tech Content.">
-    <meta name="keywords" content="Naresh Indian Hacker, Naresh, Cyber Security, Ethical Hacking, Python, Tech">
-    <meta name="author" content="Naresh Indian Hacker">
-
-    <!-- Firebase SDKs (v8) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- EmailJS Official SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("zEXmh31UhCJOE3oVU");
+       })();
+    </script>
 
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
-            text-align: center;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
+
         .container {
-            max-width: 480px;
-            margin: 10px auto;
-            background: #1e293b;
-            padding: 30px 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.25);
-            border: 1px solid #334155;
+            width: 100%;
+            max-width: 500px;
+            background: #121826;
+            border: 1px solid #1f293d;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
         }
-        /* Top Left - Login Button */
-        .top-login-btn {
-            position: absolute; top: 15px; left: 15px;
-            background: #3b82f6; color: #ffffff; padding: 6px 12px;
-            border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; border: none;
+
+        /* Top Bar Buttons */
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn-small {
+            background: #1f293d;
+            color: #4f46e5;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-small.contact {
+            color: #10b981;
+        }
+
+        /* Profile Details */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #10b981;
+            margin-bottom: 12px;
+        }
+
+        .profile-title {
+            font-size: 22px;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .profile-sub {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        /* About Section */
+        .about-card {
+            background: #1a2332;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #10b981;
+        }
+
+        .about-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .about-text {
+            font-size: 13px;
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+
+        /* Main Batch Button */
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background: #10b981;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
             transition: 0.3s;
         }
-        .top-login-btn:hover { background: #2563eb; transform: scale(1.05); }
 
-        /* Top Right - Contact Button */
-        .top-contact-btn {
-            position: absolute; top: 15px; right: 15px;
-            background: #00ff88; color: #0f172a; padding: 6px 12px;
-            border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; border: none;
-            transition: 0.3s;
+        .action-btn:hover {
+            background: #059669;
         }
-        .top-contact-btn:hover { background: #34d399; transform: scale(1.05); }
 
-        .profile-pic {
-            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
-            border: 3px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
-            margin-bottom: 12px; margin-top: 15px;
+        /* OTP Popup Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
         }
-        h1 { color: #00ff88; font-size: 1.8rem; margin: 10px 0 5px 0; }
-        .tagline { color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px; }
-        .about-box, .skills-box {
-            background: #0f172a; padding: 15px; border-radius: 12px;
-            margin: 15px 0; border: 1px solid #334155; text-align: left;
-        }
-        .box-title { color: #00ff88; font-size: 0.95rem; font-weight: bold; margin-bottom: 10px; text-align: center; }
-        .about-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; margin: 0; }
-        .skills-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-        .tag {
-            background: #334155; color: #e2e8f0; padding: 6px 14px;
-            border-radius: 15px; font-size: 0.85rem; cursor: pointer; transition: 0.3s;
-        }
-        .tag:hover { background: #00ff88; color: #0f172a; font-weight: bold; transform: scale(1.05); }
-        .tag-batch { background: linear-gradient(45deg, #ff007f, #ffaa00); color: #ffffff; font-weight: bold; }
-        
-        .btn {
-            display: block; width: 90%; margin: 12px auto; padding: 12px 0;
-            color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 25px; font-size: 0.95rem; transition: 0.3s;
-        }
-        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .btn-yt { background-color: #ff0000; }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Modals */
-        .modal {
-            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85);
-            justify-content: center; align-items: center;
+        .modal-box {
+            background: #1a2332;
+            border: 1px solid #10b981;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            text-align: center;
         }
-        .modal-content {
-            background-color: #1e293b; padding: 20px; border-radius: 15px;
-            max-width: 340px; width: 85%; border: 1px solid #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); text-align: left;
-            max-height: 80vh; overflow-y: auto;
-        }
-        .modal-title { color: #00ff88; font-size: 1.1rem; margin-top: 0; margin-bottom: 10px; text-align: center; }
-        .modal-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; }
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
-        .form-group input {
-            width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #334155;
-            background-color: #0f172a; color: #ffffff; box-sizing: border-box; font-size: 0.85rem;
-        }
-        .submit-btn {
-            width: 100%; padding: 10px; background: #00ff88; color: #0f172a;
-            border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
-            text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center;
-        }
-        .close-btn {
-            background: #334155; color: #ffffff; border: none; padding: 8px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
-        }
-        
-        /* Chat Box */
-        .chat-container {
-            height: 220px; background: #0f172a; border: 1px solid #334155;
-            border-radius: 10px; padding: 10px; overflow-y: auto; margin-bottom: 10px; text-align: left;
-        }
-        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 10px; margin-bottom: 8px; font-size: 0.82rem; color: #cbd5e1; }
-        .chat-msg span { color: #00ff88; font-weight: bold; display: block; font-size: 0.75rem; }
 
-        .payment-box { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px dashed #00ff88; text-align: center; margin: 10px 0; }
-        .price-tag { font-size: 1.6rem; color: #00ff88; font-weight: bold; margin: 5px 0; }
-        .status-msg { font-size: 0.8rem; margin-top: 8px; text-align: center; display: none; }
+        .modal-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffb703;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 16px;
+            outline: none;
+        }
+
+        .input-box:focus {
+            border-color: #10b981;
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 12px;
+            background: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            padding: 10px;
+            background: #374151;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .status-msg {
+            font-size: 13px;
+            margin-bottom: 12px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Purana Login Option -->
-        <button class="top-login-btn" onclick="openLoginModal()">🔐 Login</button>
+        <!-- Purane Top Navigation Buttons -->
+        <div class="header-buttons">
+            <button class="btn-small">🔐 Login</button>
+            <button class="btn-small contact">📩 Contact Us</button>
+        </div>
 
-        <!-- Purana Contact Us Option -->
-        <button class="top-contact-btn" onclick="openContactModal()">📩 Contact Us</button>
+        <!-- Purana Profile Section -->
+        <div class="profile-section">
+            <img src="https://via.placeholder.com/90" alt="Naresh Indian Hacker" class="profile-img">
+            <h1 class="profile-title">Naresh Indian Hacker</h1>
+            <p class="profile-sub">Welcome to my official profile page!</p>
+        </div>
 
-        <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Naresh" class="profile-pic">
-        <h1>Naresh Indian Hacker</h1>
-        <div class="tagline">Welcome to my official profile page!</div>
-
-        <div class="about-box">
-            <div class="box-title">🙋‍♂️ About Me</div>
-            <p class="about-text">
+        <!-- Purana About Me Card -->
+        <div class="about-card">
+            <div class="about-title">🙋‍♂️ About Me</div>
+            <div class="about-text">
                 Namaste! Main Naresh hoon. Mujhe Cyber Security, Ethical Hacking, Python programming aur Tech content create karne me kaafi interest hai. Main nayi technologies seekhta hoon aur apne YouTube & Instagram par tech-related updates share karta hoon.
-            </p>
-        </div>
-
-        <!-- Purana Skills & Batch Option -->
-        <div class="skills-box">
-            <div class="box-title">🚀 What I Do / Learning</div>
-            <div class="skills-tags">
-                <span class="tag" onclick="openInfoModal('python')">Python</span>
-                <span class="tag" onclick="openInfoModal('cyber')">Cyber Security</span>
-                <span class="tag" onclick="openInfoModal('web')">Web Development</span>
-                <span class="tag" onclick="openInfoModal('tech')">Tech Content</span>
-                <span class="tag tag-batch" onclick="openBatchEmailModal()">🔥 Join Batch (₹10)</span>
             </div>
         </div>
 
-        <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
-        <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
+        <!-- Action Button -->
+        <button class="action-btn" onclick="openModal()">🚀 Naresh Batch Access (Gmail OTP Verify)</button>
     </div>
 
-    <!-- 1. PURANA SKILLS POPUP -->
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <h3 id="modalTitle" class="modal-title"></h3>
-            <div id="modalText" class="modal-text"></div>
-            <button class="close-btn" style="background:#00ff88; color:#0f172a;" onclick="closeInfoModal()">Close</button>
-        </div>
-    </div>
-
-    <!-- 2. PURANA LOGIN MODAL -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content" style="border-color: #3b82f6;">
-            <h3 style="color:#3b82f6; text-align:center; margin-top:0;">🔐 Account Login</h3>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Gmail Address:</label>
-                    <input type="email" id="loginEmail" placeholder="Apni Gmail ID daalein" required>
-                </div>
-                <div class="form-group">
-                    <label>Password:</label>
-                    <input type="password" id="loginPassword" placeholder="Password daalein" required>
-                </div>
-                <button type="button" class="submit-btn" style="background:#3b82f6; color:#fff;" onclick="handleLogin()">Login & Open Chat 🚀</button>
-            </form>
-            <button class="close-btn" onclick="closeLoginModal()">Close</button>
-        </div>
-    </div>
-
-    <!-- 3. PURANA ONLINE LIVE CHAT MODAL -->
-    <div id="chatModal" class="modal">
-        <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
-            <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
-            <div class="chat-container" id="chatBox">
-                <div class="chat-msg">
-                    <span>Naresh (Admin)</span>
-                    Welcome! Aap successfully login ho chuke hain. Yahan se aap mujhse live chat kar sakte hain.
-                </div>
+    <!-- OTP Popup Box -->
+    <div class="modal-overlay" id="otpModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                📧 Gmail OTP Verification
             </div>
-            <div class="form-group">
-                <input type="text" id="chatMessage" placeholder="Apna message yahan likhein...">
-            </div>
-            <button type="button" class="submit-btn" onclick="sendMessage()">Send Message 🚀</button>
-            <button class="close-btn" onclick="closeChatModal()">Close Chat</button>
-        </div>
-    </div>
-
-    <!-- 4. PURANA CONTACT MODAL -->
-    <div id="contactModal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact Us</h3>
-            <form id="userForm">
-                <div class="form-group">
-                    <label>Aapka Naam:</label>
-                    <input type="text" id="fullName" placeholder="Apna Poora Naam daalein" required>
-                </div>
-                <div class="form-group">
-                    <label>Aapka Pata (Address):</label>
-                    <input type="text" id="userAddress" placeholder="Apna Pata/City daalein" required>
-                </div>
-                <div class="form-group">
-                    <label>Mobile No.:</label>
-                    <input type="tel" id="userContact" placeholder="Phone number" required>
-                </div>
-                <div class="form-group">
-                    <label>Gmail Address:</label>
-                    <input type="email" id="userEmail" placeholder="example@gmail.com" required>
-                </div>
-                <button type="button" class="submit-btn" onclick="submitDetails()">Submit & Send WhatsApp 🚀</button>
-            </form>
-            <button class="close-btn" onclick="closeContactModal()">Close</button>
-        </div>
-    </div>
-
-    <!-- 5. GMAIL + OTP VERIFICATION MODAL -->
-    <div id="batchEmailModal" class="modal">
-        <div class="modal-content" style="border-color: #ffaa00;">
-            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📧 Gmail OTP Verification</h3>
-            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye Gmail Par OTP Verify Karein.</p>
-            
-            <!-- STEP 1: Enter Gmail -->
-            <div id="emailStep">
-                <div class="form-group">
-                    <label>Aapki Gmail Address:</label>
-                    <input type="email" id="batchEmailInput" placeholder="example@gmail.com">
-                </div>
-                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendGmailOTP()">Send OTP 📩</button>
-            </div>
-
-            <!-- STEP 2: Enter OTP Code -->
-            <div id="otpStep" style="display: none;">
-                <div class="form-group">
-                    <label>Enter 4-Digit OTP Code:</label>
-                    <input type="number" id="otpCodeInput" placeholder="Ex: 4821">
-                </div>
-                <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyGmailOTP()">Verify OTP & Open Payment 🚀</button>
-            </div>
+            <p class="modal-desc">Naresh Batch Access Ke Liye Gmail Par OTP Verify Karein.</p>
 
             <div id="statusBox" class="status-msg"></div>
-            <button class="close-btn" onclick="closeModal('batchEmailModal')">Cancel</button>
-        </div>
-    </div>
 
-    <!-- 6. PURANA PAYMENT MODAL -->
-    <div id="batchPayModal" class="modal">
-        <div class="modal-content" style="border-color: #00ff88; text-align:center;">
-            <h3 style="color:#00ff88; margin-top:0;">💳 Payment Window</h3>
-            <div class="payment-box">
-                <div style="font-size:0.85rem; color:#cbd5e1;">Batch Access Fees:</div>
-                <div class="price-tag">₹ 10</div>
-                <p style="font-size:0.78rem; color:#94a3b8; margin-top:5px;">
-                    Payment Number: <b style="color:#00ff88;">8955042715</b><br>
-                    Niche UPI link se ₹10 Pay karein:
-                </p>
+            <!-- Step 1: Input Gmail -->
+            <div id="emailStep">
+                <input type="email" id="batchEmailInput" class="input-box" placeholder="Apna Gmail ID Daalein">
+                <button class="verify-btn" onclick="sendGmailOTP()">OTP Bhejein 🚀</button>
             </div>
-            
-            <a id="upiPayBtn" href="upi://pay?pa=8955042715@paytm&pn=Naresh_Indian_Hacker&am=10.00&cu=INR&tn=Batch_Access_Fees" class="submit-btn" style="background:#00ff88; color:#0f172a; margin-bottom: 8px;" onclick="trackPaymentClick()">Pay ₹10 via UPI App 💸</a>
-            <button type="button" class="submit-btn" style="background:#3b82f6; color:#fff; margin-top:0;" onclick="checkAndOpenBatch()">Payment Complete Check & Access Batch ✅</button>
-            <button class="close-btn" onclick="closeModal('batchPayModal')">Close</button>
-        </div>
-    </div>
 
-    <!-- 7. PURANA UNLOCKED BATCH WINDOW -->
-    <div id="batchSuccessModal" class="modal">
-        <div class="modal-content" style="border-color: #00ff88; text-align:center;">
-            <h3 style="color:#00ff88; margin-top:0;">🎉 Welcome to Premium Batch!</h3>
-            <p style="font-size:0.85rem; color:#cbd5e1;">Payment Successful! Contact Options Unlocked:</p>
-            
-            <a id="waBtn" href="#" target="_blank" class="btn" style="background:#25D366; font-size:0.88rem; margin:8px auto; text-decoration:none;">💬 Chat with Naresh on WhatsApp</a>
-            <a href="tel:8955042715" class="btn" style="background:#3b82f6; font-size:0.88rem; margin:8px auto; text-decoration:none;">📞 Call Naresh (8955042715)</a>
+            <!-- Step 2: Input OTP (Initially Hidden) -->
+            <div id="otpStep" style="display: none;">
+                <input type="text" id="otpInput" class="input-box" placeholder="Enter 4-Digit OTP Code" maxlength="4">
+                <button class="verify-btn" onclick="verifyOTP()">Verify OTP & Open Batch 🚀</button>
+            </div>
 
-            <button class="close-btn" onclick="closeModal('batchSuccessModal')">Close</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <script>
-        // ---------------- FIREBASE CONFIG ----------------
-        const firebaseConfig = {
-            apiKey: "AIzaSyAE_e6bBLVg6mh2R1tbGqUDgdC0sikNtvw",
-            authDomain: "naresh-indian-hacker.firebaseapp.com",
-            projectId: "naresh-indian-hacker",
-            storageBucket: "naresh-indian-hacker.firebasestorage.app",
-            messagingSenderId: "537910000098",
-            appId: "1:537910000098:web:1889e23ee6b6cf9758e1bb"
-        };
-        firebase.initializeApp(firebaseConfig);
-
         let generatedOTP = null;
-        let verifiedEmail = "";
-        let hasClickedPay = false;
-        let currentUser = "";
 
-        const details = {
-            'cyber': { title: '🛡️ Cyber Security', text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai.' },
-            'python': { title: '🐍 Python Programming', text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' },
-            'web': { title: '🌐 Web Development', text: 'Web Development me hum HTML, CSS aur JS ka use karke responsive websites design karte hain.' },
-            'tech': { title: '🎬 Tech Content', text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.' }
-        };
-
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function openInfoModal(topic) {
-            document.getElementById('modalTitle').innerText = details[topic].title;
-            document.getElementById('modalText').innerText = details[topic].text;
-            document.getElementById('infoModal').style.display = 'flex';
-        }
-        function closeInfoModal() { closeModal('infoModal'); }
-        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeLoginModal() { closeModal('loginModal'); }
-        function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
-        function closeContactModal() { closeModal('contactModal'); }
-        function closeChatModal() { closeModal('chatModal'); }
-
-        function openBatchEmailModal() {
-            document.getElementById('batchEmailModal').style.display = 'flex';
+        function openModal() {
+            document.getElementById('otpModal').style.display = 'flex';
             document.getElementById('emailStep').style.display = 'block';
             document.getElementById('otpStep').style.display = 'none';
             document.getElementById('statusBox').style.display = 'none';
-            hasClickedPay = false;
         }
 
-        // Send OTP Function (Screen par OTP bilkul nahi dikhega)
+        function closeModal() {
+            document.getElementById('otpModal').style.display = 'none';
+        }
+
+        // Real OTP Sending Function (Connected to EmailJS)
         function sendGmailOTP() {
             const email = document.getElementById('batchEmailInput').value.trim();
             const statusBox = document.getElementById('statusBox');
@@ -350,98 +307,49 @@
                 return;
             }
 
-            // Random OTP code (Background verification ke liye)
+            // Generate 4-digit random code
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
-            verifiedEmail = email;
 
-            statusBox.innerText = "⏳ Generating OTP...";
+            statusBox.innerText = "⏳ Gmail par OTP bheja ja raha hai...";
             statusBox.style.color = "#ffaa00";
             statusBox.style.display = "block";
 
-            setTimeout(() => {
-                statusBox.innerText = "📩 OTP Bheja Gaya! Apne Gmail Inbox me check karein.";
+            // EmailJS API Call
+            emailjs.send("service_bnq06is", "template_y1smpoj", {
+                to_email: email,
+                passcode: generatedOTP
+            })
+            .then(function(response) {
+                statusBox.innerText = "📩 Real OTP aapke Gmail Inbox me bhej diya gaya hai!";
                 statusBox.style.color = "#00ff88";
                 document.getElementById('emailStep').style.display = 'none';
                 document.getElementById('otpStep').style.display = 'block';
-            }, 1000);
+            }, function(error) {
+                console.error("EmailJS Error:", error);
+                statusBox.innerText = "❌ Email bhejane me error aaya. Direct try karein.";
+                statusBox.style.color = "#ff4d4d";
+            });
         }
 
-        // Verify OTP Function
-        function verifyGmailOTP() {
-            const userOTP = document.getElementById('otpCodeInput').value.trim();
+        // OTP Match Function
+        function verifyOTP() {
+            const userOTP = document.getElementById('otpInput').value.trim();
             const statusBox = document.getElementById('statusBox');
 
             if (userOTP == generatedOTP) {
                 statusBox.innerText = "✅ OTP Verified Successfully!";
                 statusBox.style.color = "#00ff88";
-                document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Gmail:%20${verifiedEmail}`;
+                statusBox.style.display = "block";
                 
                 setTimeout(() => {
-                    closeModal('batchEmailModal');
-                    document.getElementById('batchPayModal').style.display = 'flex';
-                }, 800);
+                    alert("OTP Verification Successful!");
+                    closeModal();
+                }, 1000);
             } else {
-                statusBox.innerText = "❌ Galat OTP! Kripya sahi OTP daalein.";
+                statusBox.innerText = "❌ Galat OTP! Sahi 4-digit code daalein.";
                 statusBox.style.color = "#ff4d4d";
                 statusBox.style.display = "block";
             }
-        }
-
-        function trackPaymentClick() { hasClickedPay = true; }
-
-        function checkAndOpenBatch() {
-            if(!hasClickedPay) {
-                alert('⚠️ Pehle "Pay ₹10 via UPI App" par click karke payment karein!');
-                return;
-            }
-            closeModal('batchPayModal');
-            document.getElementById('batchSuccessModal').style.display = 'flex';
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
-            if(!email || !pass) { alert('Gmail aur Password dono daalein!'); return; }
-            currentUser = email.split('@')[0];
-            closeLoginModal();
-            document.getElementById('chatModal').style.display = 'flex';
-        }
-
-        function sendMessage() {
-            const msgInput = document.getElementById('chatMessage');
-            const msgText = msgInput.value.trim();
-            if(!msgText) return;
-            const chatBox = document.getElementById('chatBox');
-            const newMsg = document.createElement('div');
-            newMsg.className = 'chat-msg';
-            newMsg.innerHTML = `<span>${currentUser || 'User'}</span>${msgText}`;
-            chatBox.appendChild(newMsg);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            msgInput.value = "";
-        }
-
-        function submitDetails() {
-            const name = document.getElementById('fullName').value;
-            const address = document.getElementById('userAddress').value;
-            const phone = document.getElementById('userContact').value;
-            const email = document.getElementById('userEmail').value;
-
-            if(!name || !address || !phone || !email) { 
-                alert('Kripya saari details bharein!'); 
-                return; 
-            }
-
-            const message = `*New Contact Details Received!*%0A%0A` +
-                            `👤 *Name:* ${name}%0A` +
-                            `🏠 *Address:* ${address}%0A` +
-                            `📞 *Mobile:* ${phone}%0A` +
-                            `📧 *Gmail:* ${email}`;
-
-            const whatsappUrl = `https://wa.me/918955042715?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-            
-            document.getElementById('userForm').reset();
-            closeModal('contactModal');
         }
     </script>
 </body>
