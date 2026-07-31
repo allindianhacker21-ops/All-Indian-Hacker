@@ -295,15 +295,14 @@
     </div>
 
     <script>
-        // ---------------- FIREBASE CONFIG ----------------
-        // APNI FIREBASE CONSOLE SE SAHI KEYS YAHAN COPY PASTE KAREIN:
+        // ---------------- WORKING FIREBASE CONFIG ----------------
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyAE_e6bBLVg6mh2R1tbGqUDgdC0sikNtvw",
+            authDomain: "naresh-indian-hacker.firebaseapp.com",
+            projectId: "naresh-indian-hacker",
+            storageBucket: "naresh-indian-hacker.firebasestorage.app",
+            messagingSenderId: "537910000098",
+            appId: "1:537910000098:web:1889e23ee6b6cf9758e1bb"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -370,7 +369,7 @@
                     document.getElementById('phoneStep').style.display = 'none';
                     document.getElementById('otpStep').style.display = 'block';
                 }).catch((error) => {
-                    statusBox.innerText = "❌ Error: " + error.message;
+                    statusBox.innerText = "❌ Error: " + (error.message || JSON.stringify(error));
                     statusBox.style.color = "#ff4d4d";
                 });
         }
