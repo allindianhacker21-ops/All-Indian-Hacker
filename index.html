@@ -338,7 +338,7 @@
             hasClickedPay = false;
         }
 
-        // Send OTP Function
+        // Send OTP Function (Screen par OTP bilkul nahi dikhega)
         function sendGmailOTP() {
             const email = document.getElementById('batchEmailInput').value.trim();
             const statusBox = document.getElementById('statusBox');
@@ -350,7 +350,7 @@
                 return;
             }
 
-            // Generate 4 digit OTP
+            // Random OTP code (Background verification ke liye)
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
             verifiedEmail = email;
 
@@ -359,7 +359,7 @@
             statusBox.style.display = "block";
 
             setTimeout(() => {
-                statusBox.innerText = `📩 OTP Bheja Gaya! (Demo OTP: ${generatedOTP})`;
+                statusBox.innerText = "📩 OTP Bheja Gaya! Apne Gmail Inbox me check karein.";
                 statusBox.style.color = "#00ff88";
                 document.getElementById('emailStep').style.display = 'none';
                 document.getElementById('otpStep').style.display = 'block';
