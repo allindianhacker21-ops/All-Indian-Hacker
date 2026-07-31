@@ -126,10 +126,10 @@
 <body>
 
     <div class="container">
-        <!-- Top Left - Login Button -->
+        <!-- Purana Login Option -->
         <button class="top-login-btn" onclick="openLoginModal()">🔐 Login</button>
 
-        <!-- Top Right - Contact Button -->
+        <!-- Purana Contact Us Option -->
         <button class="top-contact-btn" onclick="openContactModal()">📩 Contact Us</button>
 
         <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Naresh" class="profile-pic">
@@ -143,7 +143,7 @@
             </p>
         </div>
 
-        <!-- Skills Section -->
+        <!-- Purana Skills & Batch Option -->
         <div class="skills-box">
             <div class="box-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
@@ -159,7 +159,7 @@
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
     </div>
 
-    <!-- 1. SKILLS POPUP -->
+    <!-- 1. PURANA SKILLS POPUP -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title"></h3>
@@ -168,7 +168,7 @@
         </div>
     </div>
 
-    <!-- 2. LOGIN MODAL -->
+    <!-- 2. PURANA LOGIN MODAL -->
     <div id="loginModal" class="modal">
         <div class="modal-content" style="border-color: #3b82f6;">
             <h3 style="color:#3b82f6; text-align:center; margin-top:0;">🔐 Account Login</h3>
@@ -187,7 +187,7 @@
         </div>
     </div>
 
-    <!-- 3. ONLINE LIVE CHAT MODAL -->
+    <!-- 3. PURANA ONLINE LIVE CHAT MODAL -->
     <div id="chatModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
@@ -205,7 +205,7 @@
         </div>
     </div>
 
-    <!-- 4. CONTACT MODAL (Linked to WhatsApp 8955042715) -->
+    <!-- 4. PURANA CONTACT MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact Us</h3>
@@ -232,18 +232,28 @@
         </div>
     </div>
 
-    <!-- 5. GMAIL VERIFICATION MODAL -->
+    <!-- 5. GMAIL + OTP VERIFICATION MODAL -->
     <div id="batchEmailModal" class="modal">
         <div class="modal-content" style="border-color: #ffaa00;">
-            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📧 Gmail Verification</h3>
-            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye Apni Gmail ID Verify Karein.</p>
+            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📧 Gmail OTP Verification</h3>
+            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye Gmail Par OTP Verify Karein.</p>
             
+            <!-- STEP 1: Enter Gmail -->
             <div id="emailStep">
                 <div class="form-group">
                     <label>Aapki Gmail Address:</label>
                     <input type="email" id="batchEmailInput" placeholder="example@gmail.com">
                 </div>
-                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendEmailVerification()">Verify Gmail & Proceed 🚀</button>
+                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendGmailOTP()">Send OTP 📩</button>
+            </div>
+
+            <!-- STEP 2: Enter OTP Code -->
+            <div id="otpStep" style="display: none;">
+                <div class="form-group">
+                    <label>Enter 4-Digit OTP Code:</label>
+                    <input type="number" id="otpCodeInput" placeholder="Ex: 4821">
+                </div>
+                <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyGmailOTP()">Verify OTP & Open Payment 🚀</button>
             </div>
 
             <div id="statusBox" class="status-msg"></div>
@@ -251,7 +261,7 @@
         </div>
     </div>
 
-    <!-- 6. PAYMENT MODAL (DIRECT TO 8955042715) -->
+    <!-- 6. PURANA PAYMENT MODAL -->
     <div id="batchPayModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">💳 Payment Window</h3>
@@ -270,7 +280,7 @@
         </div>
     </div>
 
-    <!-- 7. UNLOCKED BATCH WINDOW -->
+    <!-- 7. PURANA UNLOCKED BATCH WINDOW -->
     <div id="batchSuccessModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">🎉 Welcome to Premium Batch!</h3>
@@ -284,7 +294,7 @@
     </div>
 
     <script>
-        // ---------------- WORKING FIREBASE CONFIG ----------------
+        // ---------------- FIREBASE CONFIG ----------------
         const firebaseConfig = {
             apiKey: "AIzaSyAE_e6bBLVg6mh2R1tbGqUDgdC0sikNtvw",
             authDomain: "naresh-indian-hacker.firebaseapp.com",
@@ -293,9 +303,9 @@
             messagingSenderId: "537910000098",
             appId: "1:537910000098:web:1889e23ee6b6cf9758e1bb"
         };
-
         firebase.initializeApp(firebaseConfig);
 
+        let generatedOTP = null;
         let verifiedEmail = "";
         let hasClickedPay = false;
         let currentUser = "";
@@ -322,12 +332,14 @@
 
         function openBatchEmailModal() {
             document.getElementById('batchEmailModal').style.display = 'flex';
+            document.getElementById('emailStep').style.display = 'block';
+            document.getElementById('otpStep').style.display = 'none';
             document.getElementById('statusBox').style.display = 'none';
             hasClickedPay = false;
         }
 
-        // Gmail Verification Function
-        function sendEmailVerification() {
+        // Send OTP Function
+        function sendGmailOTP() {
             const email = document.getElementById('batchEmailInput').value.trim();
             const statusBox = document.getElementById('statusBox');
 
@@ -338,21 +350,41 @@
                 return;
             }
 
-            statusBox.innerText = "⏳ Verifying Gmail...";
+            // Generate 4 digit OTP
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            verifiedEmail = email;
+
+            statusBox.innerText = "⏳ Generating OTP...";
             statusBox.style.color = "#ffaa00";
             statusBox.style.display = "block";
 
-            verifiedEmail = email;
-            document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Gmail:%20${verifiedEmail}`;
-
             setTimeout(() => {
-                statusBox.innerText = "✅ Gmail Verified Successfully!";
+                statusBox.innerText = `📩 OTP Bheja Gaya! (Demo OTP: ${generatedOTP})`;
                 statusBox.style.color = "#00ff88";
+                document.getElementById('emailStep').style.display = 'none';
+                document.getElementById('otpStep').style.display = 'block';
+            }, 1000);
+        }
+
+        // Verify OTP Function
+        function verifyGmailOTP() {
+            const userOTP = document.getElementById('otpCodeInput').value.trim();
+            const statusBox = document.getElementById('statusBox');
+
+            if (userOTP == generatedOTP) {
+                statusBox.innerText = "✅ OTP Verified Successfully!";
+                statusBox.style.color = "#00ff88";
+                document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Gmail:%20${verifiedEmail}`;
+                
                 setTimeout(() => {
                     closeModal('batchEmailModal');
                     document.getElementById('batchPayModal').style.display = 'flex';
                 }, 800);
-            }, 1000);
+            } else {
+                statusBox.innerText = "❌ Galat OTP! Kripya sahi OTP daalein.";
+                statusBox.style.color = "#ff4d4d";
+                statusBox.style.display = "block";
+            }
         }
 
         function trackPaymentClick() { hasClickedPay = true; }
@@ -388,7 +420,6 @@
             msgInput.value = "";
         }
 
-        // Contact Us Details directly sent to WhatsApp (8955042715)
         function submitDetails() {
             const name = document.getElementById('fullName').value;
             const address = document.getElementById('userAddress').value;
@@ -410,7 +441,7 @@
             window.open(whatsappUrl, '_blank');
             
             document.getElementById('userForm').reset();
-            closeContactModal();
+            closeModal('contactModal');
         }
     </script>
 </body>
