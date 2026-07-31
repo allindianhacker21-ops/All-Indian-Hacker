@@ -10,6 +10,10 @@
     <meta name="keywords" content="Naresh Indian Hacker, Naresh, Cyber Security, Ethical Hacking, Python, Tech">
     <meta name="author" content="Naresh Indian Hacker">
 
+    <!-- Firebase SDKs (v8) for Real SMS OTP -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -31,47 +35,26 @@
         }
         /* Top Left - Login Button */
         .top-login-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #3b82f6;
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
+            position: absolute; top: 15px; left: 15px;
+            background: #3b82f6; color: #ffffff; padding: 6px 12px;
+            border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; border: none;
             transition: 0.3s;
         }
         .top-login-btn:hover { background: #2563eb; transform: scale(1.05); }
 
         /* Top Right - Contact Button */
         .top-contact-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #00ff88;
-            color: #0f172a;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
+            position: absolute; top: 15px; right: 15px;
+            background: #00ff88; color: #0f172a; padding: 6px 12px;
+            border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; border: none;
             transition: 0.3s;
         }
         .top-contact-btn:hover { background: #34d399; transform: scale(1.05); }
 
         .profile-pic {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #00ff88;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
-            margin-bottom: 12px;
-            margin-top: 15px;
+            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+            border: 3px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            margin-bottom: 12px; margin-top: 15px;
         }
         h1 { color: #00ff88; font-size: 1.8rem; margin: 10px 0 5px 0; }
         .tagline { color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px; }
@@ -87,22 +70,17 @@
             border-radius: 15px; font-size: 0.85rem; cursor: pointer; transition: 0.3s;
         }
         .tag:hover { background: #00ff88; color: #0f172a; font-weight: bold; transform: scale(1.05); }
-        .tag-batch {
-            background: linear-gradient(45deg, #ff007f, #ffaa00);
-            color: #ffffff;
-            font-weight: bold;
-        }
+        .tag-batch { background: linear-gradient(45deg, #ff007f, #ffaa00); color: #ffffff; font-weight: bold; }
         
         .btn {
             display: block; width: 90%; margin: 12px auto; padding: 12px 0;
-            color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 25px; font-size: 0.95rem;
-            transition: 0.3s;
+            color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 25px; font-size: 0.95rem; transition: 0.3s;
         }
         .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .btn-yt { background-color: #ff0000; }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Modal Windows */
+        /* Modals */
         .modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85);
@@ -132,51 +110,17 @@
             border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
         }
         
-        /* Online Chat Box Styling */
+        /* Chat Box */
         .chat-container {
-            height: 220px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 10px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            text-align: left;
+            height: 220px; background: #0f172a; border: 1px solid #334155;
+            border-radius: 10px; padding: 10px; overflow-y: auto; margin-bottom: 10px; text-align: left;
         }
-        .chat-msg {
-            background: #1e293b;
-            padding: 8px 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 0.82rem;
-            color: #cbd5e1;
-        }
-        .chat-msg span {
-            color: #00ff88;
-            font-weight: bold;
-            display: block;
-            font-size: 0.75rem;
-        }
+        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 10px; margin-bottom: 8px; font-size: 0.82rem; color: #cbd5e1; }
+        .chat-msg span { color: #00ff88; font-weight: bold; display: block; font-size: 0.75rem; }
 
-        .payment-box {
-            background: #0f172a;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px dashed #00ff88;
-            text-align: center;
-            margin: 10px 0;
-        }
-        .price-tag {
-            font-size: 1.6rem;
-            color: #00ff88;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        .verify-status {
-            font-size: 0.78rem;
-            margin-top: 5px;
-            display: none;
-        }
+        .payment-box { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px dashed #00ff88; text-align: center; margin: 10px 0; }
+        .price-tag { font-size: 1.6rem; color: #00ff88; font-weight: bold; margin: 5px 0; }
+        .status-msg { font-size: 0.8rem; margin-top: 8px; text-align: center; display: none; }
     </style>
 </head>
 <body>
@@ -247,14 +191,12 @@
     <div id="chatModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
-            
             <div class="chat-container" id="chatBox">
                 <div class="chat-msg">
                     <span>Naresh (Admin)</span>
                     Welcome! Aap successfully login ho chuke hain. Yahan se aap mujhse live chat kar sakte hain.
                 </div>
             </div>
-
             <div class="form-group">
                 <input type="text" id="chatMessage" placeholder="Apna message yahan likhein...">
             </div>
@@ -290,47 +232,60 @@
         </div>
     </div>
 
-    <!-- 5. PAID BATCH: STEP 1 (PHONE NUMBER VERIFICATION) -->
+    <!-- 5. REAL SMS OTP VERIFICATION MODAL -->
     <div id="batchPhoneModal" class="modal">
         <div class="modal-content" style="border-color: #ffaa00;">
-            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📱 Mobile Verification</h3>
-            <p style="font-size:0.85rem; color:#cbd5e1; text-align:center;">Naresh Se Connect Karne Aur Batch Access Ke Liye Mobile Number Daalein.</p>
-            <div class="form-group">
-                <label>Aapka Mobile Number:</label>
-                <input type="tel" id="batchPhoneInput" placeholder="10 Digit Phone Number" maxlength="10" required>
-                <div id="verifyStatus" class="verify-status"></div>
+            <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📱 OTP Verification</h3>
+            <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye SMS OTP Verify Karein.</p>
+            
+            <!-- Step 1: Phone Input -->
+            <div id="phoneStep">
+                <div class="form-group">
+                    <label>Aapka Mobile Number (10 Digits):</label>
+                    <input type="tel" id="batchPhoneInput" placeholder="10 Digit Number" maxlength="10">
+                </div>
+                <div id="recaptcha-container"></div>
+                <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendOTP()">Send OTP SMS 📩</button>
             </div>
-            <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="verifyAndProceed()">Verify & Pay ₹10 💳</button>
+
+            <!-- Step 2: OTP Input -->
+            <div id="otpStep" style="display:none;">
+                <div class="form-group">
+                    <label>SMS me aaya 6-Digit OTP daalein:</label>
+                    <input type="number" id="otpInput" placeholder="Enter OTP">
+                </div>
+                <button type="button" class="submit-btn" style="background:#00ff88; color:#0f172a;" onclick="verifyOTP()">Verify OTP & Proceed 🚀</button>
+            </div>
+
+            <div id="statusBox" class="status-msg"></div>
             <button class="close-btn" onclick="closeModal('batchPhoneModal')">Cancel</button>
         </div>
     </div>
 
-    <!-- 6. PAID BATCH: STEP 2 (DIRECT PAYMENT TO 8955042715) -->
+    <!-- 6. PAYMENT MODAL (DIRECT TO 8955042715) -->
     <div id="batchPayModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">💳 Payment Window</h3>
             <div class="payment-box">
-                <div style="font-size:0.85rem; color:#cbd5e1;">Batch Access & Consultation:</div>
+                <div style="font-size:0.85rem; color:#cbd5e1;">Batch Access Fees:</div>
                 <div class="price-tag">₹ 10</div>
                 <p style="font-size:0.78rem; color:#94a3b8; margin-top:5px;">
                     Payment Number: <b style="color:#00ff88;">8955042715</b><br>
-                    Niche click karke Google Pay / PhonePe / Paytm se ₹10 Pay karein:
+                    Niche UPI link se ₹10 Pay karein:
                 </p>
             </div>
             
-            <!-- Direct Payment Link linked to 8955042715 -->
             <a id="upiPayBtn" href="upi://pay?pa=8955042715@paytm&pn=Naresh_Indian_Hacker&am=10.00&cu=INR&tn=Batch_Access_Fees" class="submit-btn" style="background:#00ff88; color:#0f172a; margin-bottom: 8px;" onclick="trackPaymentClick()">Pay ₹10 via UPI App 💸</a>
-            
             <button type="button" class="submit-btn" style="background:#3b82f6; color:#fff; margin-top:0;" onclick="checkAndOpenBatch()">Payment Complete Check & Access Batch ✅</button>
             <button class="close-btn" onclick="closeModal('batchPayModal')">Close</button>
         </div>
     </div>
 
-    <!-- 7. PAID BATCH: STEP 3 (SUCCESS WINDOW - UNLOCKED ONLY AFTER PAYMENT) -->
+    <!-- 7. UNLOCKED BATCH WINDOW -->
     <div id="batchSuccessModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">🎉 Welcome to Premium Batch!</h3>
-            <p style="font-size:0.85rem; color:#cbd5e1;">Payment Successful! Ab aap Naresh ke Batch aur Direct Contact options access kar sakte hain:</p>
+            <p style="font-size:0.85rem; color:#cbd5e1;">Payment Successful! Contact Options Unlocked:</p>
             
             <a id="waBtn" href="#" target="_blank" class="btn" style="background:#25D366; font-size:0.88rem; margin:8px auto; text-decoration:none;">💬 Chat with Naresh on WhatsApp</a>
             <a href="tel:8955042715" class="btn" style="background:#3b82f6; font-size:0.88rem; margin:8px auto; text-decoration:none;">📞 Call Naresh (8955042715)</a>
@@ -340,6 +295,24 @@
     </div>
 
     <script>
+        // ---------------- FIREBASE CONFIG ----------------
+        // AAPNI KEYS YAHAN PASTE KAREIN:
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        let confirmationResult = null;
+        let verifiedPhone = "";
+        let hasClickedPay = false;
+        let currentUser = "";
+
         const details = {
             'cyber': { title: '🛡️ Cyber Security', text: 'Cyber Security ka matlab digital systems, networks aur data ko online threats se secure karna hai.' },
             'python': { title: '🐍 Python Programming', text: 'Python ek powerful programming language hai. Iska use Ethical Hacking tools, Automation, aur Web Development me hota hai.' },
@@ -347,128 +320,129 @@
             'tech': { title: '🎬 Tech Content', text: 'Main YouTube aur Instagram par tech videos, tutorials aur cyber security tips share karta hoon.' }
         };
 
-        let currentUser = "";
-        let savedBatchPhone = "";
-        let hasClickedPay = false;
+        window.onload = function() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
+        };
 
-        // Modal Controls
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
         function openInfoModal(topic) {
             document.getElementById('modalTitle').innerText = details[topic].title;
             document.getElementById('modalText').innerText = details[topic].text;
             document.getElementById('infoModal').style.display = 'flex';
         }
         function closeInfoModal() { closeModal('infoModal'); }
-
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { closeModal('loginModal'); }
-
         function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
         function closeContactModal() { closeModal('contactModal'); }
-
         function closeChatModal() { closeModal('chatModal'); }
 
-        // Batch Flow Functions
         function openBatchPhoneModal() {
             document.getElementById('batchPhoneModal').style.display = 'flex';
-            document.getElementById('batchPhoneInput').value = "";
-            document.getElementById('verifyStatus').style.display = "none";
+            document.getElementById('phoneStep').style.display = 'block';
+            document.getElementById('otpStep').style.display = 'none';
+            document.getElementById('statusBox').style.display = 'none';
             hasClickedPay = false;
         }
 
-        // Phone Number Verification Logic
-        function verifyAndProceed() {
+        // OTP SMS Function
+        function sendOTP() {
             const phone = document.getElementById('batchPhoneInput').value.trim();
-            const statusBox = document.getElementById('verifyStatus');
-            
-            const phoneRegex = /^[6-9]\d{9}$/;
+            const statusBox = document.getElementById('statusBox');
 
-            if(!phoneRegex.test(phone)) {
-                statusBox.innerText = "❌ Galat Mobile Number! Kripya 10 digit ka sahi number daalein.";
+            if (phone.length !== 10 || !/^[6-9]\d{9}$/.test(phone)) {
+                statusBox.innerText = "❌ Kripya 10-digit Sahi Mobile Number daalein!";
                 statusBox.style.color = "#ff4d4d";
                 statusBox.style.display = "block";
                 return;
             }
 
-            statusBox.innerText = "✅ Mobile Number Verified!";
-            statusBox.style.color = "#00ff88";
+            statusBox.innerText = "⏳ Bhej rahe hain OTP...";
+            statusBox.style.color = "#ffaa00";
             statusBox.style.display = "block";
 
-            savedBatchPhone = phone;
-
-            // WhatsApp link updated with user's verified phone number
-            document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Mera%20verified%20number:%20${phone}`;
-
-            setTimeout(() => {
-                closeModal('batchPhoneModal');
-                document.getElementById('batchPayModal').style.display = 'flex';
-            }, 800);
+            firebase.auth().signInWithPhoneNumber("+91" + phone, window.recaptchaVerifier)
+                .then((result) => {
+                    confirmationResult = result;
+                    verifiedPhone = phone;
+                    statusBox.innerText = "✅ OTP Bhej diya gaya hai!";
+                    statusBox.style.color = "#00ff88";
+                    document.getElementById('phoneStep').style.display = 'none';
+                    document.getElementById('otpStep').style.display = 'block';
+                }).catch((error) => {
+                    statusBox.innerText = "❌ Error: " + error.message;
+                    statusBox.style.color = "#ff4d4d";
+                });
         }
 
-        function trackPaymentClick() {
-            hasClickedPay = true;
+        function verifyOTP() {
+            const otp = document.getElementById('otpInput').value.trim();
+            const statusBox = document.getElementById('statusBox');
+
+            if (otp.length !== 6) {
+                statusBox.innerText = "❌ 6-Digit OTP daalein!";
+                statusBox.style.color = "#ff4d4d";
+                return;
+            }
+
+            confirmationResult.confirm(otp).then((result) => {
+                statusBox.innerText = "✅ Number Verified Successfully!";
+                statusBox.style.color = "#00ff88";
+                document.getElementById('waBtn').href = `https://wa.me/918955042715?text=Hi%20Naresh,%20Maine%2010%20rupees%20pay%20kardiye%20hain.%20Verified%20Number:%20${verifiedPhone}`;
+
+                setTimeout(() => {
+                    closeModal('batchPhoneModal');
+                    document.getElementById('batchPayModal').style.display = 'flex';
+                }, 1000);
+            }).catch((error) => {
+                statusBox.innerText = "❌ Galat OTP! Dobara check karein.";
+                statusBox.style.color = "#ff4d4d";
+            });
         }
+
+        function trackPaymentClick() { hasClickedPay = true; }
 
         function checkAndOpenBatch() {
             if(!hasClickedPay) {
-                alert('⚠️ Pehle "Pay ₹10 via UPI App" par click karke ₹10 ka payment poora karein!');
+                alert('⚠️ Pehle "Pay ₹10 via UPI App" par click karke payment karein!');
                 return;
             }
             closeModal('batchPayModal');
             document.getElementById('batchSuccessModal').style.display = 'flex';
         }
 
-        // Login Logic
         function handleLogin() {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
-
-            if(email === '' || pass === '') {
-                alert('Kripya Gmail aur Password dono daalein!');
-                return;
-            }
-
+            if(!email || !pass) { alert('Gmail aur Password dono daalein!'); return; }
             currentUser = email.split('@')[0];
             closeLoginModal();
             document.getElementById('chatModal').style.display = 'flex';
         }
 
-        // Live Chat Message
         function sendMessage() {
             const msgInput = document.getElementById('chatMessage');
             const msgText = msgInput.value.trim();
-
-            if(msgText === "") return;
-
+            if(!msgText) return;
             const chatBox = document.getElementById('chatBox');
             const newMsg = document.createElement('div');
             newMsg.className = 'chat-msg';
             newMsg.innerHTML = `<span>${currentUser || 'User'}</span>${msgText}`;
-            
             chatBox.appendChild(newMsg);
             chatBox.scrollTop = chatBox.scrollHeight;
-
             msgInput.value = "";
         }
 
-        // Simple Form Submit
         function submitDetails() {
             const name = document.getElementById('fullName').value;
             const address = document.getElementById('userAddress').value;
             const phone = document.getElementById('userContact').value;
             const email = document.getElementById('userEmail').value;
-
-            if(!name || !address || !phone || !email) {
-                alert('Kripya saari details (Naam, Pata, Phone number, Gmail) bharein!');
-                return;
-            }
-
-            alert('🟢 Thank you ' + name + '! Aapki jankari safaltapurvak bhej di gayi hai.');
+            if(!name || !address || !phone || !email) { alert('Saari details bharein!'); return; }
+            alert('🟢 Thank you ' + name + '! Aapki jankari bhej di gayi hai.');
             document.getElementById('userForm').reset();
             closeContactModal();
         }
     </script>
-
 </body>
 </html>
