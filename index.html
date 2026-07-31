@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Naresh Indian Hacker - Profile & OTP Access</title>
+  <title>Naresh Indian Hacker</title>
   <style>
     :root {
       --bg-color: #0d1117;
@@ -130,10 +130,6 @@
       border: 1px solid var(--border-color);
     }
 
-    .btn-action:hover {
-      opacity: 0.9;
-    }
-
     /* Modal Styling */
     .modal-overlay {
       display: none;
@@ -179,7 +175,6 @@
       margin-bottom: 16px;
       font-size: 1rem;
       text-align: center;
-      letter-spacing: 1px;
     }
 
     .error-box {
@@ -209,11 +204,11 @@
   <div class="container">
     <div class="header-btns">
       <button class="top-btn" onclick="openModal()">🔐 Login</button>
-      <a href="https://instagram.com" target="_blank" class="top-btn">📩 Contact Us</a>
+      <a href="#" class="top-btn">📩 Contact Us</a>
     </div>
 
     <div class="profile-section">
-      <img src="https://via.placeholder.com/100" alt="Profile" class="profile-img" id="profile-pic">
+      <img src="https://via.placeholder.com/100" alt="Profile" class="profile-img">
       <h2 class="profile-title">Naresh Indian Hacker</h2>
       <p class="profile-subtitle">Welcome to my official profile page!</p>
     </div>
@@ -222,8 +217,6 @@
       <h3>🙋‍♂️ About Me</h3>
       <p>Namaste! Main Naresh hoon. Mujhe Cyber Security, Ethical Hacking, Python programming aur Tech content create karne me kaafi interest hai.</p>
     </div>
-
-    <button class="btn-action btn-primary" onclick="openModal()">🔐 Get Access via OTP</button>
   </div>
 
   <!-- OTP Verification Modal -->
@@ -232,14 +225,12 @@
       <h3 class="modal-title">📱 OTP Verification</h3>
       <p class="modal-sub">Naresh Batch Access Ke Liye SMS OTP Verify Karein.</p>
 
-      <!-- Step 1: Phone Input -->
       <div id="phone-step">
         <input type="tel" id="phoneNumber" class="input-field" placeholder="Aapka Mobile Number (10 Digits)" maxlength="10">
         <div id="recaptcha-container"></div>
         <button class="btn-action btn-primary" onclick="sendOTP()">Send OTP SMS 📩</button>
       </div>
 
-      <!-- Step 2: OTP Input -->
       <div id="otp-step" style="display: none;">
         <input type="number" id="otpCode" class="input-field" placeholder="Enter 6-Digit OTP" maxlength="6">
         <button class="btn-action btn-primary" onclick="verifyOTP()">Verify OTP ✅</button>
@@ -252,12 +243,11 @@
     </div>
   </div>
 
-  <!-- Firebase Modular SDKs -->
+  <!-- Firebase Integration -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // ✅ Aapki Verified Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAE_e6bBLVg6mh2R1tbGqUDgdC0sikNtvw",
       authDomain: "naresh-indian-hacker.firebaseapp.com",
@@ -268,7 +258,6 @@
       measurementId: "G-7VQLVRBSBZ"
     };
 
-    // Firebase Initialize
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     auth.languageCode = 'en';
@@ -303,10 +292,7 @@
     function initRecaptcha() {
       if (!window.recaptchaVerifier) {
         window.recaptchaVerifier = new window.RecaptchaVerifier(window.auth, 'recaptcha-container', {
-          'size': 'invisible',
-          'callback': (response) => {
-            // reCAPTCHA solved
-          }
+          'size': 'invisible'
         });
       }
     }
@@ -336,13 +322,8 @@
           successMsg.style.display = 'block';
         })
         .catch((error) => {
-          errorMsg.innerText = "Error: " + JSON.stringify(error.message || error);
+          errorMsg.innerText = "Error: " + (error.message || JSON.stringify(error));
           errorMsg.style.display = 'block';
-          if (window.recaptchaVerifier) {
-            window.recaptchaVerifier.render().then(widgetId => {
-              grecaptcha.reset(widgetId);
-            });
-          }
         });
     }
 
@@ -360,8 +341,7 @@
       }
 
       confirmationResultObj.confirm(otpCode).then((result) => {
-        const user = result.user;
-        successMsg.innerText = "Verification Successful! Access Granted 🎉";
+        successMsg.innerText = "Verification Successful! 🎉";
         successMsg.style.display = 'block';
         document.getElementById('otp-step').style.display = 'none';
       }).catch((error) => {
