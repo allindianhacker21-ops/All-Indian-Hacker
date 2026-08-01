@@ -130,6 +130,19 @@
             border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
         }
         
+        /* Friends Card Style */
+        .friend-card {
+            background: #0f172a; padding: 10px; border-radius: 12px;
+            margin-bottom: 10px; border: 1px solid #334155;
+            display: flex; align-items: center; gap: 12px; text-align: left;
+        }
+        .friend-img {
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            border: 2px solid #ec4899; flex-shrink: 0;
+        }
+        .friend-info b { color: #00ff88; font-size: 0.95rem; display: block; }
+        .friend-info p { margin: 2px 0 0 0; color: #cbd5e1; font-size: 0.8rem; }
+
         /* Chat Box */
         .chat-container {
             height: 220px; background: #0f172a; border: 1px solid #334155;
@@ -363,11 +376,37 @@
     <div id="friendsModal" class="modal">
         <div class="modal-content" style="border-color: #ec4899; text-align:center;">
             <h3 style="color:#ec4899; margin-top:0;">👥 Friends & Team</h3>
-            <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Meet my friends and team members:</p>
             
-            <div style="background:#0f172a; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #334155; text-align:left;">
-                <b style="color:#00ff88; font-size:0.95rem;">Ankit</b>
-                <p style="margin:4px 0 0 0; color:#cbd5e1; font-size:0.82rem;">Co-Creator & Channel Partner</p>
+            <!-- Welcome Message -->
+            <p style="font-size:0.85rem; color:#00ff88; font-weight: bold; margin-bottom:15px; line-height: 1.4;">
+                My best friends aap sbhi ka svagt he Naresh Indian Hacker ki website pr or app sbhi kese ho mere pyaro dosto. Devendra, Manish, Pulkit, and sbhi ka svagt he ❤️
+            </p>
+
+            <!-- Devendra Card -->
+            <div class="friend-card">
+                <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Devendra" class="friend-img">
+                <div class="friend-info">
+                    <b>Devendra</b>
+                    <p>Best Friend & Team Member</p>
+                </div>
+            </div>
+
+            <!-- Manish Card -->
+            <div class="friend-card">
+                <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Manish" class="friend-img">
+                <div class="friend-info">
+                    <b>Manish</b>
+                    <p>Best Friend & Team Member</p>
+                </div>
+            </div>
+
+            <!-- Pulkit Card -->
+            <div class="friend-card">
+                <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Pulkit" class="friend-img">
+                <div class="friend-info">
+                    <b>Pulkit</b>
+                    <p>Best Friend & Team Member</p>
+                </div>
             </div>
 
             <button class="close-btn" onclick="closeModal('friendsModal')">Close</button>
