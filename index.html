@@ -18,7 +18,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          // Yahan apni EmailJS Public Key daalein
           emailjs.init("YOUR_PUBLIC_KEY");
        })();
     </script>
@@ -84,9 +83,11 @@
         .btn {
             display: block; width: 90%; margin: 12px auto; padding: 12px 0;
             color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 25px; font-size: 0.95rem; transition: 0.3s;
+            border: none; cursor: pointer; font-family: inherit;
         }
         .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .btn-yt { background-color: #ff0000; }
+        .btn-friends { background: linear-gradient(45deg, #8b5cf6, #ec4899); }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
         /* Work Form Box Styling */
@@ -175,8 +176,11 @@
 
         <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
+        
+        <!-- 👥 FRIENDS BUTTON -->
+        <button class="btn btn-friends" onclick="openFriendsModal()">👥 Friends / Team</button>
 
-        <!-- 💼 WORK WITH US FORM (YouTube Button Ke Just Niche) -->
+        <!-- 💼 WORK WITH US FORM -->
         <div class="work-box">
             <div class="box-title">💼 Work With Us / Job Application</div>
             <p style="color: #cbd5e1; font-size: 0.8rem; text-align: center; margin-top: -5px; margin-bottom: 12px;">
@@ -355,6 +359,21 @@
         </div>
     </div>
 
+    <!-- 8. FRIENDS MODAL POPUP -->
+    <div id="friendsModal" class="modal">
+        <div class="modal-content" style="border-color: #ec4899; text-align:center;">
+            <h3 style="color:#ec4899; margin-top:0;">👥 Friends & Team</h3>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Meet my friends and team members:</p>
+            
+            <div style="background:#0f172a; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #334155; text-align:left;">
+                <b style="color:#00ff88; font-size:0.95rem;">Ankit</b>
+                <p style="margin:4px 0 0 0; color:#cbd5e1; font-size:0.82rem;">Co-Creator & Channel Partner</p>
+            </div>
+
+            <button class="close-btn" onclick="closeModal('friendsModal')">Close</button>
+        </div>
+    </div>
+
     <script>
         // ---------------- FIREBASE CONFIG ----------------
         const firebaseConfig = {
@@ -391,6 +410,7 @@
         function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
         function closeContactModal() { closeModal('contactModal'); }
         function closeChatModal() { closeModal('chatModal'); }
+        function openFriendsModal() { document.getElementById('friendsModal').style.display = 'flex'; }
 
         function openBatchEmailModal() {
             document.getElementById('batchEmailModal').style.display = 'flex';
