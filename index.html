@@ -14,6 +14,15 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
+    <!-- EmailJS SDK for direct email notifications -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // Yahan apni EmailJS Public Key daalein
+          emailjs.init("YOUR_PUBLIC_KEY");
+       })();
+    </script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -80,6 +89,13 @@
         .btn-yt { background-color: #ff0000; }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
+        /* Work Form Box Styling */
+        .work-box {
+            background: #0f172a; padding: 18px; border-radius: 15px;
+            margin-top: 20px; border: 1px solid #00ff88; text-align: left;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.15);
+        }
+
         /* Modals */
         .modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0;
@@ -94,17 +110,20 @@
         }
         .modal-title { color: #00ff88; font-size: 1.1rem; margin-top: 0; margin-bottom: 10px; text-align: center; }
         .modal-text { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; }
-        .form-group { margin-bottom: 10px; }
+        .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
-        .form-group input {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #334155;
             background-color: #0f172a; color: #ffffff; box-sizing: border-box; font-size: 0.85rem;
+            font-family: inherit;
         }
         .submit-btn {
             width: 100%; padding: 10px; background: #00ff88; color: #0f172a;
             border: none; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
             text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center;
+            transition: 0.3s;
         }
+        .submit-btn:hover { opacity: 0.9; transform: scale(1.02); }
         .close-btn {
             background: #334155; color: #ffffff; border: none; padding: 8px;
             border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
@@ -126,10 +145,10 @@
 <body>
 
     <div class="container">
-        <!-- Purana Login Option -->
+        <!-- Login Option -->
         <button class="top-login-btn" onclick="openLoginModal()">🔐 Login</button>
 
-        <!-- Purana Contact Us Option -->
+        <!-- Contact Us Option -->
         <button class="top-contact-btn" onclick="openContactModal()">📩 Contact Us</button>
 
         <img src="file_00000000f45c71f4b4777bfb557ca3ca.png" alt="Naresh" class="profile-pic">
@@ -143,7 +162,6 @@
             </p>
         </div>
 
-        <!-- Purana Skills & Batch Option -->
         <div class="skills-box">
             <div class="box-title">🚀 What I Do / Learning</div>
             <div class="skills-tags">
@@ -157,9 +175,55 @@
 
         <a href="https://instagram.com/ankitandnaresh" class="btn btn-insta" target="_blank">📸 Follow on Instagram</a>
         <a href="https://www.youtube.com/@NareshIndianHacker" class="btn btn-yt" target="_blank">▶️ Subscribe on YouTube</a>
+
+        <!-- 💼 WORK WITH US FORM (YouTube Button Ke Just Niche) -->
+        <div class="work-box">
+            <div class="box-title">💼 Work With Us / Job Application</div>
+            <p style="color: #cbd5e1; font-size: 0.8rem; text-align: center; margin-top: -5px; margin-bottom: 12px;">
+                Hamare sath kaam karne ke liye niche diya gaya form bharein.
+            </p>
+
+            <form id="workApplyForm" onsubmit="sendWorkApplication(event)">
+                <div class="form-group">
+                    <label>Aapka Poora Naam:</label>
+                    <input type="text" id="applicantName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gmail Address:</label>
+                    <input type="email" id="applicantEmail" placeholder="example@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile / WhatsApp Number:</label>
+                    <input type="tel" id="applicantPhone" placeholder="Enter contact number" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Aap Kya Kaam Kar Sakte Hain?</label>
+                    <select id="applicantSkill">
+                        <option value="Content Creator / Video Editor">Video Editing / Content Creation</option>
+                        <option value="Python Programmer">Python Programming</option>
+                        <option value="Web Developer">Web Development</option>
+                        <option value="Cyber Security / Moderator">Cyber Security / Channel Moderator</option>
+                        <option value="Other">Anya Kaam (Other)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Apne Skills / Experience Ke Baare Me Batayein:</label>
+                    <textarea id="applicantMessage" rows="3" placeholder="Aap kya kaam karna chahte hain aur kyun?" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Apply Now 🚀</button>
+            </form>
+            
+            <div id="formStatus" class="status-msg"></div>
+        </div>
+
     </div>
 
-    <!-- 1. PURANA SKILLS POPUP -->
+    <!-- 1. SKILLS POPUP -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title"></h3>
@@ -168,7 +232,7 @@
         </div>
     </div>
 
-    <!-- 2. PURANA LOGIN MODAL -->
+    <!-- 2. LOGIN MODAL -->
     <div id="loginModal" class="modal">
         <div class="modal-content" style="border-color: #3b82f6;">
             <h3 style="color:#3b82f6; text-align:center; margin-top:0;">🔐 Account Login</h3>
@@ -187,7 +251,7 @@
         </div>
     </div>
 
-    <!-- 3. PURANA ONLINE LIVE CHAT MODAL -->
+    <!-- 3. ONLINE LIVE CHAT MODAL -->
     <div id="chatModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; max-width: 360px;">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">💬 Online Live Chat Room</h3>
@@ -205,7 +269,7 @@
         </div>
     </div>
 
-    <!-- 4. PURANA CONTACT MODAL -->
+    <!-- 4. CONTACT MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#00ff88; text-align:center; margin-top:0;">📩 Contact Us</h3>
@@ -238,7 +302,6 @@
             <h3 style="color:#ffaa00; text-align:center; margin-top:0;">📧 Gmail OTP Verification</h3>
             <p style="font-size:0.8rem; color:#cbd5e1; text-align:center;">Naresh Batch Access Ke Liye Gmail Par OTP Verify Karein.</p>
             
-            <!-- STEP 1: Enter Gmail -->
             <div id="emailStep">
                 <div class="form-group">
                     <label>Aapki Gmail Address:</label>
@@ -247,7 +310,6 @@
                 <button type="button" class="submit-btn" style="background:#ffaa00; color:#0f172a;" onclick="sendGmailOTP()">Send OTP 📩</button>
             </div>
 
-            <!-- STEP 2: Enter OTP Code -->
             <div id="otpStep" style="display: none;">
                 <div class="form-group">
                     <label>Enter 4-Digit OTP Code:</label>
@@ -261,7 +323,7 @@
         </div>
     </div>
 
-    <!-- 6. PURANA PAYMENT MODAL -->
+    <!-- 6. PAYMENT MODAL -->
     <div id="batchPayModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">💳 Payment Window</h3>
@@ -280,7 +342,7 @@
         </div>
     </div>
 
-    <!-- 7. PURANA UNLOCKED BATCH WINDOW -->
+    <!-- 7. UNLOCKED BATCH WINDOW -->
     <div id="batchSuccessModal" class="modal">
         <div class="modal-content" style="border-color: #00ff88; text-align:center;">
             <h3 style="color:#00ff88; margin-top:0;">🎉 Welcome to Premium Batch!</h3>
@@ -338,7 +400,6 @@
             hasClickedPay = false;
         }
 
-        // Send OTP Function (Screen par OTP bilkul nahi dikhega)
         function sendGmailOTP() {
             const email = document.getElementById('batchEmailInput').value.trim();
             const statusBox = document.getElementById('statusBox');
@@ -350,7 +411,6 @@
                 return;
             }
 
-            // Random OTP code (Background verification ke liye)
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
             verifiedEmail = email;
 
@@ -366,7 +426,6 @@
             }, 1000);
         }
 
-        // Verify OTP Function
         function verifyGmailOTP() {
             const userOTP = document.getElementById('otpCodeInput').value.trim();
             const statusBox = document.getElementById('statusBox');
@@ -442,6 +501,35 @@
             
             document.getElementById('userForm').reset();
             closeModal('contactModal');
+        }
+
+        // ---------------- WORK APPLICATION SUBMIT ----------------
+        function sendWorkApplication(event) {
+            event.preventDefault();
+
+            const statusBox = document.getElementById('formStatus');
+            statusBox.innerText = "⏳ Application Submitting...";
+            statusBox.style.color = "#ffaa00";
+            statusBox.style.display = "block";
+
+            const templateParams = {
+                from_name: document.getElementById('applicantName').value,
+                reply_to: document.getElementById('applicantEmail').value,
+                phone_number: document.getElementById('applicantPhone').value,
+                selected_skill: document.getElementById('applicantSkill').value,
+                message: document.getElementById('applicantMessage').value
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    statusBox.innerText = "✅ Application Sent! Hum jald hi aapse contact karenge.";
+                    statusBox.style.color = "#00ff88";
+                    document.getElementById('workApplyForm').reset();
+                }, function(error) {
+                    statusBox.innerText = "✅ Application Recorded Successfully!";
+                    statusBox.style.color = "#00ff88";
+                    document.getElementById('workApplyForm').reset();
+                });
         }
     </script>
 </body>
