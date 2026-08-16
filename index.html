@@ -6,21 +6,122 @@
     <title>All Indian Hacker</title>
     <style>
         body {
-            background-color: #000000; /* ब्लैक बैकग्राउंड */
+            background-color: #000000;
+            color: #ffffff;
             margin: 0;
-            padding: 0;
-            text-align: center; /* टेक्स्ट को बीच में रखने के लिए */
+            padding: 20px;
+            font-family: Arial, sans-serif;
         }
+
         h1 {
-            color: red; /* टेक्स्ट का रंग लाल */
-            font-family: sans-serif;
-            margin-top: 20px; /* ऊपर से थोड़ा गैप */
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* दाएं (Right) तरफ फॉर्म को एलाइन करने के लिए */
+        .container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-right: 20px;
+        }
+
+        .signup-box {
+            background: #111111;
+            border: 1px solid red;
+            padding: 20px;
+            border-radius: 8px;
+            width: 280px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+        }
+
+        .signup-box h2 {
+            color: red;
+            margin-top: 0;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: red;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: darkred;
+        }
+
+        /* मोबाइल स्क्रीन के लिए एलाइनमेंट */
+        @media (max-width: 600px) {
+            .container {
+                justify-content: center;
+                padding-right: 0;
+            }
         }
     </style>
 </head>
 <body>
 
     <h1>All Indian Hacker</h1>
+
+    <div class="container">
+        <div class="signup-box">
+            <h2>Sign Up</h2>
+            <!-- नीचे YOUR_FORM_ID हटाकर अपनी Formspree ID डालें -->
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <div class="input-group">
+                    <label>Name:</label>
+                    <input type="text" name="Name" required placeholder="अपना नाम लिखें">
+                </div>
+
+                <div class="input-group">
+                    <label>Date of Birth:</label>
+                    <input type="date" name="DOB" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Gmail:</label>
+                    <input type="email" name="Email" required placeholder="अपनी Gmail आईडी लिखें">
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>
