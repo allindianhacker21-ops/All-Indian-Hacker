@@ -137,7 +137,6 @@
         <div class="signup-box">
             <span class="close-btn" onclick="closeForm()">&times;</span>
             <h2>Sign Up</h2>
-            <!-- आपकी फॉर्म आईडी लगा दी गई है -->
             <form action="https://formspree.io/f/mljrwyeo" method="POST">
                 <div class="input-group">
                     <label>Name:</label>
@@ -147,6 +146,12 @@
                 <div class="input-group">
                     <label>Date of Birth:</label>
                     <input type="date" name="DOB" required>
+                </div>
+
+                <!-- Gmail के ठीक ऊपर फ़ोन नंबर का ऑप्शन जोड़ दिया गया है -->
+                <div class="input-group">
+                    <label>Phone Number:</label>
+                    <input type="tel" name="Phone" required placeholder="अपना फ़ोन नंबर लिखें" pattern="[0-9]{10}">
                 </div>
 
                 <div class="input-group">
