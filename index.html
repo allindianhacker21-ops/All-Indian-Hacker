@@ -19,7 +19,6 @@
             margin-top: 10px;
         }
 
-        /* Sign Up बटन को दाएं तरफ सेट करने के लिए */
         .top-bar {
             display: flex;
             justify-content: flex-end;
@@ -43,9 +42,8 @@
             background-color: darkred;
         }
 
-        /* बैकग्राउंड धुंधला/डार्क करने का बैकड्रॉप */
         .modal-overlay {
-            display: none; /* शुरुआत में छुपा रहेगा */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -57,7 +55,6 @@
             z-index: 1000;
         }
 
-        /* पॉपअप फॉर्म बॉक्स */
         .signup-box {
             background: #111111;
             border: 1px solid red;
@@ -75,7 +72,6 @@
             text-align: center;
         }
 
-        /* बंद (Close) करने के लिए 'X' बटन */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -133,18 +129,16 @@
 
     <h1>All Indian Hacker</h1>
 
-    <!-- केवल Sign Up बटन दिखेगा -->
     <div class="top-bar">
         <button class="open-btn" onclick="openForm()">Sign Up</button>
     </div>
 
-    <!-- पॉपअप फॉर्म (क्लिक करने पर खुलेगा) -->
     <div class="modal-overlay" id="signupModal">
         <div class="signup-box">
             <span class="close-btn" onclick="closeForm()">&times;</span>
             <h2>Sign Up</h2>
-            <!-- YOUR_FORM_ID हटाकर अपनी Formspree ID डालें -->
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <!-- आपकी Formspree ID यहाँ जोड़ दी गई है -->
+            <form action="https://formspree.io/f/mljrwyeo" method="POST">
                 <div class="input-group">
                     <label>Name:</label>
                     <input type="text" name="Name" required placeholder="अपना नाम लिखें">
