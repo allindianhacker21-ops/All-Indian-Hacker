@@ -3,353 +3,484 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Processing</title>
+<title>VOID // TERMINAL</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+*{
+    box-sizing:border-box;
+}
 
-    body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at 50% 50%, #180000 0%, #050505 45%, #000 100%);
-        color: #ff2020;
-        font-family: "Courier New", monospace;
-        overflow: hidden;
-    }
+body{
+    margin:0;
+    background:#000;
+    color:#00ff66;
+    font-family:"Courier New",monospace;
+    overflow:hidden;
+}
 
-    /* Noise / dark texture */
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: .12;
-        background-image:
-            repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 3px,
-                #fff 4px
-            );
-        mix-blend-mode: overlay;
-    }
+/* Scanlines */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.02) 0px,
+        rgba(255,255,255,.02) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+    z-index:10;
+}
 
-    .screen {
-        width: 100%;
-        height: 100vh;
-        position: relative;
-        padding: 30px;
-    }
-
-    /* Top terminal */
-    .terminal {
-        position: absolute;
-        top: 30px;
-        left: 30px;
-        color: #777;
-        font-size: 14px;
-        line-height: 1.8;
-    }
-
-    .ok {
-        color: #ff2525;
-        margin-left: 20px;
-    }
-
-    .connection {
-        margin-top: 25px;
-        color: #888;
-    }
-
-    .established {
-        color: #ff2020;
-    }
-
-    /* Main processing box */
-    .center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: min(720px, 90%);
-        text-align: center;
-    }
-
-    .title {
-        font-size: clamp(38px, 6vw, 70px);
-        letter-spacing: 5px;
-        font-weight: bold;
-        text-shadow:
-            0 0 5px #ff0000,
-            0 0 20px #ff0000,
-            0 0 40px #700000;
-        animation: flicker 1.8s infinite;
-    }
-
-    @keyframes flicker {
-        0%, 18%, 22%, 63%, 64%, 100% {
-            opacity: 1;
-        }
-        20%, 62% {
-            opacity: .45;
-        }
-    }
-
-    /* Progress bar */
-    .progress-container {
-        margin-top: 30px;
-        height: 70px;
-        border: 2px solid #ff2222;
-        box-shadow:
-            0 0 10px #ff0000,
-            inset 0 0 15px #450000;
-        padding: 9px;
-        display: flex;
-        align-items: center;
-    }
-
-    .progress {
-        height: 100%;
-        width: 0%;
-        background: repeating-linear-gradient(
-            90deg,
-            #ff1515 0px,
-            #ff1515 25px,
-            #7d0000 25px,
-            #7d0000 31px
+/* Main terminal */
+.terminal{
+    height:100vh;
+    padding:25px;
+    position:relative;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0,255,80,.04),
+            #000 65%
         );
-        box-shadow:
-            0 0 15px #ff0000,
-            0 0 30px #900000;
-        transition: width .15s linear;
+}
+
+/* Header */
+.header{
+    border-bottom:1px solid #123b20;
+    padding-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    color:#00ff66;
+    font-size:25px;
+    font-weight:bold;
+    letter-spacing:4px;
+    text-shadow:0 0 15px #00ff66;
+}
+
+.status{
+    color:#ff2222;
+    font-size:13px;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{opacity:.3}
+}
+
+/* Terminal content */
+.content{
+    margin-top:25px;
+    height:calc(100vh - 120px);
+    overflow:hidden;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.line{
+    opacity:.9;
+}
+
+.green{
+    color:#00ff66;
+}
+
+.red{
+    color:#ff3030;
+}
+
+.gray{
+    color:#65756a;
+}
+
+.yellow{
+    color:#d8ff00;
+}
+
+.blue{
+    color:#00c8ff;
+}
+
+/* Big hacker text */
+.banner{
+    margin:20px 0;
+    color:#00ff66;
+    font-size:12px;
+    line-height:1.1;
+    text-shadow:0 0 8px #00ff66;
+}
+
+/* Command line */
+.command{
+    margin-top:20px;
+    color:#00ff66;
+}
+
+.prompt{
+    color:#ff3030;
+}
+
+.cursor{
+    display:inline-block;
+    width:8px;
+    height:16px;
+    background:#00ff66;
+    vertical-align:middle;
+    animation:cursor .7s infinite;
+}
+
+@keyframes cursor{
+    50%{opacity:0}
+}
+
+/* Side panel */
+.panel{
+    position:absolute;
+    right:25px;
+    top:110px;
+    width:230px;
+    border:1px solid #123b20;
+    padding:15px;
+    background:rgba(0,20,8,.5);
+    box-shadow:0 0 20px rgba(0,255,80,.08);
+}
+
+.panel-title{
+    color:#00ff66;
+    border-bottom:1px solid #123b20;
+    padding-bottom:8px;
+    margin-bottom:12px;
+}
+
+.panel div{
+    margin:8px 0;
+    color:#65756a;
+}
+
+.panel span{
+    float:right;
+    color:#00ff66;
+}
+
+/* Matrix rain */
+.matrix{
+    position:fixed;
+    right:0;
+    top:0;
+    width:260px;
+    height:100%;
+    opacity:.12;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.matrix span{
+    position:absolute;
+    color:#00ff66;
+    font-size:13px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-100px);
+    }
+    to{
+        transform:translateY(110vh);
+    }
+}
+
+/* Mobile */
+@media(max-width:700px){
+
+    .panel{
+        display:none;
     }
 
-    .percent {
-        position: absolute;
-        right: 0;
-        margin-right: -70px;
-        font-size: 24px;
-        text-shadow: 0 0 10px red;
+    .logo{
+        font-size:18px;
     }
 
-    .message {
-        margin-top: 22px;
-        letter-spacing: 3px;
-        font-size: 15px;
-        color: #ff2929;
+    .content{
+        font-size:11px;
     }
 
-    /* IP panel */
-    .ip {
-        position: absolute;
-        right: 35px;
-        top: 220px;
-        color: #777;
-        font-size: 14px;
+    .terminal{
+        padding:15px;
     }
-
-    .ip span {
-        display: block;
-        color: #ff2525;
-        font-size: 18px;
-        margin-top: 8px;
-        text-shadow: 0 0 8px red;
-    }
-
-    /* Fingerprint */
-    .fingerprint {
-        position: absolute;
-        right: 35px;
-        bottom: 40px;
-        width: 180px;
-        height: 180px;
-        border: 1px solid #555;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 80px;
-        filter: grayscale(1);
-        text-shadow: 0 0 15px red;
-    }
-
-    .auth {
-        position: absolute;
-        bottom: 15px;
-        right: 35px;
-        font-size: 13px;
-        color: #888;
-    }
-
-    .auth span {
-        color: red;
-    }
-
-    /* Bottom logs */
-    .logs {
-        position: absolute;
-        left: 30px;
-        bottom: 30px;
-        color: #555;
-        font-size: 13px;
-        line-height: 1.8;
-    }
-
-    .cursor {
-        display: inline-block;
-        width: 8px;
-        height: 15px;
-        background: red;
-        animation: blink .7s infinite;
-    }
-
-    @keyframes blink {
-        50% {
-            opacity: 0;
-        }
-    }
-
-    /* Mobile */
-    @media(max-width: 700px) {
-        .terminal,
-        .logs {
-            font-size: 10px;
-        }
-
-        .ip {
-            right: 15px;
-            top: 100px;
-            font-size: 10px;
-        }
-
-        .fingerprint,
-        .auth {
-            display: none;
-        }
-
-        .percent {
-            position: static;
-            display: block;
-            margin: 10px 0 0;
-        }
-
-        .progress-container {
-            height: 55px;
-        }
-    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="screen">
+<div class="terminal">
 
-    <!-- Top terminal -->
-    <div class="terminal">
-        init_start &nbsp;&nbsp; [xxx] <span class="ok">OK</span><br>
-        boot_access &nbsp; [xxx] <span class="ok">OK</span><br>
-        sys_check &nbsp;&nbsp; [xxx] <span class="ok">OK</span><br>
-        usr_leng &nbsp;&nbsp;&nbsp; [xxx] <span class="ok">OK</span><br>
-        int_check &nbsp;&nbsp;&nbsp; [xxx] <span class="ok">OK</span><br>
-        root &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [xxx] <span class="ok">OK</span>
-
-        <div class="connection">
-            SYS_INTEGRITY — <span class="established">OK</span><br>
-            SECURE_CONNECTION — <span class="established">
-                ESTABLISHED
-            </span>
-        </div>
+    <div class="header">
+        <div class="logo">VOID//NET</div>
+        <div class="status">● SYSTEM ONLINE</div>
     </div>
 
-    <!-- IP -->
-    <div class="ip">
-        IP TRACKING
-        <span>192.168.1.108</span>
-    </div>
+    <div class="content">
 
-    <!-- Main -->
-    <div class="center">
-
-        <div class="title">
-            PROCESSING...
+        <div class="banner">
+<pre>
+██╗   ██╗ ██████╗ ██╗██████╗
+██║   ██║██╔═══██╗██║██╔══██╗
+██║   ██║██║   ██║██║██║  ██║
+╚██╗ ██╔╝██║   ██║██║██║  ██║
+ ╚████╔╝ ╚██████╔╝██║██████╔╝
+  ╚═══╝   ╚═════╝ ╚═╝╚═════╝
+</pre>
         </div>
 
-        <div class="progress-container">
-            <div class="progress" id="progress"></div>
-            <div class="percent" id="percent">0%</div>
+        <div class="line gray">
+            [BOOT] Initializing secure terminal...
         </div>
 
-        <div class="message">
-            PLEASE WAIT WHILE SYSTEM IS PROCESSING
+        <div class="line green">
+            [OK] Kernel interface loaded
         </div>
 
+        <div class="line green">
+            [OK] Encryption module initialized
+        </div>
+
+        <div class="line green">
+            [OK] Secure session established
+        </div>
+
+        <br>
+
+        <div class="line blue">
+            [INFO] Network interface: ONLINE
+        </div>
+
+        <div class="line gray">
+            [INFO] Firewall: ACTIVE
+        </div>
+
+        <div class="line yellow">
+            [WARN] Unauthorized access will be logged
+        </div>
+
+        <br>
+
+        <div class="line red">
+            [SYSTEM] ACCESS LEVEL: ROOT
+        </div>
+
+        <div class="line green">
+            [SYSTEM] STATUS: ONLINE
+        </div>
+
+        <br>
+
+        <div class="line gray">
+            -----------------------------------------
+        </div>
+
+        <div class="line green">
+            Available modules:
+        </div>
+
+        <div class="line">
+            &nbsp;&nbsp;01 // SYSTEM
+        </div>
+
+        <div class="line">
+            &nbsp;&nbsp;02 // NETWORK
+        </div>
+
+        <div class="line">
+            &nbsp;&nbsp;03 // ENCRYPTION
+        </div>
+
+        <div class="line">
+            &nbsp;&nbsp;04 // DATABASE
+        </div>
+
+        <div class="line">
+            &nbsp;&nbsp;05 // TERMINAL
+        </div>
+
+        <br>
+
+        <div class="line gray">
+            -----------------------------------------
+        </div>
+
+        <div class="command">
+            <span class="prompt">root@void</span>:~$ 
+            <span id="typing"></span><span class="cursor"></span>
+        </div>
+
+        <br>
+
+        <div id="logs"></div>
+
     </div>
 
-    <!-- Fingerprint -->
-    <div class="fingerprint">
-        🖐
-    </div>
+    <!-- Side information -->
+    <div class="panel">
 
-    <div class="auth">
-        AUTHENTICATION<br>
-        <span>SUCCESSFUL</span>
-    </div>
+        <div class="panel-title">
+            SYSTEM STATUS
+        </div>
 
-    <!-- Logs -->
-    <div class="logs">
-        connecting to node...<br>
-        connection established.<br>
-        receiving data...<br>
-        decryption in progress...<br>
-        data received successfully.<br><br>
+        <div>
+            CPU <span>ONLINE</span>
+        </div>
 
-        loading modules...<br>
-        system check complete.<br>
-        preparing interface... <span class="cursor"></span>
+        <div>
+            MEMORY <span>64%</span>
+        </div>
+
+        <div>
+            NETWORK <span>SECURE</span>
+        </div>
+
+        <div>
+            FIREWALL <span>ACTIVE</span>
+        </div>
+
+        <div>
+            ENCRYPTION <span>AES-256</span>
+        </div>
+
+        <div>
+            SESSION <span>ACTIVE</span>
+        </div>
+
     </div>
 
 </div>
 
+<!-- Matrix background -->
+<div class="matrix" id="matrix"></div>
 
 <script>
 
-let progress = 0;
+/* Fake terminal typing animation */
 
-const bar = document.getElementById("progress");
-const percent = document.getElementById("percent");
+const commands = [
+    "sudo system_check",
+    "scan --network",
+    "initialize --secure",
+    "status --verbose",
+    "terminal --access"
+];
 
-function processAnimation() {
+let commandIndex = 0;
+let charIndex = 0;
 
-    progress += Math.random() * 2;
+const typing = document.getElementById("typing");
 
-    if (progress >= 100) {
-        progress = 100;
-    }
+function typeCommand(){
 
-    bar.style.width = progress + "%";
-    percent.innerText = Math.floor(progress) + "%";
+    const command = commands[commandIndex];
 
-    if (progress < 100) {
-        setTimeout(processAnimation, 150);
-    } else {
+    if(charIndex < command.length){
 
-        setTimeout(() => {
+        typing.textContent += command[charIndex];
 
-            progress = 0;
-            bar.style.width = "0%";
-            percent.innerText = "0%";
+        charIndex++;
 
-            processAnimation();
+        setTimeout(typeCommand,80);
 
-        }, 2500);
+    }else{
+
+        setTimeout(()=>{
+
+            typing.textContent="";
+            charIndex=0;
+
+            commandIndex++;
+
+            if(commandIndex >= commands.length){
+                commandIndex=0;
+            }
+
+            typeCommand();
+
+        },1800);
     }
 }
 
-processAnimation();
+typeCommand();
+
+
+/* Fake system logs */
+
+const logs = document.getElementById("logs");
+
+const messages = [
+    "[LOG] monitoring system integrity...",
+    "[LOG] secure channel active",
+    "[LOG] encryption heartbeat received",
+    "[LOG] terminal session verified",
+    "[LOG] firewall rules synchronized",
+    "[LOG] background services running"
+];
+
+let logIndex=0;
+
+function addLog(){
+
+    const line=document.createElement("div");
+
+    line.className="line gray";
+
+    line.textContent=messages[logIndex];
+
+    logs.appendChild(line);
+
+    if(logs.children.length > 6){
+        logs.removeChild(logs.firstChild);
+    }
+
+    logIndex++;
+
+    if(logIndex >= messages.length){
+        logIndex=0;
+    }
+
+    setTimeout(addLog,1400);
+}
+
+addLog();
+
+
+/* Matrix characters */
+
+const matrix=document.getElementById("matrix");
+
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%@";
+
+for(let i=0;i<35;i++){
+
+    const span=document.createElement("span");
+
+    span.textContent=chars[Math.floor(Math.random()*chars.length)];
+
+    span.style.left=Math.random()*100+"%";
+
+    span.style.animationDuration=
+        (3+Math.random()*7)+"s";
+
+    span.style.animationDelay=
+        Math.random()*5+"s";
+
+    matrix.appendChild(span);
+}
 
 </script>
 
 </body>
-    </html>
+</html>
