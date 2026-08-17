@@ -402,13 +402,30 @@
     </div>
 
     <script>
-        let generatedOTP = null;
+        // OTP को सीधे एक्सेस होने से रोकने के लिए IIFE
+        const AppState = (function() {
+            let secretOTP = null;
+            return {
+                setOTP: function(val) { secretOTP = val; },
+                getOTP: function() { return secretOTP; }
+            };
+        })();
+
         let isOtpSent = false;
+
+        // ऑटो-लॉगिन चेक (पेज रिफ्रेश होने पर भी लॉगिन रहेगा)
+        window.onload = function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('navBar').style.display = 'none';
+                document.getElementById('batchSection').style.display = 'block';
+            }
+        };
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function goBackToHome() {
+            localStorage.removeItem('isLoggedIn'); // होम पर जाने पर सेशन क्लियर होगा
             document.getElementById('batchSection').style.display = 'none';
             document.getElementById('navBar').style.display = 'flex';
         }
@@ -425,13 +442,14 @@
                 const email = document.getElementById('userEmail').value;
                 const btn = document.getElementById('actionBtn');
                 
-                generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                const otp = Math.floor(100000 + Math.random() * 900000).toString();
+                AppState.setOTP(otp);
                 btn.innerText = "Sending OTP...";
 
                 const templateParams = {
                     email: email,
                     to_email: email,
-                    passcode: generatedOTP,
+                    passcode: otp,
                     time: "15 minutes"
                 };
 
@@ -451,9 +469,11 @@
             } else {
                 const inputOTP = document.getElementById('otpInput').value;
 
-                if (inputOTP === generatedOTP) {
+                if (inputOTP === AppState.getOTP()) {
                     alert("OTP सही है! लॉग-इन सफल रहा।");
+                    localStorage.setItem('isLoggedIn', 'true');
                     closeModal('loginModal');
+                    document.getElementById('loginForm').reset();
                     document.getElementById('navBar').style.display = 'none';
                     document.getElementById('batchSection').style.display = 'block';
                 } else {
@@ -485,14 +505,15 @@
                 if (response.ok) {
                     alert("आपका Enrollment सफल रहा! डेटा सबमिट हो चुका है।");
                     closeModal('enrollModal');
+                    document.getElementById('freeEnrollForm').reset();
                     
                     document.getElementById('batchSection').style.display = 'none';
                     document.getElementById('currentCourseTitle').innerText = batchName + " - Video Lessons";
                     document.getElementById('videoSection').style.display = 'block';
                 } else {
                     alert("सबमिट करने में समस्या आई, कृपया दोबारा कोशिश करें।");
-                    btn.innerText = "Enroll Free";
                 }
+                btn.innerText = "Enroll Free";
             }).catch(error => {
                 alert("नेटवर्क या फॉर्म में त्रुटि है!");
                 btn.innerText = "Enroll Free";
