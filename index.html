@@ -201,14 +201,14 @@
 </head>
 <body>
 
-    <!-- HOME PAGE NAVBAR -->
+    <!-- HOME PAGE HEADER -->
     <div class="header-container" id="navBar">
         <button class="action-btn login-btn" onclick="openModal('loginModal')">Login</button>
         <h1>All Indian Hacker</h1>
         <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
     </div>
 
-    <!-- BATCH SECTION (लॉगिन से पहले छुपा रहेगा) -->
+    <!-- BATCH SECTION (लॉगिन सफलता के बाद खुलेगा) -->
     <div id="batchSection" style="display: none;">
         <h1 style="font-size: 28px; margin-top: 20px;">Welcome to All Indian Hacker</h1>
         <p class="subtitle">अपना पसंदीदा बैच चुनें और एथिकल हैकिंग सीखना शुरू करें!</p>
@@ -261,29 +261,34 @@
         </div>
     </div>
 
-    <!-- SIGN UP MODAL -->
+    <!-- SIGN UP MODAL (STRICT GMAIL VALIDATION) -->
     <div class="modal-overlay" id="signupModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
             <h2>Sign Up</h2>
             <form action="https://formspree.io/f/xvkpbjln" method="POST">
                 <input type="hidden" name="Form_Type" value="Sign Up">
+                
                 <div class="input-group">
                     <label>Name:</label>
                     <input type="text" name="Name" required placeholder="अपना नाम लिखें">
                 </div>
+                
                 <div class="input-group">
                     <label>Date of Birth:</label>
                     <input type="date" name="DOB" required>
                 </div>
+                
                 <div class="input-group">
                     <label>Phone Number:</label>
-                    <input type="tel" name="Phone" required placeholder="अपना फ़ोन नंबर लिखें" pattern="[0-9]{10}">
+                    <input type="tel" name="Phone" required placeholder="अपना 10 अंकों का नंबर लिखें" pattern="[0-9]{10}">
                 </div>
+                
                 <div class="input-group">
                     <label>Gmail:</label>
-                    <input type="email" name="Email" required placeholder="अपनी Gmail आईडी लिखें">
+                    <input type="email" name="Email" required placeholder="example@gmail.com" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="कृपया केवल सही Gmail आईडी (जैसे example@gmail.com) ही दर्ज करें">
                 </div>
+                
                 <button type="submit" class="submit-btn">Sign Up</button>
             </form>
         </div>
@@ -383,8 +388,8 @@
                 if (inputOTP === generatedOTP) {
                     alert("OTP सही है! लॉग-इन सफल रहा।");
                     closeModal('loginModal');
-                    document.getElementById('navBar').style.display = 'none'; // लॉगिन और साइन-अप बटन छुपाएँ
-                    document.getElementById('batchSection').style.display = 'block'; // ब्लैक बैच पेज दिखाएँ
+                    document.getElementById('navBar').style.display = 'none';
+                    document.getElementById('batchSection').style.display = 'block';
                 } else {
                     alert("गलत OTP! कृपया सही कोड डालें।");
                 }
