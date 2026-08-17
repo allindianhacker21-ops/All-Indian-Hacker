@@ -94,6 +94,57 @@
             margin-bottom: 10px;
         }
 
+        /* HOME PAGE HERO & LAB CONTENT STYLES */
+        .hero-section {
+            margin: 40px auto 30px auto;
+            max-width: 800px;
+            padding: 0 15px;
+        }
+
+        .hero-title {
+            color: #ff0000;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .hero-tagline {
+            color: #00ff00;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .lab-features-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            border: 1px solid red;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        .lab-feature-item {
+            font-size: 15px;
+            color: #ddd;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .disclaimer-box {
+            margin-top: 25px;
+            padding: 12px;
+            background: #110000;
+            border-left: 4px solid red;
+            color: #ff6666;
+            font-size: 14px;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -268,6 +319,9 @@
             .responsive-video {
                 height: 250px;
             }
+            .hero-title {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
@@ -281,6 +335,29 @@
         </div>
         <h1>All Indian Hacker</h1>
         <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
+    </div>
+
+    <!-- HOME PAGE CONTENT -->
+    <div id="homeContent">
+        <div class="hero-section">
+            <div class="hero-title">“WELCOME TO THE CYBER LAB”</div>
+            <div class="hero-tagline">Explore • Learn • Practice • Defend</div>
+        </div>
+
+        <div class="lab-features-container">
+            <div class="lab-feature-item">🛡️ <strong>Cyber Security Lab</strong> — “Learn. Practice. Secure.”</div>
+            <div class="lab-feature-item">💻 <strong>Ethical Hacking</strong> — basic concepts aur defensive security</div>
+            <div class="lab-feature-item">🐧 <strong>Termux & Linux</strong> — commands aur practice</div>
+            <div class="lab-feature-item">🔐 <strong>Web Security</strong> — XSS, SQL injection jaise concepts sirf legal lab/CTF environment mein</div>
+            <div class="lab-feature-item">🧪 <strong>Cyber Labs</strong> — safe practice challenges</div>
+            <div class="lab-feature-item">📚 <strong>Tutorials</strong> — beginner se advanced learning</div>
+            <div class="lab-feature-item">⚡ <strong>Tools</strong> — legal security-testing tools ka introduction</div>
+            <div class="lab-feature-item">🏆 <strong>CTF Challenges</strong> — practice ke liye challenges</div>
+            
+            <div class="disclaimer-box">
+                ⚠️ <strong>Disclaimer</strong> — “Use these techniques only on systems you own or have permission to test.”
+            </div>
+        </div>
     </div>
 
     <!-- BATCH SECTION -->
@@ -496,7 +573,7 @@
         let isCreatorOtpSent = false;
         let currentOpenBatch = "";
 
-        // Default default video storage structure
+        // Videos Storage
         let batchVideos = JSON.parse(localStorage.getItem('batchVideosMap')) || {
             "Basic Batch": [{ title: "Basic Ethical Hacking Lecture 1", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
             "Pro Hacker Batch": [{ title: "Pro Hacking Intro", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
@@ -505,17 +582,23 @@
 
         window.onload = function() {
             if (localStorage.getItem('isLoggedIn') === 'true') {
-                document.getElementById('navBar').style.display = 'none';
-                document.getElementById('batchSection').style.display = 'block';
+                showBatches();
             }
         };
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+        function showBatches() {
+            document.getElementById('navBar').style.display = 'none';
+            document.getElementById('homeContent').style.display = 'none';
+            document.getElementById('batchSection').style.display = 'block';
+        }
+
         function goBackToHome() {
             localStorage.removeItem('isLoggedIn');
             document.getElementById('batchSection').style.display = 'none';
+            document.getElementById('homeContent').style.display = 'block';
             document.getElementById('navBar').style.display = 'flex';
         }
 
@@ -563,8 +646,7 @@
                     localStorage.setItem('isLoggedIn', 'true');
                     closeModal('loginModal');
                     document.getElementById('loginForm').reset();
-                    document.getElementById('navBar').style.display = 'none';
-                    document.getElementById('batchSection').style.display = 'block';
+                    showBatches();
                 } else {
                     alert("गलत OTP! कृपया सही कोड डालें।");
                 }
@@ -631,7 +713,6 @@
 
             const embedUrl = "https://www.youtube.com/embed/" + videoUrl;
 
-            // Save to array
             if(!batchVideos[targetBatch]) {
                 batchVideos[targetBatch] = [];
             }
@@ -642,7 +723,6 @@
             closeModal('videoUploadModal');
             document.getElementById('uploadVideoForm').reset();
 
-            // Render batch content
             renderBatchVideos(targetBatch);
         }
 
@@ -668,6 +748,7 @@
                 });
             }
 
+            document.getElementById('homeContent').style.display = 'none';
             document.getElementById('batchSection').style.display = 'none';
             document.getElementById('navBar').style.display = 'none';
             document.getElementById('videoSection').style.display = 'block';
