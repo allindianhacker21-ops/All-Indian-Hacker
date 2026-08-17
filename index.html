@@ -18,6 +18,7 @@
             margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
+            text-align: center;
         }
 
         .header-container {
@@ -30,7 +31,6 @@
 
         h1 {
             color: red;
-            text-align: center;
             margin: 0;
             font-size: 24px;
         }
@@ -78,6 +78,7 @@
             width: 290px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
             position: relative;
+            text-align: left;
         }
 
         .box h2 {
@@ -99,7 +100,6 @@
 
         .input-group {
             margin-bottom: 15px;
-            text-align: left;
         }
 
         .input-group label {
@@ -134,15 +134,131 @@
         }
 
         .submit-btn:hover { background-color: darkred; }
+
+        /* BATCH SECTION STYLES */
+        .subtitle {
+            color: #ccc;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .batch-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+
+        .batch-card {
+            background: #111111;
+            border: 2px solid red;
+            border-radius: 10px;
+            width: 280px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .batch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        }
+
+        .batch-card h2 {
+            color: red;
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff00;
+            margin: 15px 0;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            color: #ddd;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .features li::before {
+            content: "✓ ";
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <!-- HOME PAGE HEADER WITH LOGIN & SIGN UP -->
-    <div class="header-container">
+    <!-- HOME PAGE NAVBAR -->
+    <div class="header-container" id="navBar">
         <button class="action-btn login-btn" onclick="openModal('loginModal')">Login</button>
         <h1>All Indian Hacker</h1>
         <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
+    </div>
+
+    <!-- BATCH SECTION (लॉगिन से पहले छुपा रहेगा) -->
+    <div id="batchSection" style="display: none;">
+        <h1 style="font-size: 28px; margin-top: 20px;">Welcome to All Indian Hacker</h1>
+        <p class="subtitle">अपना पसंदीदा बैच चुनें और एथिकल हैकिंग सीखना शुरू करें!</p>
+
+        <div class="batch-container">
+            <!-- Basic Batch -->
+            <div class="batch-card">
+                <div>
+                    <h2>Basic Batch</h2>
+                    <div class="price">₹499</div>
+                    <ul class="features">
+                        <li>Basic Ethical Hacking</li>
+                        <li>Termux Commands</li>
+                        <li>Phishing Attacks Basics</li>
+                        <li>Recorded Lectures</li>
+                    </ul>
+                </div>
+                <button class="submit-btn" onclick="openPayment('Basic Batch', '499')">Enroll Now</button>
+            </div>
+
+            <!-- Pro Hacker Batch -->
+            <div class="batch-card">
+                <div>
+                    <h2>Pro Hacker Batch</h2>
+                    <div class="price">₹999</div>
+                    <ul class="features">
+                        <li>Advance Ethical Hacking</li>
+                        <li>Website Vulnerability Test</li>
+                        <li>Network Security & Wi-Fi</li>
+                        <li>Live Doubts & Certificate</li>
+                    </ul>
+                </div>
+                <button class="submit-btn" onclick="openPayment('Pro Hacker Batch', '999')">Enroll Now</button>
+            </div>
+
+            <!-- VIP Cyber Batch -->
+            <div class="batch-card">
+                <div>
+                    <h2>VIP Cyber Batch</h2>
+                    <div class="price">₹1,999</div>
+                    <ul class="features">
+                        <li>Complete Bug Bounty Course</li>
+                        <li>Python Automation Hacking</li>
+                        <li>1-on-1 Personal Mentorship</li>
+                        <li>Lifetime Access & VIP Group</li>
+                    </ul>
+                </div>
+                <button class="submit-btn" onclick="openPayment('VIP Cyber Batch', '1,999')">Enroll Now</button>
+            </div>
+        </div>
     </div>
 
     <!-- SIGN UP MODAL -->
@@ -199,6 +315,31 @@
         </div>
     </div>
 
+    <!-- PAYMENT MODAL -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('paymentModal')">&times;</span>
+            <h2 id="selectedBatchName">Batch Checkout</h2>
+            <p style="color: #00ff00; font-size: 18px; text-align: center; font-weight: bold;" id="selectedPrice">₹0</p>
+            
+            <form action="https://formspree.io/f/xvkpbjln" method="POST">
+                <input type="hidden" name="Form_Type" value="Batch Enrollment">
+                <input type="hidden" name="Selected_Batch" id="batchInput">
+                <input type="hidden" name="Price" id="priceInput">
+                
+                <div class="input-group">
+                    <label>Your Name:</label>
+                    <input type="text" name="Student_Name" required placeholder="अपना नाम दर्ज करें">
+                </div>
+                <div class="input-group">
+                    <label>UPI ID / Transaction Reference:</label>
+                    <input type="text" name="Payment_Reference" required placeholder="UPI / Ref ID दर्ज करें">
+                </div>
+                <button type="submit" class="submit-btn">Confirm & Access Batch</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         let generatedOTP = null;
         let isOtpSent = false;
@@ -241,11 +382,21 @@
 
                 if (inputOTP === generatedOTP) {
                     alert("OTP सही है! लॉग-इन सफल रहा।");
-                    window.location.href = "welcome.html";
+                    closeModal('loginModal');
+                    document.getElementById('navBar').style.display = 'none'; // लॉगिन और साइन-अप बटन छुपाएँ
+                    document.getElementById('batchSection').style.display = 'block'; // ब्लैक बैच पेज दिखाएँ
                 } else {
                     alert("गलत OTP! कृपया सही कोड डालें।");
                 }
             }
+        }
+
+        function openPayment(batch, price) {
+            document.getElementById('selectedBatchName').innerText = batch;
+            document.getElementById('selectedPrice').innerText = "Amount: ₹" + price;
+            document.getElementById('batchInput').value = batch;
+            document.getElementById('priceInput').value = "₹" + price;
+            openModal('paymentModal');
         }
     </script>
 
