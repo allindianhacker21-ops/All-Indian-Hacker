@@ -146,7 +146,7 @@
             color: #ddd;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
@@ -157,7 +157,7 @@
             outline: none;
         }
 
-        .input-group input:focus { border-color: red; }
+        .input-group input:focus, .input-group select:focus { border-color: red; }
 
         .submit-btn {
             width: 100%;
@@ -253,6 +253,17 @@
             border: none;
         }
 
+        .video-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .video-item h3 {
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 600px) {
             .responsive-video {
                 height: 250px;
@@ -337,7 +348,7 @@
         <p class="subtitle">आपका नाम दर्ज हो चुका है! नीचे दिए गए वीडियो से पढ़ना शुरू करें।</p>
         
         <div class="video-container" id="videoListContainer">
-            <iframe class="responsive-video" id="mainVideoPlayer" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            <!-- Videos dynamically load here -->
         </div>
     </div>
 
@@ -422,12 +433,20 @@
         </div>
     </div>
 
-    <!-- VIDEO UPLOAD PANEL MODAL -->
+    <!-- VIDEO UPLOAD PANEL MODAL WITH BATCH SELECTION -->
     <div class="modal-overlay" id="videoUploadModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('videoUploadModal')">&times;</span>
             <h2>Upload Video</h2>
             <form id="uploadVideoForm" onsubmit="handleVideoUpload(event)">
+                <div class="input-group">
+                    <label>Select Batch:</label>
+                    <select id="targetBatchSelect" required>
+                        <option value="Basic Batch">Basic Batch</option>
+                        <option value="Pro Hacker Batch">Pro Hacker Batch</option>
+                        <option value="VIP Cyber Batch">VIP Cyber Batch</option>
+                    </select>
+                </div>
                 <div class="input-group">
                     <label>Video Title:</label>
                     <input type="text" id="videoTitleInput" required placeholder="वीडियो का नाम/शीर्षक लिखें">
@@ -475,6 +494,14 @@
 
         let isOtpSent = false;
         let isCreatorOtpSent = false;
+        let currentOpenBatch = "";
+
+        // Default default video storage structure
+        let batchVideos = JSON.parse(localStorage.getItem('batchVideosMap')) || {
+            "Basic Batch": [{ title: "Basic Ethical Hacking Lecture 1", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
+            "Pro Hacker Batch": [{ title: "Pro Hacking Intro", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
+            "VIP Cyber Batch": [{ title: "VIP Mentorship Class 1", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }]
+        };
 
         window.onload = function() {
             if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -589,13 +616,13 @@
             }
         }
 
-        // HANDLE VIDEO UPLOAD BY USER
+        // HANDLE VIDEO UPLOAD TO SPECIFIC BATCH
         function handleVideoUpload(e) {
             e.preventDefault();
+            const targetBatch = document.getElementById('targetBatchSelect').value;
             const title = document.getElementById('videoTitleInput').value;
             let videoUrl = document.getElementById('videoUrlInput').value;
 
-            // Extract YouTube ID if full URL is given
             if (videoUrl.includes('watch?v=')) {
                 videoUrl = videoUrl.split('watch?v=')[1].split('&')[0];
             } else if (videoUrl.includes('youtu.be/')) {
@@ -603,16 +630,45 @@
             }
 
             const embedUrl = "https://www.youtube.com/embed/" + videoUrl;
-            
-            // Set as current video
-            document.getElementById('mainVideoPlayer').src = embedUrl;
-            document.getElementById('currentCourseTitle').innerText = title;
 
-            alert("आपकी वीडियो सफलतापूर्वक अपलोड/अपडेट हो गई है!");
+            // Save to array
+            if(!batchVideos[targetBatch]) {
+                batchVideos[targetBatch] = [];
+            }
+            batchVideos[targetBatch].push({ title: title, url: embedUrl });
+            localStorage.setItem('batchVideosMap', JSON.stringify(batchVideos));
+
+            alert("आपकी वीडियो " + targetBatch + " में जोड़ दी गई है!");
             closeModal('videoUploadModal');
             document.getElementById('uploadVideoForm').reset();
 
-            // Navigate to Video Player
+            // Render batch content
+            renderBatchVideos(targetBatch);
+        }
+
+        function renderBatchVideos(batchName) {
+            currentOpenBatch = batchName;
+            document.getElementById('currentCourseTitle').innerText = batchName + " - Video Lessons";
+            const container = document.getElementById('videoListContainer');
+            container.innerHTML = "";
+
+            const list = batchVideos[batchName] || [];
+
+            if(list.length === 0) {
+                container.innerHTML = "<p>इस बैच में अभी तक कोई वीडियो अपलोड नहीं हुई है।</p>";
+            } else {
+                list.forEach((item) => {
+                    const videoDiv = document.createElement('div');
+                    videoDiv.className = 'video-item';
+                    videoDiv.innerHTML = `
+                        <h3>${item.title}</h3>
+                        <iframe class="responsive-video" src="${item.url}" allowfullscreen></iframe>
+                    `;
+                    container.appendChild(videoDiv);
+                });
+            }
+
+            document.getElementById('batchSection').style.display = 'none';
             document.getElementById('navBar').style.display = 'none';
             document.getElementById('videoSection').style.display = 'block';
         }
@@ -641,10 +697,7 @@
                     alert("आपका Enrollment सफल रहा! डेटा सबमिट हो चुका है।");
                     closeModal('enrollModal');
                     document.getElementById('freeEnrollForm').reset();
-                    
-                    document.getElementById('batchSection').style.display = 'none';
-                    document.getElementById('currentCourseTitle').innerText = batchName + " - Video Lessons";
-                    document.getElementById('videoSection').style.display = 'block';
+                    renderBatchVideos(batchName);
                 } else {
                     alert("सबमिट करने में समस्या आई, कृपया दोबारा कोशिश करें।");
                 }
