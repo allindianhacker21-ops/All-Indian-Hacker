@@ -8,7 +8,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            // आपकी Public Key
             emailjs.init("zEXmh31UhCjOE3oVU");
         })();
     </script>
@@ -179,7 +178,6 @@
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
             <h2>Login</h2>
             
-            <!-- Step 1: Gmail Input Form -->
             <form id="loginForm" onsubmit="sendOTP(event)">
                 <div class="input-group">
                     <label>Gmail:</label>
@@ -192,7 +190,6 @@
                 <button type="submit" class="submit-btn" id="sendBtn">Send OTP</button>
             </form>
 
-            <!-- Step 2: OTP Verification Form -->
             <form id="otpForm" style="display:none;" onsubmit="verifyOTP(event)">
                 <div class="input-group">
                     <label>Enter OTP Code:</label>
@@ -214,22 +211,26 @@
             const email = document.getElementById('userEmail').value;
             const btn = document.getElementById('sendBtn');
             
-            // 6 अंकों का OTP कोड जनरेट करें
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
             btn.innerText = "Sending OTP...";
 
-            // EmailJS के ज़रिए असली Gmail पर OTP भेजें
-            emailjs.send("service_bnq0is", "template_y1smpoj", {
+            const templateParams = {
                 email: email,
-                passcode: generatedOTP
-            }).then(() => {
-                alert("OTP आपकी Gmail पर सफलतापूर्वक भेज दिया गया है!");
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('otpForm').style.display = 'block';
-            }, (err) => {
-                alert("OTP भेजने में समस्या आई! कृपया पुनः प्रयास करें।");
-                btn.innerText = "Send OTP";
-            });
+                to_email: email,
+                passcode: generatedOTP,
+                time: "15 minutes"
+            };
+
+            emailjs.send("service_bnq0is", "template_y1smpoj", templateParams)
+                .then(function(response) {
+                    alert("OTP आपकी Gmail पर सफलतापूर्वक भेज दिया गया है!");
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('otpForm').style.display = 'block';
+                }, function(error) {
+                    console.error("FAILED...", error);
+                    alert("OTP भेजने में समस्या आई। एरर: " + JSON.stringify(error));
+                    btn.innerText = "Send OTP";
+                });
         }
 
         function verifyOTP(e) {
@@ -237,8 +238,7 @@
             const inputOTP = document.getElementById('otpInput').value;
 
             if (inputOTP === generatedOTP) {
-                alert("वेरीफिकेशन सफल रहा! नए पेज पर रिडायरेक्ट किया जा रहा है...");
-                // OTP वेरीफाई होने के बाद यहाँ नया पेज खुलेगा
+                alert("वेरीफिकेशन सफल रहा!");
                 window.location.href = "welcome.html";
             } else {
                 alert("गलत OTP! सही कोड डालें।");
