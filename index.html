@@ -172,13 +172,13 @@
         </div>
     </div>
 
-    <!-- LOGIN MODAL WITH REAL EMAIL OTP -->
+    <!-- LOGIN MODAL WITH SINGLE FORM -->
     <div class="modal-overlay" id="loginModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
             <h2>Login</h2>
             
-            <form id="loginForm" onsubmit="sendOTP(event)">
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
                 <div class="input-group">
                     <label>Gmail:</label>
                     <input type="email" id="userEmail" required placeholder="अपनी Gmail लिखें">
@@ -187,60 +187,70 @@
                     <label>Phone Number:</label>
                     <input type="tel" id="userPhone" required placeholder="अपना फ़ोन नंबर लिखें" pattern="[0-9]{10}">
                 </div>
-                <button type="submit" class="submit-btn" id="sendBtn">Send OTP</button>
-            </form>
 
-            <form id="otpForm" style="display:none;" onsubmit="verifyOTP(event)">
-                <div class="input-group">
+                <!-- OTP Input Box (शुरुआत में छुपा रहेगा) -->
+                <div class="input-group" id="otpGroup" style="display: none;">
                     <label>Enter OTP Code:</label>
-                    <input type="text" id="otpInput" required placeholder="Gmail पर आया OTP लिखें">
+                    <input type="text" id="otpInput" placeholder="Gmail पर आया OTP लिखें">
                 </div>
-                <button type="submit" class="submit-btn">Verify & Proceed</button>
+
+                <button type="submit" class="submit-btn" id="actionBtn">Send OTP</button>
             </form>
         </div>
     </div>
 
     <script>
         let generatedOTP = null;
+        let isOtpSent = false;
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function sendOTP(e) {
+        function handleLoginSubmit(e) {
             e.preventDefault();
-            const email = document.getElementById('userEmail').value;
-            const btn = document.getElementById('sendBtn');
-            
-            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            btn.innerText = "Sending OTP...";
 
-            const templateParams = {
-                email: email,
-                to_email: email,
-                passcode: generatedOTP,
-                time: "15 minutes"
-            };
+            // अगर OTP अभी नहीं भेजा गया है, तो पहले Send OTP का काम करें
+            if (!isOtpSent) {
+                const email = document.getElementById('userEmail').value;
+                const btn = document.getElementById('actionBtn');
+                
+                generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                btn.innerText = "Sending OTP...";
 
-            emailjs.send("service_bpd14j6", "template_m3begkd", templateParams)
-                .then(function(response) {
-                    alert("OTP आपकी Gmail पर सफलतापूर्वक भेज दिया गया है!");
-                    document.getElementById('loginForm').style.display = 'none';
-                    document.getElementById('otpForm').style.display = 'block';
-                }, function(error) {
-                    alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
-                    btn.innerText = "Send OTP";
-                });
-        }
+                const templateParams = {
+                    email: email,
+                    to_email: email,
+                    passcode: generatedOTP,
+                    time: "15 minutes"
+                };
 
-        function verifyOTP(e) {
-            e.preventDefault();
-            const inputOTP = document.getElementById('otpInput').value;
+                emailjs.send("service_bpd14j6", "template_m3begkd", templateParams)
+                    .then(function(response) {
+                        alert("OTP आपकी Gmail पर भेज दिया गया है!");
+                        
+                        // Gmail और Phone को लॉक करें और OTP बॉक्स दिखाएं
+                        document.getElementById('userEmail').readOnly = true;
+                        document.getElementById('userPhone').readOnly = true;
+                        document.getElementById('otpGroup').style.display = 'block';
+                        document.getElementById('otpInput').required = true;
+                        
+                        btn.innerText = "Verify OTP & Login";
+                        isOtpSent = true;
+                    }, function(error) {
+                        alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
+                        btn.innerText = "Send OTP";
+                    });
+            } 
+            // अगर OTP भेजा जा चुका है, तो Match करके Login करें
+            else {
+                const inputOTP = document.getElementById('otpInput').value;
 
-            if (inputOTP === generatedOTP) {
-                alert("वेरीफिकेशन सफल रहा!");
-                window.location.href = "welcome.html";
-            } else {
-                alert("गलत OTP! सही कोड डालें।");
+                if (inputOTP === generatedOTP) {
+                    alert("OTP सही है! लॉग-इन सफल रहा।");
+                    window.location.href = "welcome.html";
+                } else {
+                    alert("गलत OTP! कृपया सही कोड डालें।");
+                }
             }
         }
     </script>
