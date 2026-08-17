@@ -245,6 +245,45 @@
 
         .submit-btn:hover { background-color: darkred; }
 
+        /* TEAM MANAGER CARD STYLES */
+        .team-card {
+            background: #1a1a1a;
+            border: 1px solid red;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .team-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .team-info h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .team-info p {
+            margin: 3px 0 0 0;
+            color: #00ff00;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
         /* BATCH SECTION STYLES */
         .subtitle {
             color: #ccc;
@@ -513,31 +552,31 @@
         </div>
     </div>
 
-    <!-- TEAM MANAGER MODAL -->
+    <!-- TEAM MANAGER MODAL (SHOWING NARESH & MANISH) -->
     <div class="modal-overlay" id="teamManagerModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('teamManagerModal')">&times;</span>
-            <h2>Team Manager</h2>
-            <form action="https://formspree.io/f/xvkpbjln" method="POST">
-                <input type="hidden" name="Form_Type" value="Team Manager Request">
-                
-                <div class="input-group">
-                    <label>Manager Name:</label>
-                    <input type="text" name="Manager_Name" required placeholder="प्रबंधक का नाम दर्ज करें">
+            <h2>Team Managers</h2>
+            
+            <!-- Naresh -->
+            <div class="team-card">
+                <div class="team-avatar">N</div>
+                <div class="team-info">
+                    <h3>Naresh</h3>
+                    <p>Team Manager / Admin</p>
                 </div>
-                
-                <div class="input-group">
-                    <label>Gmail:</label>
-                    <input type="email" name="Manager_Email" required placeholder="Gmail आईडी दर्ज करें">
+            </div>
+
+            <!-- Manish -->
+            <div class="team-card">
+                <div class="team-avatar">M</div>
+                <div class="team-info">
+                    <h3>Manish</h3>
+                    <p>Team Manager / Admin</p>
                 </div>
-                
-                <div class="input-group">
-                    <label>Role / Position:</label>
-                    <input type="text" name="Role" required placeholder="जैसे: Admin, Moderator, Lead">
-                </div>
-                
-                <button type="submit" class="submit-btn">Submit Details</button>
-            </form>
+            </div>
+
+            <button class="submit-btn" style="margin-top: 10px;" onclick="closeModal('teamManagerModal')">Close</button>
         </div>
     </div>
 
