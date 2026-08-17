@@ -197,6 +197,30 @@
             color: red;
             font-weight: bold;
         }
+
+        /* VIDEO COURSE SECTION STYLES */
+        .video-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #111;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid red;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .responsive-video {
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        @media (max-width: 600px) {
+            .responsive-video {
+                height: 250px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -261,7 +285,18 @@
         </div>
     </div>
 
-    <!-- SIGN UP MODAL (STRICT GMAIL VALIDATION) -->
+    <!-- VIDEO SECTION (एनरोलमेंट पूरा होने के बाद यह ब्लैक पेज खुलेगा) -->
+    <div id="videoSection" style="display: none;">
+        <h1 style="font-size: 28px; margin-top: 20px;" id="currentCourseTitle">Ethical Hacking Course</h1>
+        <p class="subtitle">आपका नाम दर्ज हो चुका है! नीचे दिए गए वीडियो से पढ़ना शुरू करें।</p>
+        
+        <div class="video-container">
+            <!-- यहाँ अपना Video Embed URL लगा सकते हैं -->
+            <iframe class="responsive-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- SIGN UP MODAL -->
     <div class="modal-overlay" id="signupModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
@@ -320,22 +355,22 @@
         </div>
     </div>
 
-    <!-- ENROLLMENT MODAL (ONLY NAME) -->
+    <!-- ENROLLMENT MODAL (NO WHITE SCREEN, SENDS DATA TO FORMSPREE) -->
     <div class="modal-overlay" id="enrollModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('enrollModal')">&times;</span>
             <h2 id="selectedBatchName">Batch Enrollment</h2>
             <p style="color: #00ff00; font-size: 18px; text-align: center; font-weight: bold;">FREE ACCESS</p>
             
-            <form action="https://formspree.io/f/xvkpbjln" method="POST">
+            <form id="freeEnrollForm" onsubmit="handleEnrollSubmit(event)">
                 <input type="hidden" name="Form_Type" value="Free Batch Enrollment">
                 <input type="hidden" name="Selected_Batch" id="batchInput">
                 
                 <div class="input-group">
                     <label>Your Name:</label>
-                    <input type="text" name="Student_Name" required placeholder="अपना नाम दर्ज करें">
+                    <input type="text" name="Student_Name" id="studentName" required placeholder="अपना नाम दर्ज करें">
                 </div>
-                <button type="submit" class="submit-btn">Enroll Free</button>
+                <button type="submit" class="submit-btn" id="enrollBtn">Enroll Free</button>
             </form>
         </div>
     </div>
@@ -395,6 +430,41 @@
             document.getElementById('selectedBatchName').innerText = batch;
             document.getElementById('batchInput').value = batch;
             openModal('enrollModal');
+        }
+
+        function handleEnrollSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('enrollBtn');
+            const batchName = document.getElementById('batchInput').value;
+
+            btn.innerText = "Processing...";
+
+            const formData = new FormData(document.getElementById('freeEnrollForm'));
+
+            // बैकग्राउंड में Formspree पर नाम और बैच का डेटा भेजने का कोड
+            fetch("https://formspree.io/f/xvkpbjln", {
+                method: "POST",
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    alert("आपका Enrollment सफल रहा! डेटा सबमिट हो चुका है।");
+                    closeModal('enrollModal');
+                    
+                    // बैच सेक्शन छुपाएं
+                    document.getElementById('batchSection').style.display = 'none';
+                    
+                    // नया ब्लैक वीडियो पेज खोलें
+                    document.getElementById('currentCourseTitle').innerText = batchName + " - Video Lessons";
+                    document.getElementById('videoSection').style.display = 'block';
+                } else {
+                    alert("सबमिट करने में समस्या आई, कृपया दोबारा कोशिश करें।");
+                    btn.innerText = "Enroll Free";
+                }
+            }).catch(error => {
+                alert("नेटवर्क या फॉर्म में त्रुटि है!");
+                btn.innerText = "Enroll Free";
+            });
         }
     </script>
 
