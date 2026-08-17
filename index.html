@@ -221,14 +221,13 @@
                 time: "15 minutes"
             };
 
-            emailjs.send("service_bnq0is", "template_y1smpoj", templateParams)
+            emailjs.send("service_bnq06is", "template_y1smpoj", templateParams)
                 .then(function(response) {
                     alert("OTP आपकी Gmail पर सफलतापूर्वक भेज दिया गया है!");
                     document.getElementById('loginForm').style.display = 'none';
                     document.getElementById('otpForm').style.display = 'block';
                 }, function(error) {
-                    console.error("FAILED...", error);
-                    alert("OTP भेजने में समस्या आई। एरर: " + JSON.stringify(error));
+                    alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
                     btn.innerText = "Send OTP";
                 });
         }
