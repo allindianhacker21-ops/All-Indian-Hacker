@@ -29,6 +29,13 @@
             padding: 0 10px;
         }
 
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
         h1 {
             color: red;
             margin: 0;
@@ -56,6 +63,15 @@
         }
 
         .login-btn:hover { background-color: red; }
+
+        .upload-btn {
+            background-color: #111;
+            border: 1px solid red;
+            font-size: 13px;
+            padding: 8px 14px;
+        }
+
+        .upload-btn:hover { background-color: red; }
 
         .back-btn {
             background-color: #222;
@@ -248,7 +264,10 @@
 
     <!-- HOME PAGE HEADER -->
     <div class="header-container" id="navBar">
-        <button class="action-btn login-btn" onclick="openModal('loginModal')">Login</button>
+        <div class="header-left">
+            <button class="action-btn login-btn" onclick="openModal('loginModal')">Login</button>
+            <button class="action-btn upload-btn" onclick="openModal('creatorModal')">User Upload</button>
+        </div>
         <h1>All Indian Hacker</h1>
         <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
     </div>
@@ -317,8 +336,8 @@
         <h1 style="font-size: 28px; margin-top: 10px;" id="currentCourseTitle">Ethical Hacking Course</h1>
         <p class="subtitle">आपका नाम दर्ज हो चुका है! नीचे दिए गए वीडियो से पढ़ना शुरू करें।</p>
         
-        <div class="video-container">
-            <iframe class="responsive-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        <div class="video-container" id="videoListContainer">
+            <iframe class="responsive-video" id="mainVideoPlayer" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -381,6 +400,47 @@
         </div>
     </div>
 
+    <!-- USER UPLOAD MODAL (ONLY GMAIL) -->
+    <div class="modal-overlay" id="creatorModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('creatorModal')">&times;</span>
+            <h2>User Upload Portal</h2>
+            
+            <form id="creatorLoginForm" onsubmit="handleCreatorLogin(event)">
+                <div class="input-group">
+                    <label>Gmail:</label>
+                    <input type="email" id="creatorEmail" required placeholder="अपनी Gmail आईडी लिखें">
+                </div>
+
+                <div class="input-group" id="creatorOtpGroup" style="display: none;">
+                    <label>Enter OTP Code:</label>
+                    <input type="text" id="creatorOtpInput" placeholder="Gmail पर आया OTP लिखें">
+                </div>
+
+                <button type="submit" class="submit-btn" id="creatorActionBtn">Send OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIDEO UPLOAD PANEL MODAL -->
+    <div class="modal-overlay" id="videoUploadModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('videoUploadModal')">&times;</span>
+            <h2>Upload Video</h2>
+            <form id="uploadVideoForm" onsubmit="handleVideoUpload(event)">
+                <div class="input-group">
+                    <label>Video Title:</label>
+                    <input type="text" id="videoTitleInput" required placeholder="वीडियो का नाम/शीर्षक लिखें">
+                </div>
+                <div class="input-group">
+                    <label>YouTube Embed Link or ID:</label>
+                    <input type="text" id="videoUrlInput" required placeholder="जैसे: dQw4w9WgXcQ या YouTube Link">
+                </div>
+                <button type="submit" class="submit-btn">Publish Video</button>
+            </form>
+        </div>
+    </div>
+
     <!-- ENROLLMENT MODAL -->
     <div class="modal-overlay" id="enrollModal">
         <div class="box">
@@ -402,18 +462,20 @@
     </div>
 
     <script>
-        // OTP को सीधे एक्सेस होने से रोकने के लिए IIFE
         const AppState = (function() {
             let secretOTP = null;
+            let creatorOTP = null;
             return {
                 setOTP: function(val) { secretOTP = val; },
-                getOTP: function() { return secretOTP; }
+                getOTP: function() { return secretOTP; },
+                setCreatorOTP: function(val) { creatorOTP = val; },
+                getCreatorOTP: function() { return creatorOTP; }
             };
         })();
 
         let isOtpSent = false;
+        let isCreatorOtpSent = false;
 
-        // ऑटो-लॉगिन चेक (पेज रिफ्रेश होने पर भी लॉगिन रहेगा)
         window.onload = function() {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('navBar').style.display = 'none';
@@ -425,7 +487,7 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function goBackToHome() {
-            localStorage.removeItem('isLoggedIn'); // होम पर जाने पर सेशन क्लियर होगा
+            localStorage.removeItem('isLoggedIn');
             document.getElementById('batchSection').style.display = 'none';
             document.getElementById('navBar').style.display = 'flex';
         }
@@ -480,6 +542,79 @@
                     alert("गलत OTP! कृपया सही कोड डालें।");
                 }
             }
+        }
+
+        // USER UPLOAD - GMAIL ONLY OTP LOGIC
+        function handleCreatorLogin(e) {
+            e.preventDefault();
+
+            if (!isCreatorOtpSent) {
+                const email = document.getElementById('creatorEmail').value;
+                const btn = document.getElementById('creatorActionBtn');
+                
+                const otp = Math.floor(100000 + Math.random() * 900000).toString();
+                AppState.setCreatorOTP(otp);
+                btn.innerText = "Sending OTP...";
+
+                const templateParams = {
+                    email: email,
+                    to_email: email,
+                    passcode: otp,
+                    time: "15 minutes"
+                };
+
+                emailjs.send("service_bpd14j6", "template_m3begkd", templateParams)
+                    .then(function(response) {
+                        alert("OTP आपकी Gmail पर भेज दिया गया है!");
+                        document.getElementById('creatorEmail').readOnly = true;
+                        document.getElementById('creatorOtpGroup').style.display = 'block';
+                        document.getElementById('creatorOtpInput').required = true;
+                        btn.innerText = "Verify OTP";
+                        isCreatorOtpSent = true;
+                    }, function(error) {
+                        alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
+                        btn.innerText = "Send OTP";
+                    });
+            } else {
+                const inputOTP = document.getElementById('creatorOtpInput').value;
+
+                if (inputOTP === AppState.getCreatorOTP()) {
+                    alert("OTP सही है! वीडियो अपलोड पोर्टल में आपका स्वागत है।");
+                    closeModal('creatorModal');
+                    document.getElementById('creatorLoginForm').reset();
+                    openModal('videoUploadModal');
+                } else {
+                    alert("गलत OTP! कृपया सही कोड डालें।");
+                }
+            }
+        }
+
+        // HANDLE VIDEO UPLOAD BY USER
+        function handleVideoUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById('videoTitleInput').value;
+            let videoUrl = document.getElementById('videoUrlInput').value;
+
+            // Extract YouTube ID if full URL is given
+            if (videoUrl.includes('watch?v=')) {
+                videoUrl = videoUrl.split('watch?v=')[1].split('&')[0];
+            } else if (videoUrl.includes('youtu.be/')) {
+                videoUrl = videoUrl.split('youtu.be/')[1].split('?')[0];
+            }
+
+            const embedUrl = "https://www.youtube.com/embed/" + videoUrl;
+            
+            // Set as current video
+            document.getElementById('mainVideoPlayer').src = embedUrl;
+            document.getElementById('currentCourseTitle').innerText = title;
+
+            alert("आपकी वीडियो सफलतापूर्वक अपलोड/अपडेट हो गई है!");
+            closeModal('videoUploadModal');
+            document.getElementById('uploadVideoForm').reset();
+
+            // Navigate to Video Player
+            document.getElementById('navBar').style.display = 'none';
+            document.getElementById('videoSection').style.display = 'block';
         }
 
         function openEnroll(batch) {
