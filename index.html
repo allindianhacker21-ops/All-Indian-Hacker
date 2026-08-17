@@ -186,6 +186,8 @@
             padding: 25px;
             border-radius: 8px;
             width: 290px;
+            max-height: 85vh;
+            overflow-y: auto;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
             position: relative;
             text-align: left;
@@ -510,6 +512,26 @@
                     <label>Date of Birth:</label>
                     <input type="date" name="DOB" required>
                 </div>
+
+                <div class="input-group">
+                    <label>State (राज्य):</label>
+                    <input type="text" name="State" required placeholder="अपना राज्य चुनें/लिखें">
+                </div>
+
+                <div class="input-group">
+                    <label>District (ज़िला):</label>
+                    <input type="text" name="District" required placeholder="अपना ज़िला लिखें">
+                </div>
+
+                <div class="input-group">
+                    <label>Block (ब्लॉक):</label>
+                    <input type="text" name="Block" required placeholder="अपना ब्लॉक लिखें">
+                </div>
+
+                <div class="input-group">
+                    <label>Village (गाँव):</label>
+                    <input type="text" name="Village" required placeholder="अपने गाँव का नाम लिखें">
+                </div>
                 
                 <div class="input-group">
                     <label>Phone Number:</label>
@@ -552,7 +574,7 @@
         </div>
     </div>
 
-    <!-- TEAM MANAGER MODAL (SHOWING NARESH & MANISH) -->
+    <!-- TEAM MANAGER MODAL -->
     <div class="modal-overlay" id="teamManagerModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('teamManagerModal')">&times;</span>
