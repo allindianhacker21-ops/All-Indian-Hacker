@@ -211,14 +211,14 @@
     <!-- BATCH SECTION (लॉगिन सफलता के बाद खुलेगा) -->
     <div id="batchSection" style="display: none;">
         <h1 style="font-size: 28px; margin-top: 20px;">Welcome to All Indian Hacker</h1>
-        <p class="subtitle">अपना पसंदीदा बैच चुनें और एथिकल हैकिंग सीखना शुरू करें!</p>
+        <p class="subtitle">अपना पसंदीदा बैच चुनें और मुफ़्त में सीखना शुरू करें!</p>
 
         <div class="batch-container">
             <!-- Basic Batch -->
             <div class="batch-card">
                 <div>
                     <h2>Basic Batch</h2>
-                    <div class="price">₹499</div>
+                    <div class="price">FREE</div>
                     <ul class="features">
                         <li>Basic Ethical Hacking</li>
                         <li>Termux Commands</li>
@@ -226,14 +226,14 @@
                         <li>Recorded Lectures</li>
                     </ul>
                 </div>
-                <button class="submit-btn" onclick="openPayment('Basic Batch', '499')">Enroll Now</button>
+                <button class="submit-btn" onclick="openEnroll('Basic Batch')">Enroll Now</button>
             </div>
 
             <!-- Pro Hacker Batch -->
             <div class="batch-card">
                 <div>
                     <h2>Pro Hacker Batch</h2>
-                    <div class="price">₹999</div>
+                    <div class="price">FREE</div>
                     <ul class="features">
                         <li>Advance Ethical Hacking</li>
                         <li>Website Vulnerability Test</li>
@@ -241,14 +241,14 @@
                         <li>Live Doubts & Certificate</li>
                     </ul>
                 </div>
-                <button class="submit-btn" onclick="openPayment('Pro Hacker Batch', '999')">Enroll Now</button>
+                <button class="submit-btn" onclick="openEnroll('Pro Hacker Batch')">Enroll Now</button>
             </div>
 
             <!-- VIP Cyber Batch -->
             <div class="batch-card">
                 <div>
                     <h2>VIP Cyber Batch</h2>
-                    <div class="price">₹1,999</div>
+                    <div class="price">FREE</div>
                     <ul class="features">
                         <li>Complete Bug Bounty Course</li>
                         <li>Python Automation Hacking</li>
@@ -256,7 +256,7 @@
                         <li>Lifetime Access & VIP Group</li>
                     </ul>
                 </div>
-                <button class="submit-btn" onclick="openPayment('VIP Cyber Batch', '1,999')">Enroll Now</button>
+                <button class="submit-btn" onclick="openEnroll('VIP Cyber Batch')">Enroll Now</button>
             </div>
         </div>
     </div>
@@ -320,27 +320,22 @@
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
-    <div class="modal-overlay" id="paymentModal">
+    <!-- ENROLLMENT MODAL (ONLY NAME) -->
+    <div class="modal-overlay" id="enrollModal">
         <div class="box">
-            <span class="close-btn" onclick="closeModal('paymentModal')">&times;</span>
-            <h2 id="selectedBatchName">Batch Checkout</h2>
-            <p style="color: #00ff00; font-size: 18px; text-align: center; font-weight: bold;" id="selectedPrice">₹0</p>
+            <span class="close-btn" onclick="closeModal('enrollModal')">&times;</span>
+            <h2 id="selectedBatchName">Batch Enrollment</h2>
+            <p style="color: #00ff00; font-size: 18px; text-align: center; font-weight: bold;">FREE ACCESS</p>
             
             <form action="https://formspree.io/f/xvkpbjln" method="POST">
-                <input type="hidden" name="Form_Type" value="Batch Enrollment">
+                <input type="hidden" name="Form_Type" value="Free Batch Enrollment">
                 <input type="hidden" name="Selected_Batch" id="batchInput">
-                <input type="hidden" name="Price" id="priceInput">
                 
                 <div class="input-group">
                     <label>Your Name:</label>
                     <input type="text" name="Student_Name" required placeholder="अपना नाम दर्ज करें">
                 </div>
-                <div class="input-group">
-                    <label>UPI ID / Transaction Reference:</label>
-                    <input type="text" name="Payment_Reference" required placeholder="UPI / Ref ID दर्ज करें">
-                </div>
-                <button type="submit" class="submit-btn">Confirm & Access Batch</button>
+                <button type="submit" class="submit-btn">Enroll Free</button>
             </form>
         </div>
     </div>
@@ -396,12 +391,10 @@
             }
         }
 
-        function openPayment(batch, price) {
+        function openEnroll(batch) {
             document.getElementById('selectedBatchName').innerText = batch;
-            document.getElementById('selectedPrice').innerText = "Amount: ₹" + price;
             document.getElementById('batchInput').value = batch;
-            document.getElementById('priceInput').value = "₹" + price;
-            openModal('paymentModal');
+            openModal('enrollModal');
         }
     </script>
 
