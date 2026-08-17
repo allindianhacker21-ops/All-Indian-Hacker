@@ -57,6 +57,27 @@
 
         .login-btn:hover { background-color: red; }
 
+        .back-btn {
+            background-color: #222;
+            color: white;
+            border: 1px solid red;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background-color: red; }
+
+        .top-bar-left {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -201,7 +222,7 @@
         /* VIDEO COURSE SECTION STYLES */
         .video-container {
             max-width: 800px;
-            margin: 30px auto;
+            margin: 20px auto;
             background: #111;
             padding: 20px;
             border-radius: 10px;
@@ -232,9 +253,12 @@
         <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
     </div>
 
-    <!-- BATCH SECTION (लॉगिन सफलता के बाद खुलेगा) -->
+    <!-- BATCH SECTION -->
     <div id="batchSection" style="display: none;">
-        <h1 style="font-size: 28px; margin-top: 20px;">Welcome to All Indian Hacker</h1>
+        <div class="top-bar-left">
+            <button class="back-btn" onclick="goBackToHome()">&#8592; Back</button>
+        </div>
+        <h1 style="font-size: 28px; margin-top: 10px;">Welcome to All Indian Hacker</h1>
         <p class="subtitle">अपना पसंदीदा बैच चुनें और मुफ़्त में सीखना शुरू करें!</p>
 
         <div class="batch-container">
@@ -285,13 +309,15 @@
         </div>
     </div>
 
-    <!-- VIDEO SECTION (एनरोलमेंट पूरा होने के बाद यह ब्लैक पेज खुलेगा) -->
+    <!-- VIDEO SECTION -->
     <div id="videoSection" style="display: none;">
-        <h1 style="font-size: 28px; margin-top: 20px;" id="currentCourseTitle">Ethical Hacking Course</h1>
+        <div class="top-bar-left">
+            <button class="back-btn" onclick="goBackToBatches()">&#8592; Back</button>
+        </div>
+        <h1 style="font-size: 28px; margin-top: 10px;" id="currentCourseTitle">Ethical Hacking Course</h1>
         <p class="subtitle">आपका नाम दर्ज हो चुका है! नीचे दिए गए वीडियो से पढ़ना शुरू करें।</p>
         
         <div class="video-container">
-            <!-- यहाँ अपना Video Embed URL लगा सकते हैं -->
             <iframe class="responsive-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
         </div>
     </div>
@@ -355,7 +381,7 @@
         </div>
     </div>
 
-    <!-- ENROLLMENT MODAL (NO WHITE SCREEN, SENDS DATA TO FORMSPREE) -->
+    <!-- ENROLLMENT MODAL -->
     <div class="modal-overlay" id="enrollModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('enrollModal')">&times;</span>
@@ -381,6 +407,16 @@
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function goBackToHome() {
+            document.getElementById('batchSection').style.display = 'none';
+            document.getElementById('navBar').style.display = 'flex';
+        }
+
+        function goBackToBatches() {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('batchSection').style.display = 'block';
+        }
 
         function handleLoginSubmit(e) {
             e.preventDefault();
@@ -441,7 +477,6 @@
 
             const formData = new FormData(document.getElementById('freeEnrollForm'));
 
-            // बैकग्राउंड में Formspree पर नाम और बैच का डेटा भेजने का कोड
             fetch("https://formspree.io/f/xvkpbjln", {
                 method: "POST",
                 body: formData,
@@ -451,10 +486,7 @@
                     alert("आपका Enrollment सफल रहा! डेटा सबमिट हो चुका है।");
                     closeModal('enrollModal');
                     
-                    // बैच सेक्शन छुपाएं
                     document.getElementById('batchSection').style.display = 'none';
-                    
-                    // नया ब्लैक वीडियो पेज खोलें
                     document.getElementById('currentCourseTitle').innerText = batchName + " - Video Lessons";
                     document.getElementById('videoSection').style.display = 'block';
                 } else {
