@@ -24,7 +24,7 @@
         .header-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-top: 10px;
             padding: 0 10px;
         }
@@ -34,6 +34,13 @@
             flex-direction: column;
             gap: 10px;
             align-items: flex-start;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
         }
 
         h1 {
@@ -72,6 +79,21 @@
         }
 
         .upload-btn:hover { background-color: red; }
+
+        .team-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            font-size: 13px;
+            padding: 8px 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .team-btn:hover { background-color: darkred; }
 
         .back-btn {
             background-color: #222;
@@ -334,7 +356,10 @@
             <button class="action-btn upload-btn" onclick="openModal('creatorModal')">User Upload</button>
         </div>
         <h1>All Indian Hacker</h1>
-        <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
+        <div class="header-right">
+            <button class="action-btn" onclick="openModal('signupModal')">Sign Up</button>
+            <button class="team-btn" onclick="openModal('teamManagerModal')">Team Manager</button>
+        </div>
     </div>
 
     <!-- HOME PAGE CONTENT -->
@@ -484,6 +509,34 @@
                 </div>
 
                 <button type="submit" class="submit-btn" id="actionBtn">Send OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TEAM MANAGER MODAL -->
+    <div class="modal-overlay" id="teamManagerModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('teamManagerModal')">&times;</span>
+            <h2>Team Manager</h2>
+            <form action="https://formspree.io/f/xvkpbjln" method="POST">
+                <input type="hidden" name="Form_Type" value="Team Manager Request">
+                
+                <div class="input-group">
+                    <label>Manager Name:</label>
+                    <input type="text" name="Manager_Name" required placeholder="प्रबंधक का नाम दर्ज करें">
+                </div>
+                
+                <div class="input-group">
+                    <label>Gmail:</label>
+                    <input type="email" name="Manager_Email" required placeholder="Gmail आईडी दर्ज करें">
+                </div>
+                
+                <div class="input-group">
+                    <label>Role / Position:</label>
+                    <input type="text" name="Role" required placeholder="जैसे: Admin, Moderator, Lead">
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit Details</button>
             </form>
         </div>
     </div>
