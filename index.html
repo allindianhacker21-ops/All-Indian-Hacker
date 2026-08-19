@@ -167,6 +167,30 @@
             font-size: 14px;
         }
 
+        /* FOOTER NOTES BUTTON */
+        .home-footer-notes {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .notes-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+            transition: 0.3s;
+        }
+
+        .notes-btn:hover {
+            background-color: darkred;
+            box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -284,6 +308,27 @@
             color: #00ff00;
             font-size: 12px;
             font-weight: bold;
+        }
+
+        /* NOTES LIST STYLES */
+        .notes-item {
+            background: #1a1a1a;
+            border-left: 3px solid red;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .notes-item h4 {
+            margin: 0 0 5px 0;
+            color: #00ff00;
+            font-size: 15px;
+        }
+
+        .notes-item p {
+            margin: 0;
+            color: #ccc;
+            font-size: 13px;
         }
 
         /* BATCH SECTION STYLES */
@@ -423,6 +468,11 @@
             <div class="disclaimer-box">
                 ⚠️ <strong>Disclaimer</strong> — “Use these techniques only on systems you own or have permission to test.”
             </div>
+        </div>
+
+        <!-- NOTES OPTION AT THE BOTTOM -->
+        <div class="home-footer-notes">
+            <button class="notes-btn" onclick="openModal('notesModal')">📄 Study Notes</button>
         </div>
     </div>
 
@@ -599,6 +649,31 @@
             </div>
 
             <button class="submit-btn" style="margin-top: 10px;" onclick="closeModal('teamManagerModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- NOTES MODAL -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('notesModal')">&times;</span>
+            <h2>Cyber Security Notes</h2>
+            
+            <div class="notes-item">
+                <h4>1. Linux & Termux Basics</h4>
+                <p>Basic commands, file permissions, and directory structure.</p>
+            </div>
+
+            <div class="notes-item">
+                <h4>2. Web Vulnerabilities</h4>
+                <p>Intro to OWASP Top 10, XSS, and SQL Injection fundamentals.</p>
+            </div>
+
+            <div class="notes-item">
+                <h4>3. Networking Essentials</h4>
+                <p>IP addresses, Ports, Protocols (HTTP/HTTPS, SSH, FTP).</p>
+            </div>
+
+            <button class="submit-btn" style="margin-top: 10px;" onclick="closeModal('notesModal')">Close</button>
         </div>
     </div>
 
