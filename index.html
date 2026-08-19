@@ -24,7 +24,7 @@
         .header-container {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center; /* Center horizontally with title */
             margin-top: 10px;
             padding: 0 10px;
         }
@@ -34,6 +34,7 @@
             flex-direction: column;
             gap: 10px;
             align-items: flex-start;
+            margin-top: 12px; /* Alignment tweak to push buttons lower than the title */
         }
 
         .header-right {
@@ -41,12 +42,13 @@
             flex-direction: column;
             gap: 10px;
             align-items: flex-end;
+            margin-top: 12px; /* Alignment tweak to push buttons lower than the title */
         }
 
         h1 {
             color: red;
             margin: 0;
-            font-size: 24px;
+            font-size: 32px; /* Increased font size for title */
         }
 
         .action-btn {
@@ -110,23 +112,6 @@
 
         .back-btn:hover { background-color: red; }
 
-        .modal-back-btn {
-            position: absolute;
-            top: 10px;
-            left: 12px;
-            background: #222;
-            color: white;
-            border: 1px solid red;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .modal-back-btn:hover { background-color: red; }
-
         .top-bar-left {
             display: flex;
             justify-content: flex-start;
@@ -182,30 +167,6 @@
             border-left: 4px solid red;
             color: #ff6666;
             font-size: 14px;
-        }
-
-        /* FOOTER NOTES BUTTON */
-        .home-footer-notes {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .notes-btn {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
-            transition: 0.3s;
-        }
-
-        .notes-btn:hover {
-            background-color: darkred;
-            box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
         }
 
         .modal-overlay {
@@ -328,27 +289,6 @@
             font-weight: bold;
         }
 
-        /* NOTES LIST STYLES */
-        .notes-item {
-            background: #1a1a1a;
-            border-left: 3px solid red;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-
-        .notes-item h4 {
-            margin: 0 0 5px 0;
-            color: #00ff00;
-            font-size: 15px;
-        }
-
-        .notes-item p {
-            margin: 0;
-            color: #ccc;
-            font-size: 13px;
-        }
-
         /* BATCH SECTION STYLES */
         .subtitle {
             color: #ccc;
@@ -448,6 +388,9 @@
             .hero-title {
                 font-size: 22px;
             }
+            h1 {
+                font-size: 26px;
+            }
         }
     </style>
 </head>
@@ -487,11 +430,6 @@
                 ⚠️ <strong>Disclaimer</strong> — “Use these techniques only on systems you own or have permission to test.”
             </div>
         </div>
-
-        <!-- NOTES OPTION AT THE BOTTOM -->
-        <div class="home-footer-notes">
-            <button class="notes-btn" onclick="openModal('notesAuthModal')">📄 Notes</button>
-        </div>
     </div>
 
     <!-- BATCH SECTION -->
@@ -506,7 +444,7 @@
             <!-- Basic Batch -->
             <div class="batch-card">
                 <div>
-                    2>Basic Batch</h2>
+                    <h2>Basic Batch</h2>
                     <div class="price">FREE</div>
                     <ul class="features">
                         <li>Basic Ethical Hacking</li>
@@ -670,61 +608,6 @@
         </div>
     </div>
 
-    <!-- NOTES AUTHENTICATION MODAL (WITH TOP-LEFT BACK BUTTON) -->
-    <div class="modal-overlay" id="notesAuthModal">
-        <div class="box">
-            <button class="modal-back-btn" onclick="closeModal('notesAuthModal')">&#8592; Back</button>
-            <span class="close-btn" onclick="closeModal('notesAuthModal')">&times;</span>
-            <h2>Notes Verification</h2>
-            
-            <form id="notesAuthForm" onsubmit="handleNotesAuth(event)">
-                <div class="input-group">
-                    <label>Gmail:</label>
-                    <input type="email" id="notesEmail" required placeholder="अपनी Gmail आईडी दर्ज करें">
-                </div>
-
-                <!-- Step 2: OTP Input -->
-                <div class="input-group" id="notesOtpGroup" style="display: none;">
-                    <label>Enter OTP Code:</label>
-                    <input type="text" id="notesOtpInput" placeholder="Gmail पर भेजा गया OTP दर्ज करें">
-                </div>
-
-                <!-- Step 3: Password Input -->
-                <div class="input-group" id="notesPasswordGroup" style="display: none;">
-                    <label>Enter Password:</label>
-                    <input type="password" id="notesPasswordInput" placeholder="पासवर्ड दर्ज करें">
-                </div>
-
-                <button type="submit" class="submit-btn" id="notesActionBtn">Send OTP</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- REAL NOTES MODAL (UNLOCKED AFTER VERIFICATION) -->
-    <div class="modal-overlay" id="notesModal">
-        <div class="box">
-            <span class="close-btn" onclick="closeModal('notesModal')">&times;</span>
-            <h2>Cyber Security Notes</h2>
-            
-            <div class="notes-item">
-                <h4>1. Linux & Termux Basics</h4>
-                <p>Basic commands, file permissions, and directory structure.</p>
-            </div>
-
-            <div class="notes-item">
-                <h4>2. Web Vulnerabilities</h4>
-                <p>Intro to OWASP Top 10, XSS, and SQL Injection fundamentals.</p>
-            </div>
-
-            <div class="notes-item">
-                <h4>3. Networking Essentials</h4>
-                <p>IP addresses, Ports, Protocols (HTTP/HTTPS, SSH, FTP).</p>
-            </div>
-
-            <button class="submit-btn" style="margin-top: 10px;" onclick="closeModal('notesModal')">Close</button>
-        </div>
-    </div>
-
     <!-- USER UPLOAD MODAL (ONLY GMAIL) -->
     <div class="modal-overlay" id="creatorModal">
         <div class="box">
@@ -798,20 +681,16 @@
         const AppState = (function() {
             let secretOTP = null;
             let creatorOTP = null;
-            let notesOTP = null;
             return {
                 setOTP: function(val) { secretOTP = val; },
                 getOTP: function() { return secretOTP; },
                 setCreatorOTP: function(val) { creatorOTP = val; },
-                getCreatorOTP: function() { return creatorOTP; },
-                setNotesOTP: function(val) { notesOTP = val; },
-                getNotesOTP: function() { return notesOTP; }
+                getCreatorOTP: function() { return creatorOTP; }
             };
         })();
 
         let isOtpSent = false;
         let isCreatorOtpSent = false;
-        let notesStep = 1; 
         let currentOpenBatch = "";
 
         // Videos Storage
@@ -828,12 +707,7 @@
         };
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { 
-            document.getElementById(id).style.display = 'none'; 
-            if(id === 'notesAuthModal') {
-                resetNotesAuthForm();
-            }
-        }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function showBatches() {
             document.getElementById('navBar').style.display = 'none';
@@ -897,72 +771,6 @@
                     alert("गलत OTP! कृपया सही कोड डालें।");
                 }
             }
-        }
-
-        // NOTES VERIFICATION (GMAIL -> OTP -> PASSWORD) LOGIC
-        function handleNotesAuth(e) {
-            e.preventDefault();
-            const btn = document.getElementById('notesActionBtn');
-
-            if (notesStep === 1) {
-                const email = document.getElementById('notesEmail').value;
-                const otp = Math.floor(100000 + Math.random() * 900000).toString();
-                AppState.setNotesOTP(otp);
-                btn.innerText = "Sending OTP...";
-
-                const templateParams = {
-                    email: email,
-                    to_email: email,
-                    passcode: otp,
-                    time: "15 minutes"
-                };
-
-                emailjs.send("service_bpd14j6", "template_m3begkd", templateParams)
-                    .then(function(response) {
-                        alert("OTP आपकी Gmail पर भेज दिया गया है!");
-                        document.getElementById('notesEmail').readOnly = true;
-                        document.getElementById('notesOtpGroup').style.display = 'block';
-                        document.getElementById('notesOtpInput').required = true;
-                        btn.innerText = "Verify OTP";
-                        notesStep = 2;
-                    }, function(error) {
-                        alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
-                        btn.innerText = "Send OTP";
-                    });
-            } else if (notesStep === 2) {
-                const inputOTP = document.getElementById('notesOtpInput').value;
-
-                if (inputOTP === AppState.getNotesOTP()) {
-                    alert("OTP सही है! अब कृपया पासवर्ड दर्ज करें।");
-                    document.getElementById('notesOtpInput').readOnly = true;
-                    document.getElementById('notesPasswordGroup').style.display = 'block';
-                    document.getElementById('notesPasswordInput').required = true;
-                    btn.innerText = "Submit Password";
-                    notesStep = 3;
-                } else {
-                    alert("गलत OTP! कृपया सही कोड डालें।");
-                }
-            } else if (notesStep === 3) {
-                const pass = document.getElementById('notesPasswordInput').value;
-
-                if (pass === "Naresh@90") {
-                    alert("पासवर्ड सही है! नोट्स अनलॉक हो गए हैं।");
-                    closeModal('notesAuthModal');
-                    openModal('notesModal');
-                } else {
-                    alert("गलत पासवर्ड! कृपया सही पासवर्ड दर्ज करें।");
-                }
-            }
-        }
-
-        function resetNotesAuthForm() {
-            notesStep = 1;
-            document.getElementById('notesAuthForm').reset();
-            document.getElementById('notesEmail').readOnly = false;
-            document.getElementById('notesOtpInput').readOnly = false;
-            document.getElementById('notesOtpGroup').style.display = 'none';
-            document.getElementById('notesPasswordGroup').style.display = 'none';
-            document.getElementById('notesActionBtn').innerText = "Send OTP";
         }
 
         // USER UPLOAD - GMAIL ONLY OTP LOGIC
