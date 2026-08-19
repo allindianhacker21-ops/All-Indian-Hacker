@@ -110,6 +110,23 @@
 
         .back-btn:hover { background-color: red; }
 
+        .modal-back-btn {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            background: #222;
+            color: white;
+            border: 1px solid red;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-back-btn:hover { background-color: red; }
+
         .top-bar-left {
             display: flex;
             justify-content: flex-start;
@@ -208,6 +225,7 @@
             background: #111111;
             border: 1px solid red;
             padding: 25px;
+            padding-top: 40px;
             border-radius: 8px;
             width: 290px;
             max-height: 85vh;
@@ -219,14 +237,14 @@
 
         .box h2 {
             color: red;
-            margin-top: 0;
+            margin-top: 5px;
             font-size: 20px;
             text-align: center;
         }
 
         .close-btn {
             position: absolute;
-            top: 10px;
+            top: 8px;
             right: 15px;
             color: red;
             font-size: 22px;
@@ -488,7 +506,7 @@
             <!-- Basic Batch -->
             <div class="batch-card">
                 <div>
-                    <h2>Basic Batch</h2>
+                    2>Basic Batch</h2>
                     <div class="price">FREE</div>
                     <ul class="features">
                         <li>Basic Ethical Hacking</li>
@@ -652,11 +670,12 @@
         </div>
     </div>
 
-    <!-- NOTES AUTHENTICATION MODAL (GMAIL -> OTP -> PASSWORD) -->
+    <!-- NOTES AUTHENTICATION MODAL (WITH TOP-LEFT BACK BUTTON) -->
     <div class="modal-overlay" id="notesAuthModal">
         <div class="box">
+            <button class="modal-back-btn" onclick="closeModal('notesAuthModal')">&#8592; Back</button>
             <span class="close-btn" onclick="closeModal('notesAuthModal')">&times;</span>
-            <h2>Notes Access Verification</h2>
+            <h2>Notes Verification</h2>
             
             <form id="notesAuthForm" onsubmit="handleNotesAuth(event)">
                 <div class="input-group">
@@ -792,7 +811,7 @@
 
         let isOtpSent = false;
         let isCreatorOtpSent = false;
-        let notesStep = 1; // Step 1: Send OTP, Step 2: Verify OTP, Step 3: Check Password
+        let notesStep = 1; 
         let currentOpenBatch = "";
 
         // Videos Storage
