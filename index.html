@@ -24,7 +24,7 @@
         .header-container {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Center horizontally with title */
+            align-items: center;
             margin-top: 10px;
             padding: 0 10px;
         }
@@ -34,7 +34,7 @@
             flex-direction: column;
             gap: 10px;
             align-items: flex-start;
-            margin-top: 12px; /* Alignment tweak to push buttons lower than the title */
+            margin-top: 12px;
         }
 
         .header-right {
@@ -42,13 +42,13 @@
             flex-direction: column;
             gap: 10px;
             align-items: flex-end;
-            margin-top: 12px; /* Alignment tweak to push buttons lower than the title */
+            margin-top: 12px;
         }
 
         h1 {
             color: red;
             margin: 0;
-            font-size: 32px; /* Increased font size for title */
+            font-size: 32px;
         }
 
         .action-btn {
@@ -260,6 +260,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer; /* Pointer effect on click */
+            transition: 0.3s;
+        }
+
+        .team-card:hover {
+            background: #252525;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
         }
 
         .team-avatar {
@@ -586,8 +593,8 @@
             <span class="close-btn" onclick="closeModal('teamManagerModal')">&times;</span>
             <h2>Team Managers</h2>
             
-            <!-- Naresh -->
-            <div class="team-card">
+            <!-- Naresh Card (Clickable) -->
+            <div class="team-card" onclick="openModal('nareshInfoModal')">
                 <div class="team-avatar">N</div>
                 <div class="team-info">
                     <h3>Naresh</h3>
@@ -595,7 +602,7 @@
                 </div>
             </div>
 
-            <!-- Manish -->
+            <!-- Manish Card -->
             <div class="team-card">
                 <div class="team-avatar">M</div>
                 <div class="team-info">
@@ -605,6 +612,18 @@
             </div>
 
             <button class="submit-btn" style="margin-top: 10px;" onclick="closeModal('teamManagerModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- NARESH INFO MODAL -->
+    <div class="modal-overlay" id="nareshInfoModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('nareshInfoModal')">&times;</span>
+            <h2>Naresh</h2>
+            <p style="color: #00ff00; font-size: 16px; text-align: center; font-weight: bold; line-height: 1.5; margin-top: 15px;">
+                Naresh Indian top level Ethical hacker
+            </p>
+            <button class="submit-btn" style="margin-top: 20px;" onclick="closeModal('nareshInfoModal')">Close</button>
         </div>
     </div>
 
