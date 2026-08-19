@@ -11,6 +11,11 @@
             emailjs.init("zEXmh31UhCjOE3oVU");
         })();
     </script>
+
+    <!-- Firebase Compatibility SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
     <style>
         body {
             background-color: #000000;
@@ -610,29 +615,46 @@
         </div>
     </div>
 
-    <!-- LOGIN MODAL WITH OTP -->
+    <!-- 2-STEP LOGIN MODAL (GMAIL OTP + FIREBASE SMS OTP) -->
     <div class="modal-overlay" id="loginModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Login</h2>
             
-            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+            <!-- STEP 1: GMAIL VERIFICATION -->
+            <div id="loginStep1">
+                <h2>Login - Step 1</h2>
                 <div class="input-group">
                     <label>Gmail:</label>
                     <input type="email" id="userEmail" required placeholder="अपनी Gmail लिखें">
                 </div>
-                <div class="input-group">
-                    <label>Phone Number:</label>
-                    <input type="tel" id="userPhone" required placeholder="अपना फ़ोन नंबर लिखें" pattern="[0-9]{10}">
-                </div>
 
                 <div class="input-group" id="otpGroup" style="display: none;">
-                    <label>Enter OTP Code:</label>
+                    <label>Enter Gmail OTP:</label>
                     <input type="text" id="otpInput" placeholder="Gmail पर आया OTP लिखें">
                 </div>
 
-                <button type="submit" class="submit-btn" id="actionBtn">Send OTP</button>
-            </form>
+                <button class="submit-btn" id="actionBtn" onclick="handleEmailStep()">Send Gmail OTP</button>
+            </div>
+
+            <!-- STEP 2: PHONE SMS VERIFICATION -->
+            <div id="loginStep2" style="display: none;">
+                <h2>Login - Step 2</h2>
+                <div class="input-group">
+                    <label>Phone Number (with +91):</label>
+                    <input type="tel" id="userPhone" placeholder="+919876543210">
+                </div>
+
+                <!-- Invisible Recaptcha -->
+                <div id="recaptcha-container"></div>
+
+                <div class="input-group" id="phoneOtpGroup" style="display: none;">
+                    <label>Enter SMS OTP:</label>
+                    <input type="text" id="phoneOtpInput" placeholder="फ़ोन पर आया SMS OTP लिखें">
+                </div>
+
+                <button class="submit-btn" id="phoneActionBtn" onclick="handlePhoneStep()">Send SMS OTP</button>
+            </div>
+
         </div>
     </div>
 
@@ -772,6 +794,17 @@
     </footer>
 
     <script>
+        // 1. FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAmv4sxOvggURR01FoVc9C-zwq1wLyaPWM",
+            authDomain: "all-indian-hacker.firebaseapp.com",
+            projectId: "all-indian-hacker",
+            storageBucket: "all-indian-hacker.firebasestorage.app",
+            messagingSenderId: "789634997891",
+            appId: "1:789634997891:web:a56a9511c83d0e410945b6"
+        };
+        firebase.initializeApp(firebaseConfig);
+
         const AppState = (function() {
             let secretOTP = null;
             let creatorOTP = null;
@@ -784,6 +817,7 @@
         })();
 
         let isOtpSent = false;
+        let isPhoneOtpSent = false;
         let isCreatorOtpSent = false;
         let currentOpenBatch = "";
 
@@ -821,13 +855,14 @@
             document.getElementById('batchSection').style.display = 'block';
         }
 
-        function handleLoginSubmit(e) {
-            e.preventDefault();
+        // --- STEP 1: GMAIL OTP LOGIC ---
+        function handleEmailStep() {
+            const email = document.getElementById('userEmail').value;
+            const btn = document.getElementById('actionBtn');
 
             if (!isOtpSent) {
-                const email = document.getElementById('userEmail').value;
-                const btn = document.getElementById('actionBtn');
-                
+                if(!email) return alert("कृपया अपनी Gmail आईडी दर्ज करें!");
+
                 const otp = Math.floor(100000 + Math.random() * 900000).toString();
                 AppState.setOTP(otp);
                 btn.innerText = "Sending OTP...";
@@ -841,29 +876,70 @@
 
                 emailjs.send("service_bpd14j6", "template_m3begkd", templateParams)
                     .then(function(response) {
-                        alert("OTP आपकी Gmail पर भेज दिया गया है!");
+                        alert("Gmail OTP भेज दिया गया है!");
                         document.getElementById('userEmail').readOnly = true;
-                        document.getElementById('userPhone').readOnly = true;
                         document.getElementById('otpGroup').style.display = 'block';
-                        document.getElementById('otpInput').required = true;
-                        btn.innerText = "Verify OTP & Login";
+                        btn.innerText = "Verify Gmail OTP";
                         isOtpSent = true;
                     }, function(error) {
                         alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
-                        btn.innerText = "Send OTP";
+                        btn.innerText = "Send Gmail OTP";
                     });
             } else {
                 const inputOTP = document.getElementById('otpInput').value;
 
                 if (inputOTP === AppState.getOTP()) {
-                    alert("OTP सही है! लॉग-इन सफल रहा।");
+                    alert("Gmail OTP सही है! अब Step 2 (Phone SMS OTP) पूरा करें।");
+                    document.getElementById('loginStep1').style.display = 'none';
+                    document.getElementById('loginStep2').style.display = 'block';
+                    initRecaptcha();
+                } else {
+                    alert("गलत Gmail OTP! कृपया सही कोड डालें।");
+                }
+            }
+        }
+
+        // --- STEP 2: PHONE SMS OTP LOGIC (FIREBASE) ---
+        function initRecaptcha() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'invisible'
+            });
+        }
+
+        function handlePhoneStep() {
+            const phoneInput = document.getElementById('userPhone');
+            const btn = document.getElementById('phoneActionBtn');
+
+            if (!isPhoneOtpSent) {
+                if(!phoneInput.value.startsWith("+91")) {
+                    return alert("फ़ोन नंबर कंट्री कोड (+91) के साथ लिखें! (उदा: +919876543210)");
+                }
+
+                btn.innerText = "Sending SMS...";
+                const appVerifier = window.recaptchaVerifier;
+
+                firebase.auth().signInWithPhoneNumber(phoneInput.value, appVerifier)
+                    .then((confirmationResult) => {
+                        window.confirmationResult = confirmationResult;
+                        alert("SMS OTP आपके नंबर पर भेज दिया गया है!");
+                        phoneInput.readOnly = true;
+                        document.getElementById('phoneOtpGroup').style.display = 'block';
+                        btn.innerText = "Verify SMS OTP & Login";
+                        isPhoneOtpSent = true;
+                    }).catch((error) => {
+                        alert("SMS OTP भेजने में समस्या: " + error.message);
+                        btn.innerText = "Send SMS OTP";
+                    });
+            } else {
+                const phoneOTP = document.getElementById('phoneOtpInput').value;
+                window.confirmationResult.confirm(phoneOTP).then((result) => {
+                    alert("सफलतापूर्वक वेरीफाई हो गया! लॉग-इन सफल रहा।");
                     localStorage.setItem('isLoggedIn', 'true');
                     closeModal('loginModal');
-                    document.getElementById('loginForm').reset();
                     showBatches();
-                } else {
-                    alert("गलत OTP! कृपया सही कोड डालें।");
-                }
+                }).catch((error) => {
+                    alert("गलत SMS OTP! कृपया दोबारा प्रयास करें।");
+                });
             }
         }
 
