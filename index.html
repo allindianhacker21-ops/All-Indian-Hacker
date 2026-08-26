@@ -12,10 +12,6 @@
         })();
     </script>
 
-    <!-- Firebase Compatibility SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
     <style>
         body {
             background-color: #000000;
@@ -174,7 +170,7 @@
             font-size: 14px;
         }
 
-        /* NEW JOINING SECTION */
+        /* JOINING SECTION */
         .joining-container {
             margin: 30px auto;
             text-align: center;
@@ -519,7 +515,7 @@
             </div>
         </div>
 
-        <!-- NEW JOINING NOW BUTTON SECTION -->
+        <!-- JOINING NOW BUTTON -->
         <div class="joining-container">
             <button class="join-now-btn" onclick="openModal('loginModal')">Joining Now</button>
         </div>
@@ -614,7 +610,7 @@
 
                 <div class="input-group">
                     <label>State (राज्य):</label>
-                    <input type="text" name="State" required placeholder="अपना राज्य चुनें/लिखें">
+                    <input type="text" name="State" required placeholder="अपना राज्य लिखें">
                 </div>
 
                 <div class="input-group">
@@ -639,7 +635,7 @@
                 
                 <div class="input-group">
                     <label>Gmail:</label>
-                    <input type="email" name="Email" required placeholder="example@gmail.com" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="कृपया केवल सही Gmail आईडी (जैसे example@gmail.com) ही दर्ज करें">
+                    <input type="email" name="Email" required placeholder="example@gmail.com" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="कृपया सही Gmail आईडी दर्ज करें">
                 </div>
                 
                 <button type="submit" class="submit-btn">Sign Up</button>
@@ -647,46 +643,23 @@
         </div>
     </div>
 
-    <!-- 2-STEP LOGIN / JOINING MODAL (GMAIL OTP + FIREBASE SMS OTP) -->
+    <!-- GMAIL LOGIN MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Gmail Verification</h2>
             
-            <!-- STEP 1: GMAIL VERIFICATION -->
-            <div id="loginStep1">
-                <h2>Step 1: Gmail Verification</h2>
-                <div class="input-group">
-                    <label>Gmail:</label>
-                    <input type="email" id="userEmail" required placeholder="अपनी Gmail लिखें">
-                </div>
-
-                <div class="input-group" id="otpGroup" style="display: none;">
-                    <label>Enter Gmail OTP:</label>
-                    <input type="text" id="otpInput" placeholder="Gmail पर आया OTP लिखें">
-                </div>
-
-                <button class="submit-btn" id="actionBtn" onclick="handleEmailStep()">Send Gmail OTP</button>
+            <div class="input-group">
+                <label>Gmail:</label>
+                <input type="email" id="userEmail" required placeholder="अपनी Gmail लिखें">
             </div>
 
-            <!-- STEP 2: PHONE SMS VERIFICATION -->
-            <div id="loginStep2" style="display: none;">
-                <h2>Step 2: Phone Verification</h2>
-                <div class="input-group">
-                    <label>Phone Number (with +91):</label>
-                    <input type="tel" id="userPhone" placeholder="+919876543210">
-                </div>
-
-                <!-- Invisible Recaptcha -->
-                <div id="recaptcha-container"></div>
-
-                <div class="input-group" id="phoneOtpGroup" style="display: none;">
-                    <label>Enter SMS OTP:</label>
-                    <input type="text" id="phoneOtpInput" placeholder="फ़ोन पर आया SMS OTP लिखें">
-                </div>
-
-                <button class="submit-btn" id="phoneActionBtn" onclick="handlePhoneStep()">Send SMS OTP</button>
+            <div class="input-group" id="otpGroup" style="display: none;">
+                <label>Enter Gmail OTP:</label>
+                <input type="text" id="otpInput" placeholder="Gmail पर आया OTP लिखें">
             </div>
 
+            <button class="submit-btn" id="actionBtn" onclick="handleEmailStep()">Send Gmail OTP</button>
         </div>
     </div>
 
@@ -696,7 +669,6 @@
             <span class="close-btn" onclick="closeModal('teamManagerModal')">&times;</span>
             <h2>Team Managers</h2>
             
-            <!-- Naresh Card (Clickable) -->
             <div class="team-card" onclick="openModal('nareshInfoModal')">
                 <div class="team-avatar">N</div>
                 <div class="team-info">
@@ -705,7 +677,6 @@
                 </div>
             </div>
 
-            <!-- Manish Card -->
             <div class="team-card">
                 <div class="team-avatar">M</div>
                 <div class="team-info">
@@ -730,7 +701,7 @@
         </div>
     </div>
 
-    <!-- USER UPLOAD MODAL (ONLY GMAIL) -->
+    <!-- USER UPLOAD MODAL -->
     <div class="modal-overlay" id="creatorModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('creatorModal')">&times;</span>
@@ -752,7 +723,7 @@
         </div>
     </div>
 
-    <!-- VIDEO UPLOAD PANEL MODAL WITH BATCH SELECTION -->
+    <!-- VIDEO UPLOAD PANEL MODAL -->
     <div class="modal-overlay" id="videoUploadModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('videoUploadModal')">&times;</span>
@@ -768,7 +739,7 @@
                 </div>
                 <div class="input-group">
                     <label>Video Title:</label>
-                    <input type="text" id="videoTitleInput" required placeholder="वीडियो का नाम/शीर्षक लिखें">
+                    <input type="text" id="videoTitleInput" required placeholder="वीडियो का शीर्षक लिखें">
                 </div>
                 <div class="input-group">
                     <label>YouTube Embed Link or ID:</label>
@@ -799,7 +770,7 @@
         </div>
     </div>
 
-    <!-- HACKER ATTRACTION FOOTER -->
+    <!-- HACKER FOOTER -->
     <footer class="hacker-footer">
         <div class="footer-status">
             🟢 SYSTEM STATUS: SECURE | DEFENSE LEVEL: MAXIMUM
@@ -826,17 +797,6 @@
     </footer>
 
     <script>
-        // FIREBASE CONFIGURATION
-        const firebaseConfig = {
-            apiKey: "AIzaSyAmv4sxOvggURR01FoVc9C-zwq1wLyaPWM",
-            authDomain: "all-indian-hacker.firebaseapp.com",
-            projectId: "all-indian-hacker",
-            storageBucket: "all-indian-hacker.firebasestorage.app",
-            messagingSenderId: "789634997891",
-            appId: "1:789634997891:web:a56a9511c83d0e410945b6"
-        };
-        firebase.initializeApp(firebaseConfig);
-
         const AppState = (function() {
             let secretOTP = null;
             let creatorOTP = null;
@@ -849,11 +809,9 @@
         })();
 
         let isOtpSent = false;
-        let isPhoneOtpSent = false;
         let isCreatorOtpSent = false;
         let currentOpenBatch = "";
 
-        // Videos Storage
         let batchVideos = JSON.parse(localStorage.getItem('batchVideosMap')) || {
             "Basic Batch": [{ title: "Basic Ethical Hacking Lecture 1", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
             "Pro Hacker Batch": [{ title: "Pro Hacking Intro", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
@@ -887,7 +845,7 @@
             document.getElementById('batchSection').style.display = 'block';
         }
 
-        // STEP 1: GMAIL OTP LOGIC
+        // DIRECT GMAIL OTP LOGIC
         function handleEmailStep() {
             const email = document.getElementById('userEmail').value;
             const btn = document.getElementById('actionBtn');
@@ -911,7 +869,7 @@
                         alert("Gmail OTP भेज दिया गया है!");
                         document.getElementById('userEmail').readOnly = true;
                         document.getElementById('otpGroup').style.display = 'block';
-                        btn.innerText = "Verify Gmail OTP";
+                        btn.innerText = "Verify OTP & Login";
                         isOtpSent = true;
                     }, function(error) {
                         alert("OTP भेजने में समस्या आई: " + JSON.stringify(error));
@@ -921,57 +879,13 @@
                 const inputOTP = document.getElementById('otpInput').value;
 
                 if (inputOTP === AppState.getOTP()) {
-                    alert("Gmail OTP सही है! अब Step 2 (Phone SMS OTP) पूरा करें।");
-                    document.getElementById('loginStep1').style.display = 'none';
-                    document.getElementById('loginStep2').style.display = 'block';
-                    initRecaptcha();
-                } else {
-                    alert("गलत Gmail OTP! कृपया सही कोड डालें।");
-                }
-            }
-        }
-
-        // STEP 2: PHONE SMS OTP LOGIC
-        function initRecaptcha() {
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                'size': 'invisible'
-            });
-        }
-
-        function handlePhoneStep() {
-            const phoneInput = document.getElementById('userPhone');
-            const btn = document.getElementById('phoneActionBtn');
-
-            if (!isPhoneOtpSent) {
-                if(!phoneInput.value.startsWith("+91")) {
-                    return alert("फ़ोन नंबर कंट्री कोड (+91) के साथ लिखें! (उदा: +919876543210)");
-                }
-
-                btn.innerText = "Sending SMS...";
-                const appVerifier = window.recaptchaVerifier;
-
-                firebase.auth().signInWithPhoneNumber(phoneInput.value, appVerifier)
-                    .then((confirmationResult) => {
-                        window.confirmationResult = confirmationResult;
-                        alert("SMS OTP आपके नंबर पर भेज दिया गया है!");
-                        phoneInput.readOnly = true;
-                        document.getElementById('phoneOtpGroup').style.display = 'block';
-                        btn.innerText = "Verify SMS OTP & Join";
-                        isPhoneOtpSent = true;
-                    }).catch((error) => {
-                        alert("SMS OTP भेजने में समस्या: " + error.message);
-                        btn.innerText = "Send SMS OTP";
-                    });
-            } else {
-                const phoneOTP = document.getElementById('phoneOtpInput').value;
-                window.confirmationResult.confirm(phoneOTP).then((result) => {
-                    alert("सफलतापूर्वक वेरीफाई हो गया! आपका स्वागत है।");
+                    alert("OTP सही है! सफलतापूर्वक लॉगिन हो गया।");
                     localStorage.setItem('isLoggedIn', 'true');
                     closeModal('loginModal');
                     showBatches();
-                }).catch((error) => {
-                    alert("गलत SMS OTP! कृपया दोबारा प्रयास करें।");
-                });
+                } else {
+                    alert("गलत Gmail OTP! कृपया सही कोड डालें।");
+                }
             }
         }
 
@@ -1010,7 +924,7 @@
                 const inputOTP = document.getElementById('creatorOtpInput').value;
 
                 if (inputOTP === AppState.getCreatorOTP()) {
-                    alert("OTP सही है! वीडियो अपलोड पोर्टल में आपका स्वागत है।");
+                    alert("OTP सही है! अपलोड पोर्टल में स्वागत है।");
                     closeModal('creatorModal');
                     document.getElementById('creatorLoginForm').reset();
                     openModal('videoUploadModal');
