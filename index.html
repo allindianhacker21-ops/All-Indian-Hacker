@@ -293,24 +293,24 @@
         .team-cards-wrapper {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 20px;
             flex-wrap: wrap;
             width: 100%;
-            max-width: 500px;
+            max-width: 700px;
         }
 
         .profile-card {
             background: #111111;
             border: 2px solid red;
             border-radius: 12px;
-            padding: 20px 30px;
+            padding: 20px 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
             transition: 0.3s;
-            min-width: 130px;
+            min-width: 120px;
             cursor: pointer;
         }
 
@@ -335,7 +335,7 @@
 
         .profile-name {
             color: #ffffff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             letter-spacing: 0.5px;
         }
@@ -615,7 +615,7 @@
                 Naresh
             </h1>
 
-            <!-- 2 Profiles: Manish Bhai & Pulkit Bhai -->
+            <!-- 5 Profiles: Manish, Pulkit, Lakshy, Yogender, Sumit -->
             <div class="team-cards-wrapper">
                 <!-- Manish Bhai Card -->
                 <div class="profile-card" onclick="openModal('manishInfoModal')">
@@ -627,6 +627,24 @@
                 <div class="profile-card" onclick="openModal('pulkitInfoModal')">
                     <div class="profile-avatar">P</div>
                     <div class="profile-name">Pulkit Bhai</div>
+                </div>
+
+                <!-- Lakshy Bhai Card -->
+                <div class="profile-card" onclick="openModal('lakshyInfoModal')">
+                    <div class="profile-avatar">L</div>
+                    <div class="profile-name">Lakshy Bhai</div>
+                </div>
+
+                <!-- Yogender Bhai Card -->
+                <div class="profile-card" onclick="openModal('yogenderInfoModal')">
+                    <div class="profile-avatar">Y</div>
+                    <div class="profile-name">Yogender Bhai</div>
+                </div>
+
+                <!-- Sumit Bhai Card -->
+                <div class="profile-card" onclick="openModal('sumitInfoModal')">
+                    <div class="profile-avatar">S</div>
+                    <div class="profile-name">Sumit Bhai</div>
                 </div>
             </div>
         </div>
@@ -677,6 +695,42 @@
             </a>
 
             <button class="submit-btn" style="margin-top: 20px;" onclick="closeModal('pulkitInfoModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- LAKSHY INFO MODAL -->
+    <div class="modal-overlay" id="lakshyInfoModal">
+        <div class="box" style="text-align: center;">
+            <span class="close-btn" onclick="closeModal('lakshyInfoModal')">&times;</span>
+            <h2 style="color: red; margin-bottom: 15px;">Lakshy Bhai</h2>
+            <p style="color: #ffffff; font-size: 15px; line-height: 1.6; margin: 8px 0;">
+                Mera name Lakshy he
+            </p>
+            <button class="submit-btn" style="margin-top: 20px;" onclick="closeModal('lakshyInfoModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- YOGENDER INFO MODAL -->
+    <div class="modal-overlay" id="yogenderInfoModal">
+        <div class="box" style="text-align: center;">
+            <span class="close-btn" onclick="closeModal('yogenderInfoModal')">&times;</span>
+            <h2 style="color: red; margin-bottom: 15px;">Yogender Bhai</h2>
+            <p style="color: #ffffff; font-size: 15px; line-height: 1.6; margin: 8px 0;">
+                Mera name Yogender he
+            </p>
+            <button class="submit-btn" style="margin-top: 20px;" onclick="closeModal('yogenderInfoModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- SUMIT INFO MODAL -->
+    <div class="modal-overlay" id="sumitInfoModal">
+        <div class="box" style="text-align: center;">
+            <span class="close-btn" onclick="closeModal('sumitInfoModal')">&times;</span>
+            <h2 style="color: red; margin-bottom: 15px;">Sumit Bhai</h2>
+            <p style="color: #ffffff; font-size: 15px; line-height: 1.6; margin: 8px 0;">
+                Mera name Sumit he
+            </p>
+            <button class="submit-btn" style="margin-top: 20px;" onclick="closeModal('sumitInfoModal')">Close</button>
         </div>
     </div>
 
