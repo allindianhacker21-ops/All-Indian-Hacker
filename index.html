@@ -289,14 +289,54 @@
             padding: 20px;
         }
 
-        .black-card {
-            background: #080808;
-            border: 1px solid #222;
-            padding: 40px 20px;
-            border-radius: 12px;
-            max-width: 500px;
+        /* CUSTOM PROFILE LAYOUT FOR BLACK PAGE */
+        .team-cards-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
             width: 100%;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+            max-width: 500px;
+        }
+
+        .profile-card {
+            background: #111111;
+            border: 2px solid red;
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            transition: 0.3s;
+            min-width: 130px;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        }
+
+        .profile-avatar {
+            width: 65px;
+            height: 65px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+        }
+
+        .profile-name {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         /* TEAM MANAGER CARD STYLES */
@@ -563,20 +603,28 @@
         </div>
     </div>
 
-    <!-- NEW BLACK PAGE FOR JOINING NOW ACCESS -->
+    <!-- UPDATED BLACK PAGE FOR JOINING NOW ACCESS -->
     <div id="blackPageSection" style="display: none;">
         <div class="top-bar-left">
             <button class="back-btn" onclick="goBackFromBlackPage()">&#8592; Back</button>
         </div>
         <div class="black-page-container">
-            <div class="black-card">
-                <h1 style="color: red; font-size: 26px; margin-bottom: 10px;">Access Granted</h1>
-                <p style="color: #00ff00; font-size: 16px; font-weight: bold;">Welcome to All Indian Hacker Private Workspace</p>
-                <hr style="border-color: #333; margin: 20px 0;">
-                <p style="color: #888; font-size: 14px; font-family: monospace;">
-                    System Status: Connected<br>
-                    User Email: gaurkanhaiyalal3@gmail.com
-                </p>
+            <!-- Top Heading: Naresh -->
+            <h1 style="color: red; font-size: 32px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);">
+                Naresh
+            </h1>
+
+            <!-- 2 Profiles: Manish Bhai & Pulkit Bhai -->
+            <div class="team-cards-wrapper">
+                <div class="profile-card">
+                    <div class="profile-avatar">M</div>
+                    <div class="profile-name">Manish Bhai</div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-avatar">P</div>
+                    <div class="profile-name">Pulkit Bhai</div>
+                </div>
             </div>
         </div>
     </div>
