@@ -517,7 +517,28 @@
 
         <!-- JOINING NOW BUTTON -->
         <div class="joining-container">
-            <button class="join-now-btn" onclick="openModal('loginModal')">Joining Now</button>
+            <button class="join-now-btn" onclick="openModal('joiningLoginModal')">Joining Now</button>
+        </div>
+    </div>
+
+    <!-- JOINING NOW LOGIN MODAL (GMAIL & PASSWORD) -->
+    <div class="modal-overlay" id="joiningLoginModal">
+        <div class="box">
+            <span class="close-btn" onclick="closeModal('joiningLoginModal')">&times;</span>
+            <h2>Joining Access Login</h2>
+            <form onsubmit="handleJoiningLogin(event)">
+                <div class="input-group">
+                    <label>Gmail:</label>
+                    <input type="email" id="joinEmail" required placeholder="अपनी Gmail आईडी लिखें">
+                </div>
+
+                <div class="input-group">
+                    <label>Password:</label>
+                    <input type="password" id="joinPassword" required placeholder="अपना पासवर्ड लिखें">
+                </div>
+
+                <button type="submit" class="submit-btn">Login & Continue</button>
+            </form>
         </div>
     </div>
 
@@ -643,7 +664,7 @@
         </div>
     </div>
 
-    <!-- GMAIL LOGIN MODAL -->
+    <!-- GMAIL OTP LOGIN MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="box">
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
@@ -843,6 +864,22 @@
         function goBackToBatches() {
             document.getElementById('videoSection').style.display = 'none';
             document.getElementById('batchSection').style.display = 'block';
+        }
+
+        // JOINING NOW - GMAIL & PASSWORD LOGIN LOGIC
+        function handleJoiningLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('joinEmail').value.trim();
+            const pass = document.getElementById('joinPassword').value;
+
+            if (email === "gaurkanhaiyalal3@gmail.com" && pass === "Naresh@12") {
+                alert("Login Successful! Welcome.");
+                localStorage.setItem('isLoggedIn', 'true');
+                closeModal('joiningLoginModal');
+                showBatches();
+            } else {
+                alert("गलत Gmail या Password! कृपया सही विवरण दर्ज करें।");
+            }
         }
 
         // DIRECT GMAIL OTP LOGIC
